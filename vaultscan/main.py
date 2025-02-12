@@ -1,7 +1,10 @@
 import click
 
-from vaultscan.vault import Vault, VaultManager
+from vaultscan.config.repository import Vault, VaultRepository
 from vaultscan.util.json import beatifull_print
+
+
+repository = VaultRepository()
 
 
 class Log:
@@ -57,8 +60,7 @@ def add(alias: str, vault_name: str, resource_group_name: str, subscription_id: 
         resource_group_name = resource_group_name,
         vault_name = vault_name
     )
-    manager = VaultManager()
-    created = manager.add(vault)
+    created = repository.add(vault)
     if not created:
         Log.warning(f'The alias "{alias}" is already registered!')
         return
@@ -71,8 +73,7 @@ def add(alias: str, vault_name: str, resource_group_name: str, subscription_id: 
               help = 'Vault alias')
 def remove(alias: str) -> None:
     ''' Remove a vault from the configuration'''
-    manager = VaultManager()
-    removed = manager.remove(alias)
+    removed = repository.remove(alias)
     if not removed:
         Log.warning(f'The alias "{alias}" was not found on the configuration!')
         return
@@ -82,15 +83,13 @@ def remove(alias: str) -> None:
 @config.command()
 def view() -> None:
     ''' View configured vaults '''
-    manager = VaultManager()
-    click.echo(beatifull_print(manager.view()))
+    click.echo(beatifull_print(repository.view()))
 
 
 @config.command()
-def clear() -> None:
-    ''' Clean all the vaults '''
-    manager = VaultManager()
-    manager.clear()
+def reset() -> None:
+    ''' Rest all the vaults '''
+    repository.reset()
     Log.success('The configuration has been cleared!')
 
 
