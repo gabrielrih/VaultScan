@@ -1,0 +1,20 @@
+[project]
+name = "vaultscan"
+version = "0.1.0"
+description = "Scanning and searching secrets in multiple Azure Key Vaults"
+authors = [
+    {name = "gabrielrih@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "click (>=8.1.8,<9.0.0)"
+]
+packages = [{ include = "vaultscan" }]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project.scripts]
+vaultscan = "vaultscan.main:main"
