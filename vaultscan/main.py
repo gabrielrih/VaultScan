@@ -31,7 +31,13 @@ def main(): pass
 
 @click.group()
 def config() -> None:
-    ''' Manage the configuration vaults '''
+    ''' Manage the configuration '''
+    pass
+
+
+@click.group()
+def find() -> None:
+    ''' Find objects on vaults  '''
     pass
 
 
@@ -81,22 +87,20 @@ def remove(alias: str) -> None:
 
 
 @config.command()
-def view() -> None:
-    ''' View configured vaults '''
-    click.echo(beatifull_print(repository.view()))
+def reset() -> None:
+    ''' Reset the configuration '''
+    repository.reset()
+    Log.success('The configuration has been reset!')
 
 
 @config.command()
-def reset() -> None:
-    ''' Rest all the vaults '''
-    repository.reset()
-    Log.success('The configuration has been cleared!')
-
-
-@click.group()
-def find() -> None:
-    ''' Find objects on vaults  '''
-    pass
+def view() -> None:
+    ''' View configuration '''
+    click.echo(
+        beatifull_print(
+            repository.view()
+        )
+    )
 
 
 @find.command()

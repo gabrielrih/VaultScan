@@ -15,6 +15,11 @@ class Vault:
 class VaultRepository:
     def __init__(self):
         self.file = ConfigFile()
+        self.initialize_if_empty()
+
+    def initialize_if_empty(self):
+        if self.file.exists:
+            return
         self.initialize()
 
     def initialize(self):
