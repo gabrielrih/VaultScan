@@ -1,7 +1,7 @@
 import os
 from typing import List, Dict
 
-from vaultscan.config.repositories.common import VaultRepository, Vault
+from vaultscan.repository.common import VaultRepository, Vault
 from vaultscan.util.json import JsonFileManager
 from vaultscan.util.user import CurrentUser
 from vaultscan.util.logger import LoggerFactory
