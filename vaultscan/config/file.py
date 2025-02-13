@@ -3,6 +3,7 @@ import os
 from typing import List, Dict
 
 from vaultscan.util.json import load_json_from_file, write_json_on_file
+from vaultscan.util.user import CurrentUser
 
 
 class JSONFileHandler:
@@ -35,6 +36,7 @@ class JSONFileHandler:
 class FolderHandler:
     def __init__(self, name: str):
         self._folder_name = name
+        self._current_user = CurrentUser()
 
     @property
     def name(self) -> str:
@@ -42,17 +44,8 @@ class FolderHandler:
 
     @property
     def path(self) -> str:
-        home = self._get_home_directory()
-        if not home:
-            raise EnvironmentError('Unable to determine the user home directory')
-        return str(os.path.join(home, self.name))
+        path = os.path.join(self._current_user.home_path, self.name)
+        return str(path)
     
     def create_if_doesnt_exist(self) -> None:
         os.makedirs(self.path, exist_ok = True)
-
-    def _get_home_directory(self) -> str:
-        if os.name == 'nt':  # Windows
-            return os.getenv('USERPROFILE')
-        if os.name == 'posix':  # Linux
-            return os.getenv('HOME')
-        raise EnvironmentError('Unsupported OS')
