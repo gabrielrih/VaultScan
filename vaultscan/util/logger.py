@@ -1,20 +1,37 @@
-import logging
-import logging.config
+import click
+
+from vaultscan.settings import GlobalSettings
 
 
-class Logger:
+settings = GlobalSettings()
+
+
+class LoggerFactory:
     @staticmethod
-    def get_logger(name, verbose: bool = False):
-        log_level = 'INFO'
-        if verbose:
-            log_level = 'DEBUG'
-        logger = logging.getLogger(name)
-        logger.setLevel(level=log_level)
-        handler = logging.StreamHandler()
-        handler.setLevel(log_level)
-        formatter = logging.Formatter(
-            "%(levelname)s [%(filename)s:%(lineno)d] - %(message)s"
-        )
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-        return logger
+    def get_logger():
+        return ClickLogger()
+
+
+class ClickLogger:
+    @staticmethod
+    def success(message: str):
+        message = f'SUCCESS: {message}' 
+        click.secho(message, fg='green')
+
+    @staticmethod
+    def warning(message: str):
+        message = f'WARNING: {message}' 
+        click.secho(message, fg='yellow')
+
+    @staticmethod
+    def error(message: str):
+        message = f'ERROR: {message}' 
+        click.secho(message, fg='red')
+
+    @staticmethod
+    def verbose(message: str):
+        ''' Just printing verbose message when the config is enabled '''
+        if not settings.verbose_enabled:
+            return
+        message = f'VERBOSE: {message}'
+        click.secho(message, fg='cyan')
