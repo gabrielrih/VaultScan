@@ -18,3 +18,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project.scripts]
 vaultscan = "vaultscan.main:main"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+

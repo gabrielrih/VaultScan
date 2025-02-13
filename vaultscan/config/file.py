@@ -3,12 +3,13 @@ import os
 from typing import List, Dict
 
 from vaultscan.util.json import load_json_from_file, write_json_on_file
+from vaultscan.util.user import CurrentUser
 
 
-class ConfigFile:
-    def __init__(self):
-        self._filename = 'vaults.json'
-        self.folder = ConfigFolder()
+class JSONFileHandler:
+    def __init__(self, folder_name: str, filename: str):
+        self._filename = filename
+        self.folder = FolderHandler(name = folder_name)
         self.folder.create_if_doesnt_exist()
 
     @property
@@ -32,27 +33,19 @@ class ConfigFile:
         write_json_on_file(content, self.path)
 
 
-class ConfigFolder:
-    def __init__(self):
-        self._foldername = '.vaultscan'
+class FolderHandler:
+    def __init__(self, name: str):
+        self._folder_name = name
+        self._current_user = CurrentUser()
 
     @property
     def name(self) -> str:
-        return self._foldername
+        return self._folder_name
 
     @property
     def path(self) -> str:
-        home = self._get_home_directory()
-        if not home:
-            raise EnvironmentError('Unable to determine the user home directory')
-        return str(os.path.join(home, self.name))
+        path = os.path.join(self._current_user.home_path, self.name)
+        return str(path)
     
     def create_if_doesnt_exist(self) -> None:
         os.makedirs(self.path, exist_ok = True)
-
-    def _get_home_directory(self) -> str:
-        if os.name == 'nt':  # Windows
-            return os.getenv('USERPROFILE')
-        if os.name == 'posix':  # Linux
-            return os.getenv('HOME')
-        raise EnvironmentError('Unsupported OS')
