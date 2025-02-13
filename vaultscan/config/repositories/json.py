@@ -2,7 +2,7 @@ import os
 from typing import List, Dict
 
 from vaultscan.config.repositories.common import VaultRepository, Vault
-from vaultscan.util.json import load_json_from_file, write_json_on_file
+from vaultscan.util.json import JsonFileManager
 from vaultscan.util.user import CurrentUser
 
 
@@ -79,10 +79,10 @@ class JSONFileHandler:
     def read(self) -> List[Dict]:
         if not self.exists:
             return list()
-        return load_json_from_file(self.path)
+        return JsonFileManager.load(self.path)
     
     def write(self, content: List[Dict]) -> None:
-        write_json_on_file(content, self.path)
+        JsonFileManager.write(content, self.path)
 
 
 class DefaultConfigFolder:

@@ -2,7 +2,7 @@ import click
 
 from vaultscan.config.factory import VaultRepositoryFactory
 from vaultscan.config.repositories.common import Vault
-from vaultscan.util.json import beatifull_print
+from vaultscan.util.json import JsonHandler
 
 
 repository = VaultRepositoryFactory.create()
@@ -98,7 +98,7 @@ def reset() -> None:
 def view() -> None:
     ''' View configuration '''
     click.echo(
-        beatifull_print(
+        JsonHandler.beatifull_print(
             repository.view()
         )
     )
