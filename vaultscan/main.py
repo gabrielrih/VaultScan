@@ -1,10 +1,10 @@
 import click
 
-from vaultscan.config.repository import Vault, VaultRepositoryAsFile
+from vaultscan.config.repository import Vault, VaultRepositoryBuilder
 from vaultscan.util.json import beatifull_print
 
 
-repository = VaultRepositoryAsFile()
+repository = VaultRepositoryBuilder.create()
 
 
 class Log:

@@ -30,6 +30,11 @@ class VaultRepository(ABC):
     def reset(self) -> None: pass
 
 
+class VaultRepositoryBuilder:
+    @staticmethod
+    def create() -> VaultRepository:
+        return VaultRepositoryAsFile()
+
 
 class VaultRepositoryAsFile(VaultRepository):
     def __init__(self):
