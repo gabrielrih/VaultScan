@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 from typing import List, Dict
+from abc import ABC, abstractmethod
 
-from vaultscan.config.file import ConfigFile
+from vaultscan.config.file import JSONFileHandler
 
 
 @dataclass
@@ -12,15 +13,32 @@ class Vault:
     vault_name: str
 
 
-class VaultRepository:
-    def __init__(self):
-        self.file = ConfigFile()
-        self.initialize_if_empty()
+class VaultRepository(ABC):
+    @abstractmethod
+    def initialize(self): pass
 
-    def initialize_if_empty(self):
-        if self.file.exists:
-            return
-        self.initialize()
+    @abstractmethod
+    def add(self, new_vault: Vault) -> bool: pass
+
+    @abstractmethod
+    def remove(self, alias: str) -> bool: pass
+
+    @abstractmethod
+    def view(self) -> List[Vault]: pass
+
+    @abstractmethod
+    def reset(self) -> None: pass
+
+
+
+class VaultRepositoryAsFile(VaultRepository):
+    def __init__(self):
+        self.file = JSONFileHandler(
+            folder_name = '.vaultscan',
+            filename = 'vaults.json'
+        )
+        if not self.file.exists:
+            self.initialize()
 
     def initialize(self):
         content: Dict = {

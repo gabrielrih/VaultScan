@@ -5,10 +5,10 @@ from typing import List, Dict
 from vaultscan.util.json import load_json_from_file, write_json_on_file
 
 
-class ConfigFile:
-    def __init__(self):
-        self._filename = 'vaults.json'
-        self.folder = ConfigFolder()
+class JSONFileHandler:
+    def __init__(self, folder_name: str, filename: str):
+        self._filename = filename
+        self.folder = FolderHandler(name = folder_name)
         self.folder.create_if_doesnt_exist()
 
     @property
@@ -32,13 +32,13 @@ class ConfigFile:
         write_json_on_file(content, self.path)
 
 
-class ConfigFolder:
-    def __init__(self):
-        self._foldername = '.vaultscan'
+class FolderHandler:
+    def __init__(self, name: str):
+        self._folder_name = name
 
     @property
     def name(self) -> str:
-        return self._foldername
+        return self._folder_name
 
     @property
     def path(self) -> str:
