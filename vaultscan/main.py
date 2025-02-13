@@ -1,7 +1,7 @@
 import click
 
-from vaultscan.config.factory import VaultRepositoryFactory
-from vaultscan.config.repositories.common import Vault
+from vaultscan.repository.factory import VaultRepositoryFactory
+from vaultscan.repository.common import Vault
 from vaultscan.util.json import JsonHandler
 from vaultscan.util.logger import LoggerFactory
 
