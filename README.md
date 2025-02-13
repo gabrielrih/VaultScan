@@ -10,6 +10,7 @@ This tool can be useful to search in a fast way secrets by its name or via regex
     - [Searching secrets by their names](#searching-secrets-by-their-names)
     - [Searching secrets using regex](#searching-secrets-using-regex)
 - [Contribute](#contribute)
+    - [Testing](#testing)
 
 # Installing it 
 TO DO
@@ -51,4 +52,10 @@ To use the cli just run:
 
 ```ps1
 vaultscan --help
+```
+
+## Testing 
+
+```ps1
+pytest
 ```
