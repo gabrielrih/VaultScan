@@ -4,6 +4,10 @@ from typing import List, Dict
 from vaultscan.config.repositories.common import VaultRepository, Vault
 from vaultscan.util.json import JsonFileManager
 from vaultscan.util.user import CurrentUser
+from vaultscan.util.logger import LoggerFactory
+
+
+logger = LoggerFactory.get_logger()
 
 
 class VaultRepositoryAsJson(VaultRepository):
@@ -78,10 +82,12 @@ class JSONFileHandler:
 
     def read(self) -> List[Dict]:
         if not self.exists:
+            logger.verbose(f'File {self.path} doesnt exists!')
             return list()
         return JsonFileManager.load(self.path)
     
     def write(self, content: List[Dict]) -> None:
+        logger.verbose(f'Writing file {self.path} on disk')
         JsonFileManager.write(content, self.path)
 
 

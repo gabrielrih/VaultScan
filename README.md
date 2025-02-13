@@ -10,6 +10,7 @@ This tool can be useful to search in a fast way secrets by its name or via regex
     - [Searching secrets by their names](#searching-secrets-by-their-names)
     - [Searching secrets using regex](#searching-secrets-using-regex)
 - [Contribute](#contribute)
+    - [Environment variables](#environment-variables)
     - [Testing](#testing)
 
 # Installing it 
@@ -53,6 +54,17 @@ To use the cli just run:
 ```ps1
 vaultscan --help
 ```
+
+## Environment variables
+
+To help you on the development process you can create a ```.env``` file on the root folder and set the current variables:
+
+```
+VAULTSCAN_VERBOSE_ENABLED = True
+```
+
+> For more information just look at the [settings.py](./vaultscan/settings.py) file
+
 
 ## Testing 
 

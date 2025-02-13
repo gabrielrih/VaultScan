@@ -3,27 +3,13 @@ import click
 from vaultscan.config.factory import VaultRepositoryFactory
 from vaultscan.config.repositories.common import Vault
 from vaultscan.util.json import JsonHandler
+from vaultscan.util.logger import LoggerFactory
 
 
 repository = VaultRepositoryFactory.create()
 
 
-class Log:
-    def info(message: str):
-        message = f'INFO: {message}' 
-        click.secho(message, fg='blue')
-
-    def success(message: str):
-        message = f'SUCCESS: {message}' 
-        click.secho(message, fg='green')
-
-    def warning(message: str):
-        message = f'WARNING: {message}' 
-        click.secho(message, fg='yellow')
-
-    def error(message: str):
-        message = f'ERROR: {message}' 
-        click.secho(message, fg='red')
+logger = LoggerFactory.get_logger()
 
 
 @click.group()
@@ -69,9 +55,9 @@ def add(alias: str, vault_name: str, resource_group_name: str, subscription_id: 
     )
     created = repository.add(vault)
     if not created:
-        Log.warning(f'The alias "{alias}" is already registered!')
+        logger.warning(f'The alias "{alias}" is already registered!')
         return
-    Log.success('The vault was added on the configuration!')
+    logger.success('The vault was added on the configuration!')
 
 @config.command()
 @click.option('--alias',
@@ -82,16 +68,16 @@ def remove(alias: str) -> None:
     ''' Remove a vault from the configuration'''
     removed = repository.remove(alias)
     if not removed:
-        Log.warning(f'The alias "{alias}" was not found on the configuration!')
+        logger.warning(f'The alias "{alias}" was not found on the configuration!')
         return
-    Log.success(f'The alias "{alias}" was removed from the configuration!')
+    logger.success(f'The alias "{alias}" was removed from the configuration!')
 
 
 @config.command()
 def reset() -> None:
     ''' Reset the configuration '''
     repository.reset()
-    Log.success('The configuration has been reset!')
+    logger.success('The configuration has been reset!')
 
 
 @config.command()
@@ -114,7 +100,10 @@ def view() -> None:
               is_flag = True,
               required = False,
               help = 'Show the value of the secrets')
-def secrets(only_vault: str = '', show_values: bool = False) -> None:
+@click.option('--verbose',
+              is_flag = True,
+              help = "Enable verbose output")
+def secrets(only_vault: str = '', show_values: bool = False, verbose: bool = False) -> None:
     ''' Find secrets '''
     pass
 
