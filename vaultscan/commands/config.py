@@ -80,8 +80,7 @@ def reset() -> None:
               help = 'Output format')
 def view(output_format: str) -> None:
     ''' View configuration '''
-    logger.verbose({str(locals())})
+    logger.verbose(f'Args: {str(locals())}')
     format = OutputFormat(output_format)
-    OutputHandler(format).print(
-        data = repository.view()
-    )
+    vaults = repository.get_all()
+    OutputHandler(format).print(vaults)

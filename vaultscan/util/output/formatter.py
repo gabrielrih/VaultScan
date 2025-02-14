@@ -28,7 +28,7 @@ class OutputHandler:
         self.format = format
 
     def print(self, data: Any):
-        logger.verbose(f'Printing using format {self.format}')
+        logger.verbose(f'Printing using {self.format} format')
         if self.format == OutputFormat.JSON:
             return self.print_as_json(data)
         if self.format == OutputFormat.TABLE:

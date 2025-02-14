@@ -41,7 +41,7 @@ class VaultRepositoryAsJson(VaultRepository):
         return True
 
     def remove(self, alias: str) -> bool:
-        content: List[Dict] = self.file.read()
+        content: Dict = self.file.read()
         vaults: List[Dict] = content['vaults']
         if not vaults:
             return False
@@ -55,8 +55,17 @@ class VaultRepositoryAsJson(VaultRepository):
                 break
         return removed
 
-    def view(self) -> List[Vault]:
-        return self.file.read()
+    def get(self, alias: str) -> Dict:
+        content: Dict = self.file.read()
+        vaults: List[Dict] = content['vaults']
+        for vault in vaults:
+            if vault['alias'] == alias:
+                return vault
+        return {}
+
+    def get_all(self) -> List[Dict]:
+        content: Dict = self.file.read()
+        return content['vaults']
     
     def reset(self) -> None:
         self.initialize()
@@ -80,7 +89,7 @@ class JSONFileHandler:
     def exists(self) -> bool:
         return os.path.exists(self.path)
 
-    def read(self) -> List[Dict]:
+    def read(self) -> Dict:
         if not self.exists:
             logger.verbose(f'File {self.path} doesnt exists!')
             return list()
