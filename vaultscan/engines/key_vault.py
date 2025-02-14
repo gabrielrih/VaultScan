@@ -13,7 +13,7 @@ from vaultscan.engines.base import (
 from vaultscan.util.output.logger import LoggerFactory
 
 
-logger = LoggerFactory.get_logger()
+logger = LoggerFactory.get_logger(__name__)
 
 
 @dataclass
@@ -51,21 +51,28 @@ class KeyVaultSecretEngine(BaseVaultEngine):
         self.client = KeyVaultSecretAPI(vault_name = vault.vault_name)
 
     def find_by_regex(self, secret_name: str) -> List[Secret]:
+        secret_name = secret_name.lower()
         secrets = list()
-        raw_secrets: List[str] = self.client.get_secrets()
-        for raw_secret in raw_secrets:
-            secrets.append(
-                Secret(
-                    vault_alias = self.vault.alias,
-                    secret_name = raw_secret
-                )
-            )
-        logger.verbose(str(secrets))
+        raw_secrets: List[str] = self.client.get_all_secrets()
+        secrets = [
+            Secret(vault = self.vault.alias, name = raw_secret)
+            for raw_secret in raw_secrets
+            if secret_name in raw_secret.lower()
+        ]
+        logger.debug(f'{len(secrets)} secrets found on KV {self.vault.alias} mathing the regex {secret_name}')
         return secrets
 
     def find_by_name(self, secret_name: str) -> List[Secret]:
-        return get_fake_secrets()
-
+        secret_name = secret_name.lower()
+        secrets = list()
+        raw_secrets: List[str] = self.client.get_all_secrets()
+        secrets = [
+            Secret(vault = self.vault.alias, name = raw_secret)
+            for raw_secret in raw_secrets
+            if secret_name == raw_secret.lower()
+        ]
+        logger.debug(f'{len(secrets)} secrets found on KV {self.vault.alias} mathing the regex {secret_name}')
+        return secrets
 
 
 class KeyVaultSecretAPI:
@@ -76,25 +83,5 @@ class KeyVaultSecretAPI:
             credential = DefaultAzureCredential()
         )
         
-    def get_secrets(self) -> List[str]:
+    def get_all_secrets(self) -> List[str]:
         return [ secret.name for secret in self.client.list_properties_of_secrets() ]
-
-
-def get_fake_secrets() -> List[Secret]:
-    secrets = list()
-    secrets.append(
-        Secret(
-            vault_alias = 'vault1',
-            secret_name = 'my_secret_1'
-        ))
-    secrets.append(
-        Secret(
-            vault_alias = 'vault1',
-            secret_name = 'other'
-        ))
-    secrets.append(
-        Secret(
-            vault_alias = 'other_vault',
-            secret_name = 'kkk'
-        ))
-    return secrets

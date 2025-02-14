@@ -8,7 +8,7 @@ from vaultscan.util.user import CurrentUser
 from vaultscan.util.output.logger import LoggerFactory
 
 
-logger = LoggerFactory.get_logger()
+logger = LoggerFactory.get_logger(__name__)
 
 
 class VaultRepositoryAsJson(VaultRepository):
@@ -92,12 +92,12 @@ class JSONFileHandler:
 
     def read(self) -> Dict:
         if not self.exists:
-            logger.verbose(f'File {self.path} doesnt exists!')
+            logger.debug(f'File {self.path} doesnt exists!')
             return list()
         return JsonFileManager.load(self.path)
     
     def write(self, content: List[Dict]) -> None:
-        logger.verbose(f'Writing file {self.path} on disk')
+        logger.debug(f'Writing file {self.path} on disk')
         JsonFileManager.write(content, self.path)
 
 

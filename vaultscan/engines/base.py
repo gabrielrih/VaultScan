@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
 from dataclasses import dataclass, field
 from enum import Enum
 from abc import ABC
@@ -6,8 +6,9 @@ from abc import ABC
 
 @dataclass
 class Secret:
-    vault_alias: str
-    secret_name: str
+    vault: str
+    name: str
+    value: Optional[str] = ''
 
 
 class EngineType(Enum):

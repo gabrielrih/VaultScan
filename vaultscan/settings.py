@@ -1,14 +1,20 @@
-from vaultscan.util.converter import TypeConverter
-
 import os
 
+from enum import Enum
 from dotenv import load_dotenv
 load_dotenv() # loading .env file
 
 
+class LogLevel(Enum):
+    DEBUG = 'debug'
+    INFO = 'info'
+    WARNING = 'warning'
+    ERROR = 'error'
+    CRITICAL = 'critical'
+
+
 class GlobalSettings:
     @property
-    def verbose_enabled(self) -> bool:
-        return TypeConverter.string_to_boolean(
-            os.getenv('VAULTSCAN_VERBOSE_ENABLED', 'False')
-        )
+    def log_level(self) -> LogLevel:
+        log_level = os.getenv("LOG_LEVEL", "INFO")
+        return LogLevel(log_level.lower())

@@ -11,7 +11,7 @@ from vaultscan.util.output.logger import LoggerFactory
 vault_repository = VaultRepositoryFactory.create()
 
 
-logger = LoggerFactory.get_logger()
+logger = LoggerFactory.get_logger(__name__)
 
 
 @click.group()
@@ -42,12 +42,12 @@ def find() -> None:
               help = 'Output format')
 def secrets(secret: str, only_vault: str, exact: bool, output_format: str) -> None:
     ''' Find secrets across vaults '''
-    logger.verbose(f'Args: {str(locals())}')
+    logger.debug(f'Args: {str(locals())}')
 
     # Getting vaults
     vaults: List[Dict] = get_vaults(only_vault)
     if not vaults:
-        logger.error(f'No vault matching alias {only_vault}')
+        logger.error(f'No vault matching alias "{only_vault}"')
         return
     
     # Finding secrets
@@ -59,8 +59,9 @@ def secrets(secret: str, only_vault: str, exact: bool, output_format: str) -> No
         secret_name = secret,
         type = find_type
     )
-
+    
     # Printing results
+    logger.info(f'{len(secrets)} secret(s) found!')
     OutputHandler(
         format = OutputFormat(output_format)
     ).print(secrets)
@@ -69,7 +70,7 @@ def secrets(secret: str, only_vault: str, exact: bool, output_format: str) -> No
 def get_vaults(only_vault: str = '') -> List[Dict]:
     if only_vault:
         vault: Dict = vault_repository.get(alias = only_vault)
-        logger.verbose(f'Vault {only_vault} content: {vault}')
+        logger.debug(f'Vault {only_vault} content: {vault}')
         if not vault:
             return list()
         return [ vault ]

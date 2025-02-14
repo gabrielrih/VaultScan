@@ -10,7 +10,7 @@ from vaultscan.util.output.logger import LoggerFactory
 repository = VaultRepositoryFactory.create()
 
 
-logger = LoggerFactory.get_logger()
+logger = LoggerFactory.get_logger(__name__)
 
 
 
@@ -114,7 +114,8 @@ def reset() -> None:
               help = 'Output format')
 def view(output_format: str) -> None:
     ''' View configuration '''
-    logger.verbose(f'Args: {str(locals())}')
+    logger.debug(f'Args: {str(locals())}')
     format = OutputFormat(output_format)
     vaults = repository.get_all()
+    logger.info(f'{len(vaults)} vault(s) found!')
     OutputHandler(format).print(vaults)
