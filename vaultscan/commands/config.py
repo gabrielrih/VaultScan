@@ -2,8 +2,8 @@ import click
 
 from vaultscan.repositories.factory import VaultRepositoryFactory
 from vaultscan.repositories.common import Vault
-from vaultscan.util.json import JsonHandler
-from vaultscan.util.logger import LoggerFactory
+from vaultscan.util.output.formatter import OutputFormat, OutputHandler
+from vaultscan.util.output.logger import LoggerFactory
 
 
 repository = VaultRepositoryFactory.create()
@@ -73,10 +73,15 @@ def reset() -> None:
 
 
 @config.command()
-def view() -> None:
+@click.option('--output-format', '-o',
+              type = click.Choice(OutputFormat.get_values()),
+              required = False,
+              default = OutputFormat.JSON.value,
+              help = 'Output format')
+def view(output_format: str) -> None:
     ''' View configuration '''
-    click.echo(
-        JsonHandler.beatifull_print(
-            repository.view()
-        )
+    logger.verbose({str(locals())})
+    format = OutputFormat(output_format)
+    OutputHandler(format).print(
+        data = repository.view()
     )
