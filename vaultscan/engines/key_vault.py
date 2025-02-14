@@ -1,12 +1,19 @@
+
 from typing import List, Dict
 from dataclasses import dataclass
 
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
 from vaultscan.engines.base import (
     EngineType,
     BaseVaultConfig,
     BaseVaultEngine,
     Secret
 )
+from vaultscan.util.output.logger import LoggerFactory
+
+
+logger = LoggerFactory.get_logger()
 
 
 @dataclass
@@ -41,13 +48,36 @@ class KeyVaultConfig(BaseVaultConfig):
 class KeyVaultSecretEngine(BaseVaultEngine):
     def __init__(self, vault: KeyVaultConfig):
         super().__init__(vault)
+        self.client = KeyVaultSecretAPI(vault_name = vault.vault_name)
 
     def find_by_regex(self, secret_name: str) -> List[Secret]:
-        return get_fake_secrets()
+        secrets = list()
+        raw_secrets: List[str] = self.client.get_secrets()
+        for raw_secret in raw_secrets:
+            secrets.append(
+                Secret(
+                    vault_alias = self.vault.alias,
+                    secret_name = raw_secret
+                )
+            )
+        logger.verbose(str(secrets))
+        return secrets
 
     def find_by_name(self, secret_name: str) -> List[Secret]:
         return get_fake_secrets()
 
+
+
+class KeyVaultSecretAPI:
+    def __init__(self, vault_name: str):
+        self.vault_name = vault_name
+        self.client = SecretClient(
+            vault_url = f"https://{vault_name}.vault.azure.net",
+            credential = DefaultAzureCredential()
+        )
+        
+    def get_secrets(self) -> List[str]:
+        return [ secret.name for secret in self.client.list_properties_of_secrets() ]
 
 
 def get_fake_secrets() -> List[Secret]:

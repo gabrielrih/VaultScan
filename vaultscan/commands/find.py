@@ -31,16 +31,16 @@ def find() -> None:
               is_flag = True,
               required = False,
               help = 'Search for an exact match instead of a regex')
-@click.option('--show-values',
-              is_flag = True,
-              required = False,
-              help = 'Show the value of the secrets')
+# @click.option('--show-values',
+#               is_flag = True,
+#               required = False,
+#               help = 'Show the value of the secrets')
 @click.option('--output-format', '-o',
               type = click.Choice(OutputFormat.get_values()),
               required = False,
               default = OutputFormat.TABLE.value,
               help = 'Output format')
-def secrets(secret: str, only_vault: str, exact: bool, show_values: bool, output_format: str) -> None:
+def secrets(secret: str, only_vault: str, exact: bool, output_format: str) -> None:
     ''' Find secrets across vaults '''
     logger.verbose(f'Args: {str(locals())}')
 
