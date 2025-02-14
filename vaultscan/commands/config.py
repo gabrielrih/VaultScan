@@ -67,12 +67,12 @@ def kv(alias: str, vault_name: str, resource_group_name: str, subscription_id: s
               type = click.STRING,
               required = True,
               help = 'Path of KDBX file')
-@click.option('--password',
-              type = click.STRING,
-              required = True,
-              help = 'Password to the file')
-def keepass(alias: str, path: str, password: str) -> None:
+def keepass(alias: str, path: str) -> None:
     ''' KeePass database '''
+    if repository.get(alias = alias):  # check in the first time to avoid prompting the password and them generating the error
+        logger.warning(f'The alias "{alias}" is already registered! It must be unique.')
+        return
+    password = click.prompt(f'Password for {path}', hide_input = True, type = str)
     vault = KeePassConfig(
         alias = alias,
         path = path, 
