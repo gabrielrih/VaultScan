@@ -1,4 +1,4 @@
-from vaultscan.repositories.common import Vault
+from vaultscan.engines.base import BaseVaultConfig
 from vaultscan.util.output.logger import LoggerFactory
 
 from enum import Enum, auto
@@ -21,7 +21,7 @@ class FindType(Enum):
 
 
 class SecretScanner:
-    def __init__(self, vaults: List[Vault]):
+    def __init__(self, vaults: List[BaseVaultConfig]):
         self.vaults = vaults
 
     def find(self, secret_name: str, type: FindType = FindType.BY_REGEX) -> List[Dict]:

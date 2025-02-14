@@ -1,7 +1,8 @@
 import click
 
 from vaultscan.repositories.factory import VaultRepositoryFactory
-from vaultscan.repositories.common import Vault
+from vaultscan.engines.key_vault import KeyVaultConfig
+from vaultscan.engines.keepass import KeePassConfig
 from vaultscan.util.output.formatter import OutputFormat, OutputHandler
 from vaultscan.util.output.logger import LoggerFactory
 
@@ -19,17 +20,22 @@ def config() -> None:
     pass
 
 
+@config.group
+def add() -> None:
+    ''' Add a new vault on the configuration '''
+    pass
 
-@config.command()
+
+@add.command()
 @click.option('--alias',
               type = click.STRING,
               required = True,
               help = 'Vault alias')
-@click.option('--vault-name',
+@click.option('--vault-name', '--name',
               type = click.STRING,
               required = True,
               help = 'Azure Key Vault name')
-@click.option('--resource-group-name',
+@click.option('--resource-group-name', '--rg',
               type = click.STRING,
               required = True,
               help = 'Azure Resource Group Name where the vault is located')
@@ -37,9 +43,9 @@ def config() -> None:
               type = click.STRING,
               required = True,
               help = 'Azure Subscription ID where the vault is located')
-def add(alias: str, vault_name: str, resource_group_name: str, subscription_id: str) -> None:
-    ''' Add a new vault on the configuration '''
-    vault = Vault(
+def kv(alias: str, vault_name: str, resource_group_name: str, subscription_id: str) -> None:
+    ''' Azure Key Vault '''
+    vault = KeyVaultConfig(
         alias = alias,
         subscription_id = subscription_id,
         resource_group_name = resource_group_name,
@@ -47,9 +53,37 @@ def add(alias: str, vault_name: str, resource_group_name: str, subscription_id: 
     )
     created = repository.add(vault)
     if not created:
-        logger.warning(f'The alias "{alias}" is already registered!')
+        logger.warning(f'The alias "{alias}" is already registered! It must be unique.')
         return
     logger.success('The vault was added on the configuration!')
+
+
+@add.command
+@click.option('--alias',
+              type = click.STRING,
+              required = True,
+              help = 'Vault alias')
+@click.option('--path',
+              type = click.STRING,
+              required = True,
+              help = 'Path of KDBX file')
+@click.option('--password',
+              type = click.STRING,
+              required = True,
+              help = 'Password to the file')
+def keepass(alias: str, path: str, password: str) -> None:
+    ''' KeePass database '''
+    vault = KeePassConfig(
+        alias = alias,
+        path = path, 
+        password = password
+    )
+    created = repository.add(vault)
+    if not created:
+        logger.warning(f'The alias "{alias}" is already registered! It must be unique.')
+        return
+    logger.success('The vault was added on the configuration!')
+
 
 @config.command()
 @click.option('--alias',
