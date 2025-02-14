@@ -1,4 +1,4 @@
-from vaultscan.engines.base import BaseVaultConfig, Secret
+from vaultscan.engines.base import Secret
 from vaultscan.engines.key_vault import KeyVaultSecretEngine, KeyVaultConfig
 from vaultscan.util.output.logger import LoggerFactory
 
