@@ -1,6 +1,13 @@
+from typing import List, Dict
 from dataclasses import dataclass, field
 from enum import Enum
 from abc import ABC
+
+
+@dataclass
+class Secret:
+    vault_alias: str
+    secret_name: str
 
 
 class EngineType(Enum):
@@ -16,7 +23,18 @@ class BaseVaultConfig:
     def __post_init__(self):
         if not hasattr(self, "type"):
             raise NotImplementedError("Subclasses must define a 'type attribute")
+        
+    @classmethod
+    def from_list(cls, content: List[Dict]) -> List['BaseVaultConfig']: pass
+
+    @classmethod
+    def from_dict(cls, content: Dict) -> 'BaseVaultConfig': pass
 
 
 class BaseVaultEngine(ABC):
-    pass
+    def __init__(self, vault: BaseVaultConfig):
+        self.vault = vault
+
+    def find_by_regex(self, secret_name: str) -> List[Secret]: pass
+
+    def find_by_name(self, secret_name: str) -> List[Secret]: pass

@@ -8,7 +8,7 @@ from vaultscan.util.output.formatter import OutputFormat, OutputHandler
 from vaultscan.util.output.logger import LoggerFactory
 
 
-repository = VaultRepositoryFactory.create()
+vault_repository = VaultRepositoryFactory.create()
 
 
 logger = LoggerFactory.get_logger()
@@ -43,10 +43,9 @@ def find() -> None:
 def secrets(secret: str, only_vault: str, exact: bool, show_values: bool, output_format: str) -> None:
     ''' Find secrets across vaults '''
     logger.verbose(f'Args: {str(locals())}')
-    
+
     # Getting vaults
     vaults: List[Dict] = get_vaults(only_vault)
-    logger.verbose(f'Using vault(s): {vaults}')
     if not vaults:
         logger.error(f'No vault matching alias {only_vault}')
         return
@@ -56,7 +55,7 @@ def secrets(secret: str, only_vault: str, exact: bool, show_values: bool, output
     if exact:
         find_type = FindType.EXACTLY_MATCH
     scanner = SecretScanner(vaults)
-    secrets = scanner.find(
+    secrets: List[Dict] = scanner.find(
         secret_name = secret,
         type = find_type
     )
@@ -69,9 +68,9 @@ def secrets(secret: str, only_vault: str, exact: bool, show_values: bool, output
 
 def get_vaults(only_vault: str = '') -> List[Dict]:
     if only_vault:
-        vault = repository.get(alias = only_vault)
+        vault: Dict = vault_repository.get(alias = only_vault)
         logger.verbose(f'Vault {only_vault} content: {vault}')
         if not vault:
             return list()
         return [ vault ]
-    return repository.get_all()
+    return vault_repository.get_all()
