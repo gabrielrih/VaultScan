@@ -1,7 +1,7 @@
 from typing import List, Dict, Optional
 from dataclasses import dataclass, field
 from enum import Enum
-from abc import ABC
+from abc import ABC, abstractmethod
 
 
 @dataclass
@@ -32,10 +32,14 @@ class BaseVaultConfig:
     def from_dict(cls, content: Dict) -> 'BaseVaultConfig': pass
 
 
+class FilterType(Enum):
+    BY_REGEX = 'regex'
+    BY_MATCH = 'match'
+
+
 class BaseVaultEngine(ABC):
     def __init__(self, vault: BaseVaultConfig):
         self.vault = vault
 
-    def find_by_regex(self, secret_name: str) -> List[Secret]: pass
-
-    def find_by_name(self, secret_name: str) -> List[Secret]: pass
+    @abstractmethod
+    def find(self, filter: str, type: FilterType, is_value: bool = False) -> List[Secret]: pass
