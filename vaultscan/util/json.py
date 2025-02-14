@@ -1,8 +1,5 @@
-from json import load, dump, dumps
+from json import load, dump
 from typing import Dict
-
-
-INDENT = 4
 
 
 class JsonFileManager:
@@ -14,11 +11,4 @@ class JsonFileManager:
     @staticmethod
     def write(content: Dict, path: str) -> None:
         with open(path, 'w') as f:
-            dump(content, f, indent=INDENT)
-
-
-
-class JsonHandler:
-    @staticmethod
-    def beatifull_print(content: Dict) -> str:
-        return dumps(content, indent=INDENT)
+            dump(content, f, indent=4)

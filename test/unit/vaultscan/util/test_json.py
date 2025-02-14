@@ -5,7 +5,7 @@ from typing import Dict
 from json import dump
 
 
-from vaultscan.util.json import JsonFileManager, JsonHandler
+from vaultscan.util.json import JsonFileManager
 
 
 class TestJsonFileManager(TestCase):
@@ -37,23 +37,6 @@ class TestJsonFileManager(TestCase):
         self.assertTrue(
             Utility.is_file_exists(filename),
             msg = f'The file {filename} should exist on disk!')
-
-
-class TestJsonHandler(TestCase):
-    def setUp(self):
-        self.utility = Utility()
-
-    def test_beatifull_print(self):
-        # Given
-        raw_content: Dict = self.utility.get_sample_json_content()
-
-        # When
-        content: str = JsonHandler.beatifull_print(raw_content)
-
-        # Then
-        self.assertIsInstance(content, str)
-        self.assertIsNotNone(content)
-
 
 class Utility:
     @staticmethod
