@@ -1,14 +1,7 @@
-from dataclasses import dataclass
-from typing import List
+from typing import List, Dict
 from abc import ABC, abstractmethod
 
-
-@dataclass
-class Vault:
-    alias: str
-    subscription_id: str
-    resource_group_name: str
-    vault_name: str
+from vaultscan.engines.base import BaseVaultConfig
 
 
 class VaultRepository(ABC):
@@ -16,13 +9,16 @@ class VaultRepository(ABC):
     def initialize(self): pass
 
     @abstractmethod
-    def add(self, new_vault: Vault) -> bool: pass
+    def add(self, new_vault: BaseVaultConfig) -> bool: pass
 
     @abstractmethod
     def remove(self, alias: str) -> bool: pass
 
     @abstractmethod
-    def view(self) -> List[Vault]: pass
+    def get(self, alias: str) -> Dict: pass
+
+    @abstractmethod
+    def get_all(self) -> List[Dict]: pass
 
     @abstractmethod
     def reset(self) -> None: pass

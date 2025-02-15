@@ -21,11 +21,21 @@ TO DO
 ## Configuring the vaults
 First of all you must configure the vaults you want to use in the tool. This is a required step.
 
-To do that, you must perform the command below using the Azure Key Vault informations retrieved from Azure Portal.
+The current supported vaults are:
+- Azure Key Vault
+- KeePass
+
+Configuring an Azure Key Vault:
 
 ```ps1
-vaultscan config add --alias alias --vault-name vault --resource-group-name rg --subscription-id id 
+vaultscan config add kv --alias mykv --vault-name vault --resource-group-name rg --subscription-id id 
 ```
+
+Configuring an Keepass:
+```ps1
+vaultscan config add keepass --alias my_keepass --path C:\databases\passwords.kdbx
+```
+
 
 To look at the configured vaults you can run:
 

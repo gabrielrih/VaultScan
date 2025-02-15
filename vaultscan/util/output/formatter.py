@@ -8,7 +8,7 @@ from typing import Any, List, Dict
 from vaultscan.util.output.logger import LoggerFactory
 
 
-logger = LoggerFactory.get_logger()
+logger = LoggerFactory.get_logger(__name__)
 
 
 class OutputFormat(Enum):
@@ -28,7 +28,7 @@ class OutputHandler:
         self.format = format
 
     def print(self, data: Any):
-        logger.verbose(f'Printing using format {self.format}')
+        logger.debug(f'Printing using {self.format} format')
         if self.format == OutputFormat.JSON:
             return self.print_as_json(data)
         if self.format == OutputFormat.TABLE:
@@ -41,7 +41,11 @@ class OutputHandler:
     def print_as_table(self, data: List[Dict[str, Any]]):
         if isinstance(data, list) and all(isinstance(item, dict) for item in data):
             headers = data[0].keys() if data else []
-            table = tabulate([item.values() for item in data], headers=headers, tablefmt="grid")
+            table = tabulate(
+                [item.values() for item in data],
+                headers = headers,
+                tablefmt = "grid"
+            )
             click.secho(table)
             return
         logger.error("Invalid data format for table output.")
