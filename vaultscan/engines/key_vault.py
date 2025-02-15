@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
 from vaultscan.engines.base import (
-    EngineType,
     FilterType,
     BaseVaultConfig,
     BaseVaultEngine,
@@ -24,7 +23,7 @@ class KeyVaultConfig(BaseVaultConfig):
     vault_name: str
 
     def __post_init__(self):
-        self.type = EngineType.AZURE_KEY_VAULT.value
+        self.type = 'key_vault'  # FIX IT: From engines.py?
         return super().__post_init__()
     
     @classmethod
@@ -51,7 +50,7 @@ class KeyVaultSecretEngine(BaseVaultEngine):
         super().__init__(vault)
         self.client = KeyVaultSecretAPI(vault_name = vault.vault_name)
 
-    def find(self, filter: str, type: FilterType, is_value = False):
+    def find(self, filter: str, type: FilterType, is_value: bool = False) -> List[Secret]:
         filter = filter.lower()  # normalize the filter
         response = list()
         secrets: List[str] = self.client.get_all_secrets()

@@ -1,5 +1,5 @@
+from vaultscan.engines.engines import get_engine_from_type
 from vaultscan.engines.base import Secret, FilterType
-from vaultscan.engines.key_vault import KeyVaultSecretEngine, KeyVaultConfig
 from vaultscan.repositories.factory import VaultRepositoryFactory
 from vaultscan.util.output.logger import LoggerFactory
 
@@ -36,9 +36,8 @@ class MultiVaultScannerBuilder:
 
 
 class Scanner(ABC):
-    # FIX IT: Aqui to usando só o KV, isso deveria ser dinâmico para identificar KeePass e outros caras também
     def __init__(self, vaults: List[Dict], filter_type: FilterType):
-        self.vaults: List[KeyVaultConfig] = KeyVaultConfig.from_list(vaults)
+        self.vaults = vaults
         self.filter_type = filter_type
         logger.debug(f'Vaults: {self.vaults}')
 
@@ -47,14 +46,16 @@ class Scanner(ABC):
 
 
 class MultiVaultScanner(Scanner):
-    def __init__(self, vaults, filter_type):
+    def __init__(self, vaults: List[Dict], filter_type: FilterType):
         super().__init__(vaults, filter_type)
 
     def find(self, filter: str, is_value: bool = False) -> List[Dict]:
         response = list()
         for vault in self.vaults:
+            engine = get_engine_from_type(type = vault['type'])
+            vault = engine.config.from_dict(vault)
             logger.debug(f'Searching on vault {vault.alias} ({vault.type =})')
-            secrets: List[Secret] = KeyVaultSecretEngine(vault).find(
+            secrets: List[Secret] = engine.engine(vault).find(
                 filter = filter,
                 type = self.filter_type,
                 is_value = is_value

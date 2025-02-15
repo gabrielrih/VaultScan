@@ -2,10 +2,15 @@ from typing import Dict, List
 from dataclasses import dataclass
 
 from vaultscan.engines.base import (
-    EngineType,
+    FilterType,
     BaseVaultConfig,
-    BaseVaultEngine
+    BaseVaultEngine,
+    Secret
 )
+from vaultscan.util.output.logger import LoggerFactory
+
+
+logger = LoggerFactory.get_logger(__name__)
 
 
 @dataclass
@@ -14,7 +19,7 @@ class KeePassConfig(BaseVaultConfig):
     password: str
 
     def __post_init__(self):
-        self.type = EngineType.KEYPASS.value
+        self.type = 'keepass' # FIX IT: From engines.py?
         return super().__post_init__()
     
     @classmethod
@@ -36,4 +41,8 @@ class KeePassConfig(BaseVaultConfig):
 
 
 class KeepassSecretEngine(BaseVaultEngine):
-    pass
+    def __init__(self, vault: KeePassConfig):
+        super().__init__(vault)
+
+    def find(self, filter: str, type: FilterType, is_value: bool = False) -> List[Secret]:
+        return list()
