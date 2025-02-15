@@ -17,7 +17,7 @@ class MultiVaultScannerBuilder:
     def create(only_vault: str = '', exact_match: bool = False) -> 'Scanner':
         vaults: List[Dict] = MultiVaultScannerBuilder.get_vaults(only_vault)
         if not vaults:
-            logger.error(f'No vault matching alias "{only_vault}"')
+            logger.error('No vault(s) found!')
             return
         filter_type = FilterType.BY_REGEX
         if exact_match:
@@ -30,8 +30,10 @@ class MultiVaultScannerBuilder:
             vault: Dict = vault_repository.get(alias = only_vault)
             logger.debug(f'Vault "{only_vault}" content: {vault}')
             if not vault:
+                logger.info(f'No vault matching alias "{only_vault}"')
                 return list()
             return [ vault ]
+
         return vault_repository.get_all()
 
 
