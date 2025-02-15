@@ -93,7 +93,7 @@ class JSONFileHandler:
     def read(self) -> Dict:
         if not self.exists:
             logger.debug(f'File {self.path} doesnt exists!')
-            return list()
+            return {}
         return JsonFileManager.load(self.path)
     
     def write(self, content: List[Dict]) -> None:
