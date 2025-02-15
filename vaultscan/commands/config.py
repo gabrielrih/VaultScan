@@ -101,7 +101,7 @@ def remove(alias: str) -> None:
 
 @config.command()
 def reset() -> None:
-    ''' Reset the configuration '''
+    ''' Reset the vaults'''
     repository.reset()
     logger.success('The configuration has been reset!')
 
@@ -112,8 +112,8 @@ def reset() -> None:
               required = False,
               default = OutputFormat.JSON.value,
               help = 'Output format')
-def view(output_format: str) -> None:
-    ''' View configuration '''
+def list(output_format: str) -> None:
+    ''' List vaults '''
     logger.debug(f'Args: {str(locals())}')
     format = OutputFormat(output_format)
     vaults = repository.get_all()
