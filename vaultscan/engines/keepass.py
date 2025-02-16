@@ -13,23 +13,17 @@ from vaultscan.util.output.logger import LoggerFactory
 logger = LoggerFactory.get_logger(__name__)
 
 
+KEEPASS = 'keepass'
+
+
 @dataclass
 class KeePassConfig(BaseVaultConfig):
     path: str
     password: str
 
     def __post_init__(self):
-        self.type = 'keepass' # FIX IT: From engines.py?
+        self.type = KEEPASS
         return super().__post_init__()
-    
-    @classmethod
-    def from_list(cls, content: List[Dict]) -> List['KeePassConfig']:
-        vaults = list()
-        for vault in content:
-            vaults.append(
-                KeePassConfig.from_dict(vault)
-            )
-        return vaults
 
     @classmethod
     def from_dict(cls, content: Dict) -> 'KeePassConfig':

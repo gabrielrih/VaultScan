@@ -15,12 +15,12 @@ logger = LoggerFactory.get_logger(__name__)
 
 
 @click.group()
-def config() -> None:
-    ''' Manage the configuration '''
+def vault() -> None:
+    ''' Manage vaults '''
     pass
 
 
-@config.group
+@vault.group
 def add() -> None:
     ''' Add a new vault on the configuration '''
     pass
@@ -85,7 +85,7 @@ def keepass(alias: str, path: str) -> None:
     logger.success('The vault was added on the configuration!')
 
 
-@config.command()
+@vault.command()
 @click.option('--alias',
               type = click.STRING,
               required = True,
@@ -99,14 +99,14 @@ def remove(alias: str) -> None:
     logger.success(f'The alias "{alias}" was removed from the configuration!')
 
 
-@config.command()
+@vault.command()
 def reset() -> None:
     ''' Reset the vaults'''
     repository.reset()
     logger.success('The configuration has been reset!')
 
 
-@config.command()
+@vault.command()
 @click.option('--output-format', '-o',
               type = click.Choice(OutputFormat.get_values()),
               required = False,

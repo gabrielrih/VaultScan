@@ -1,13 +1,13 @@
 from enum import Enum
 
 from vaultscan.engines.base import BaseVaultConfig, BaseVaultEngine
-from vaultscan.engines.key_vault import KeyVaultConfig, KeyVaultSecretEngine
-from vaultscan.engines.keepass import KeePassConfig, KeepassSecretEngine
+from vaultscan.engines.key_vault import AZURE_KEY_VAULT, KeyVaultConfig, KeyVaultSecretEngine
+from vaultscan.engines.keepass import KEEPASS, KeePassConfig, KeepassSecretEngine
 
 
 class AvailableEngines(Enum):
-    AZURE_KEY_VAULT = ('key_vault', KeyVaultConfig, KeyVaultSecretEngine)
-    KEEPASS = ('keepass', KeePassConfig, KeepassSecretEngine)
+    AZURE_KEY_VAULT = (AZURE_KEY_VAULT, KeyVaultConfig, KeyVaultSecretEngine)
+    KEEPASS = (KEEPASS, KeePassConfig, KeepassSecretEngine)
 
     def __init__(self, type: str, config: BaseVaultConfig, engine: BaseVaultEngine):
         super().__init__()
