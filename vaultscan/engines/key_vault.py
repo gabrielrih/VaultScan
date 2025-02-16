@@ -16,6 +16,9 @@ from vaultscan.util.output.logger import LoggerFactory
 logger = LoggerFactory.get_logger(__name__)
 
 
+AZURE_KEY_VAULT = 'key_vault'
+
+
 @dataclass
 class KeyVaultConfig(BaseVaultConfig):
     subscription_id: str
@@ -23,17 +26,8 @@ class KeyVaultConfig(BaseVaultConfig):
     vault_name: str
 
     def __post_init__(self):
-        self.type = 'key_vault'  # FIX IT: From engines.py?
+        self.type = AZURE_KEY_VAULT
         return super().__post_init__()
-    
-    @classmethod
-    def from_list(cls, content: List[Dict]) -> List['KeyVaultConfig']:
-        vaults = list()
-        for vault in content:
-            vaults.append(
-                KeyVaultConfig.from_dict(vault)
-            )
-        return vaults
 
     @classmethod
     def from_dict(cls, content: Dict) -> 'KeyVaultConfig':
