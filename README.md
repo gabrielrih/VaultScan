@@ -65,8 +65,6 @@ To look at the configured vaults you can run:
 vaultscan vault list
 ```
 
-You could also ```remove``` or even ```reset``` all the vaults.
-
 > Internally, the tool creates a ```vaults.json``` file on the user HOME folder ```C:\Users\user\.vaultscan```
 
 ## Searching secrets using regex
