@@ -2,7 +2,7 @@ import os
 from typing import List, Dict
 
 from vaultscan.repositories.vault.base import VaultRepository
-from vaultscan.engines.base import BaseVaultConfig
+from vaultscan.engines.base import BaseVaultConfig, VaultStatus
 from vaultscan.util.json import JsonFileManager
 from vaultscan.util.user import CurrentUser
 from vaultscan.util.output.logger import LoggerFactory
@@ -70,6 +70,21 @@ class VaultRepositoryAsJson(VaultRepository):
                 renamed = True
                 break
         return renamed
+
+    def change_status(self, alias: str, status: VaultStatus) -> bool:
+        content: Dict = self.file.read()
+        vaults: List[Dict] = content['vaults']
+        if not vaults:
+            return False
+        changed = False
+        for vault in vaults:
+            if vault['alias'] == alias:
+                vault['status'] = status.value
+                content['vaults'] = vaults
+                self.file.write(content)
+                changed = True
+                break
+        return changed
 
     def get(self, alias: str) -> Dict:
         content: Dict = self.file.read()

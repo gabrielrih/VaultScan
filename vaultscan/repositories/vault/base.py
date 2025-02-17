@@ -1,7 +1,7 @@
 from typing import List, Dict
 from abc import ABC, abstractmethod
 
-from vaultscan.engines.base import BaseVaultConfig
+from vaultscan.engines.base import BaseVaultConfig, VaultStatus
 
 
 class VaultRepository(ABC):
@@ -16,6 +16,9 @@ class VaultRepository(ABC):
 
     @abstractmethod
     def rename(self, old_alias: str, new_alias: str) -> bool: pass
+
+    @abstractmethod
+    def change_status(self, alias: str, status: VaultStatus) -> bool: pass
 
     @abstractmethod
     def get(self, alias: str) -> Dict: pass

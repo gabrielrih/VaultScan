@@ -1,5 +1,5 @@
 from vaultscan.engines.engines import get_engine_from_type
-from vaultscan.engines.base import Secret, FilterType
+from vaultscan.engines.base import Secret, FilterType, VaultStatus
 from vaultscan.util.output.logger import LoggerFactory
 
 from abc import ABC, abstractmethod
@@ -23,7 +23,7 @@ class Scanner(ABC):
     def __init__(self, vaults: List[Dict], filter_type: FilterType):
         self.vaults = vaults
         self.filter_type = filter_type
-        logger.debug(f'Vaults: {self.vaults}')
+        logger.debug(f'All vaults: {self.vaults}')
 
     @abstractmethod
     def find(self, filter: str, is_value: bool = False) -> List[Dict]: pass
@@ -36,8 +36,14 @@ class MultiVaultScanner(Scanner):
     def find(self, filter: str, is_value: bool = False) -> List[Dict]:
         response = list()
         for vault in self.vaults:
+            # Convert from dict to the appropriate classes
             engine = get_engine_from_type(type = vault['type'])
             vault = engine.config.from_dict(vault)
+            # Ignoring disabled vault
+            if vault.status == VaultStatus.DISABLED:
+                logger.debug(f'Ignoring vault {vault.alias} because it''s DISABLED!')
+                continue
+            # Searching secrets
             logger.info(f'Searching on vault {vault.alias} ({vault.type =})')
             secrets: List[Secret] = engine.engine(vault).find(
                 filter = filter,

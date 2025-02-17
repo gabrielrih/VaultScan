@@ -6,7 +6,8 @@ from vaultscan.engines.base import (
     FilterType,
     BaseVaultConfig,
     BaseVaultEngine,
-    Secret
+    Secret,
+    VaultStatus
 )
 from vaultscan.repositories.secure_key.factory import SecureKeyRepositoryFactory
 from vaultscan.repositories.secure_key.cipher import DataCipher
@@ -47,6 +48,8 @@ class KeePassConfig(BaseVaultConfig):
             if f.name == 'type':  # skip 'type" to prevent TypeError
                 continue
             value = content.get(f.name)
+            if f.name == 'status':
+                value = VaultStatus(value)
             if isinstance(value, Dict) and value.get("encrypted"):
                 kwargs[f.name] = cipher.decrypt(encrypted_value = value['value'])
             else:

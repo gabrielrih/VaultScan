@@ -8,7 +8,8 @@ from vaultscan.engines.base import (
     FilterType,
     BaseVaultConfig,
     BaseVaultEngine,
-    Secret
+    Secret,
+    VaultStatus
 )
 from vaultscan.util.output.logger import LoggerFactory
 
@@ -33,6 +34,7 @@ class KeyVaultConfig(BaseVaultConfig):
     def from_dict(cls, content: Dict) -> 'KeyVaultConfig':
         return KeyVaultConfig(
             alias = content['alias'],
+            status = VaultStatus(content['status']),
             subscription_id = content['subscription_id'],
             resource_group_name = content['resource_group_name'],
             vault_name = content['vault_name']

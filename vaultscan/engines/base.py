@@ -11,10 +11,17 @@ class Secret:
     value: Optional[str] = ''
 
 
+class VaultStatus(Enum):
+    ENABLED = 'enabled'
+    DISABLED = 'disabled'
+
+
 @dataclass
 class BaseVaultConfig:
     alias: str
     type: str = field(init = False)  # Each subclass should set this
+    # FIX IT: Change it to VaultStatus
+    status: str
 
     def __post_init__(self):
         if not hasattr(self, "type"):
