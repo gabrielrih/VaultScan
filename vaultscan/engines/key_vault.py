@@ -50,7 +50,7 @@ class KeyVaultSecretEngine(BaseVaultEngine):
         secrets: List[str] = self.client.get_all_secrets()
         for name in secrets:
             name = name.lower()  # normalize the secret name
-            if not self._is_match(name, filter, type):
+            if not self.is_match([ name ], filter, type):
                 continue
             value = ''
             if is_value:
@@ -64,13 +64,6 @@ class KeyVaultSecretEngine(BaseVaultEngine):
             )
         logger.debug(f'{len(response)} secrets found on KV {self.vault.alias} mathing the regex {filter}')
         return response
-
-    def _is_match(self, secret_name: str, filter: str, type: FilterType) -> bool:
-        if type == FilterType.BY_MATCH:
-            return filter == secret_name
-        if type == FilterType.BY_REGEX:
-            return filter in secret_name
-        raise ValueError(f'Invalid FilterType {str(type)}!')
 
 
 class KeyVaultSecretClient:
