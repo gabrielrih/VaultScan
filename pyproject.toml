@@ -1,6 +1,6 @@
 [project]
 name = "VaultScan"
-version = "0.1.0"
+version = "0.1.1"
 description = "Scanning and searching secrets in multiple Azure Key Vaults"
 authors = [
     {name = "gabrielrih@gmail.com"}

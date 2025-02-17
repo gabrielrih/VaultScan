@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 load_dotenv() # loading .env file
 
 
+PACKAGE_NAME = 'VaultScan'
+
+
 class LogLevel(Enum):
     DEBUG = 'debug'
     INFO = 'info'
