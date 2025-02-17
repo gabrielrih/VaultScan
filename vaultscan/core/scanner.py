@@ -38,7 +38,7 @@ class MultiVaultScanner(Scanner):
         for vault in self.vaults:
             engine = get_engine_from_type(type = vault['type'])
             vault = engine.config.from_dict(vault)
-            logger.debug(f'Searching on vault {vault.alias} ({vault.type =})')
+            logger.info(f'Searching on vault {vault.alias} ({vault.type =})')
             secrets: List[Secret] = engine.engine(vault).find(
                 filter = filter,
                 type = self.filter_type,
@@ -46,5 +46,5 @@ class MultiVaultScanner(Scanner):
             )
             for secret in secrets:
                 response.append(secret.__dict__)
-        logger.info(f'{len(secrets)} secret(s) found!')
+        logger.info(f'{len(response)} secret(s) found!')
         return response
