@@ -109,7 +109,7 @@ def remove(alias: str) -> None:
               required = True,
               help = 'Vault new alias')
 def rename(old_alias: str, new_alias: str) -> None:
-    ''' Rename vault on the configuration'''
+    ''' Rename vault '''
     renamed = repository.rename(old_alias, new_alias)
     if not renamed:
         logger.warning(f'The alias "{old_alias}" was not found on the configuration!')
