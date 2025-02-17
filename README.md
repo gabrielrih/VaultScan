@@ -27,7 +27,7 @@ poetry build
 pip install --user .\dist\vaultscan-*.whl
 ```
 
-By doing that a pipeline.exe file will be created probably on the folder: ```C:\Users\user\AppData\Roaming\Python\Python312\Scripts```. So, you must add this folder on the user PATH.
+By doing that a vaultscan.exe file will be created probably on the folder: ```C:\Users\user\AppData\Roaming\Python\Python312\Scripts```. So, you must add this folder on the user PATH.
 
 Given that this automation uses env vars, you must create this variables are environment variables for the user, so you could run this script anywhere on Windows: 
 
