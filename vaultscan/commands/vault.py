@@ -100,6 +100,24 @@ def remove(alias: str) -> None:
 
 
 @vault.command()
+@click.option('--old-alias',
+              type = click.STRING,
+              required = True,
+              help = 'Vault old alias')
+@click.option('--new-alias',
+              type = click.STRING,
+              required = True,
+              help = 'Vault new alias')
+def rename(old_alias: str, new_alias: str) -> None:
+    ''' Rename vault on the configuration'''
+    renamed = repository.rename(old_alias, new_alias)
+    if not renamed:
+        logger.warning(f'The alias "{old_alias}" was not found on the configuration!')
+        return
+    logger.success(f'The alias "{old_alias}" has been renamed to "{new_alias}"!')
+
+
+@vault.command()
 def reset() -> None:
     ''' Reset the vaults'''
     repository.reset()

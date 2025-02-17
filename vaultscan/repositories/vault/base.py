@@ -15,6 +15,9 @@ class VaultRepository(ABC):
     def remove(self, alias: str) -> bool: pass
 
     @abstractmethod
+    def rename(self, old_alias: str, new_alias: str) -> bool: pass
+
+    @abstractmethod
     def get(self, alias: str) -> Dict: pass
 
     @abstractmethod

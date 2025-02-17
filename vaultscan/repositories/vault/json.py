@@ -56,6 +56,21 @@ class VaultRepositoryAsJson(VaultRepository):
                 break
         return removed
 
+    def rename(self, old_alias: str, new_alias: str) -> bool:
+        content: Dict = self.file.read()
+        vaults: List[Dict] = content['vaults']
+        if not vaults:
+            return False
+        renamed = False
+        for vault in vaults:
+            if vault['alias'] == old_alias:
+                vault['alias'] = new_alias
+                content['vaults'] = vaults
+                self.file.write(content)
+                renamed = True
+                break
+        return renamed
+
     def get(self, alias: str) -> Dict:
         content: Dict = self.file.read()
         vaults: List[Dict] = content['vaults']
