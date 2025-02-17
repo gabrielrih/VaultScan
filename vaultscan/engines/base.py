@@ -11,23 +11,17 @@ class Secret:
     value: Optional[str] = ''
 
 
-# class EngineType(Enum):
-#     AZURE_KEY_VAULT = 'key_vault'
-#     KEYPASS = 'keypass'
-
-
 @dataclass
 class BaseVaultConfig:
     alias: str
-    # FIX IT: From engines.py?
     type: str = field(init = False)  # Each subclass should set this
 
     def __post_init__(self):
         if not hasattr(self, "type"):
             raise NotImplementedError("Subclasses must define a 'type attribute")
-        
-    @classmethod
-    def from_list(cls, content: List[Dict]) -> List['BaseVaultConfig']: pass
+
+    def to_dict(self) -> Dict:
+        return self.__dict__
 
     @classmethod
     def from_dict(cls, content: Dict) -> 'BaseVaultConfig': pass

@@ -1,6 +1,6 @@
 import click
 
-from vaultscan.repositories.factory import VaultRepositoryFactory
+from vaultscan.repositories.vault.factory import VaultRepositoryFactory
 from vaultscan.engines.key_vault import KeyVaultConfig
 from vaultscan.engines.keepass import KeePassConfig
 from vaultscan.util.output.formatter import OutputFormat, OutputHandler

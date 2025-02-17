@@ -1,14 +1,18 @@
 # vaultscan
-Scanning and searching secrets in multiple Azure Key Vaults.
+Searching secrets in multiple vaults.
 
-This tool can be useful to search in a fast way secrets by its name or via regex throughout multiple vaults.
+This tool can be useful to search in a fast way secrets throughout multiple vaults.
+
+Supported vaults:
+- [Azure Key Vault](https://azure.microsoft.com/en-us/)
+- [Keepass](https://keepass.info/)
 
 # Index
 - [Installing it](#installing-it)
 - [Using it](#using-it)
     - [Configuring the vaults](#configuring-the-vaults)
-    - [Searching secrets by their names](#searching-secrets-by-their-names)
     - [Searching secrets using regex](#searching-secrets-using-regex)
+    - [Searching secrets by its exact name](#searching-secrets-by-their-names)
 - [Contribute](#contribute)
     - [Environment variables](#environment-variables)
     - [Testing](#testing)
@@ -21,35 +25,67 @@ TO DO
 ## Configuring the vaults
 First of all you must configure the vaults you want to use in the tool. This is a required step.
 
-The current supported vaults are:
-- Azure Key Vault
-- KeePass
-
-Configuring an Azure Key Vault:
+### Configuring an Azure Key Vault
 
 ```ps1
-vaultscan config add kv --alias mykv --vault-name vault --resource-group-name rg --subscription-id id 
+vaultscan vault add kv --alias mykv --vault-name vault --resource-group-name rg --subscription-id id 
 ```
 
-Configuring an Keepass:
+### Configuring an Keepass
+
 ```ps1
-vaultscan config add keepass --alias my_keepass --path C:\databases\passwords.kdbx
+vaultscan vault add keepass --alias my_keepass --path "C:\databases\passwords.kdbx"
 ```
-
 
 To look at the configured vaults you can run:
 
 ```ps1
-vaultscan config view
+vaultscan vault list
 ```
+
+You could also ```remove``` or even ```reset``` all the vaults.
 
 > Internally, the tool creates a ```vaults.json``` file on the user HOME folder ```C:\Users\user\.vaultscan```
 
-## Searching secrets by their names
-TO DO
-
 ## Searching secrets using regex
-TO DO
+
+It will search all the secrets that match this exact name:
+
+```ps1
+vaultscan find secrets my_secret_name --exact
+```
+
+You can also include the values
+
+```ps1
+vaultscan find secrets my_secret_name --exact --show-values
+```
+
+And you can also search in an specific vault:
+
+```ps1
+vaultscan find secrets my_secret_name --only-vault key_vault --exact --show-values
+```
+
+## Searching secrets by its exact name
+
+It will search all the secrets looking for the ```host``` regex:
+
+```ps1
+vaultscan find secrets host
+```
+
+You can also include the values
+
+```ps1
+vaultscan find secrets host --show-values
+```
+
+And you can also search in an specific vault:
+
+```ps1
+vaultscan find secrets host --only-vault key_vault --show-values
+```
 
 # Contribute
 
@@ -70,7 +106,7 @@ vaultscan --help
 To help you on the development process you can create a ```.env``` file on the root folder and set the current variables:
 
 ```
-VAULTSCAN_VERBOSE_ENABLED = True
+LOG_LEVEL = 'DEBUG'
 ```
 
 > For more information just look at the [settings.py](./vaultscan/settings.py) file

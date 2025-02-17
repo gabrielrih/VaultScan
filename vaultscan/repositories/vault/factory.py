@@ -1,7 +1,7 @@
 from enum import Enum, auto
 
-from vaultscan.repositories.common import VaultRepository
-from vaultscan.repositories.json import VaultRepositoryAsJson
+from vaultscan.repositories.vault.base import VaultRepository
+from vaultscan.repositories.vault.json import VaultRepositoryAsJson
 
 
 class VaultRepositoryType(Enum):

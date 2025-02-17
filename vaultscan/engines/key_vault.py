@@ -42,7 +42,7 @@ class KeyVaultConfig(BaseVaultConfig):
 class KeyVaultSecretEngine(BaseVaultEngine):
     def __init__(self, vault: KeyVaultConfig):
         super().__init__(vault)
-        self.client = KeyVaultSecretAPI(vault_name = vault.vault_name)
+        self.client = KeyVaultSecretClient(vault_name = vault.vault_name)
 
     def find(self, filter: str, type: FilterType, is_value: bool = False) -> List[Secret]:
         filter = filter.lower()  # normalize the filter
@@ -72,7 +72,7 @@ class KeyVaultSecretEngine(BaseVaultEngine):
         raise ValueError(f'Invalid FilterType {str(type)}!')
 
 
-class KeyVaultSecretAPI:
+class KeyVaultSecretClient:
     def __init__(self, vault_name: str):
         self.vault_name = vault_name
         self.client = SecretClient(
