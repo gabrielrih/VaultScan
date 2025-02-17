@@ -1,40 +1,22 @@
 from vaultscan.engines.engines import get_engine_from_type
 from vaultscan.engines.base import Secret, FilterType
-from vaultscan.repositories.factory import VaultRepositoryFactory
 from vaultscan.util.output.logger import LoggerFactory
 
 from abc import ABC, abstractmethod
 from typing import List, Dict
 
 
-vault_repository = VaultRepositoryFactory.create()
-
 logger = LoggerFactory.get_logger(__name__)
 
 
 class MultiVaultScannerBuilder:
     @staticmethod
-    def create(only_vault: str = '', exact_match: bool = False) -> 'Scanner':
-        vaults: List[Dict] = MultiVaultScannerBuilder.get_vaults(only_vault)
-        if not vaults:
-            logger.error('No vault(s) found!')
-            return
+    def create(vaults: List[Dict], exact_match: bool = False) -> 'Scanner':
         filter_type = FilterType.BY_REGEX
         if exact_match:
             filter_type = FilterType.BY_MATCH
         return MultiVaultScanner(vaults, filter_type)
 
-    @staticmethod
-    def get_vaults(only_vault: str = '') -> List[Dict]:
-        if only_vault:
-            vault: Dict = vault_repository.get(alias = only_vault)
-            logger.debug(f'Vault "{only_vault}" content: {vault}')
-            if not vault:
-                logger.info(f'No vault matching alias "{only_vault}"')
-                return list()
-            return [ vault ]
-
-        return vault_repository.get_all()
 
 
 class Scanner(ABC):

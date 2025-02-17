@@ -2,6 +2,7 @@ import click
 
 from typing import List, Dict
 
+from vaultscan.core.vaults import get_vaults
 from vaultscan.core.scanner import MultiVaultScannerBuilder
 from vaultscan.util.output.formatter import OutputFormat, OutputHandler
 from vaultscan.util.output.logger import LoggerFactory
@@ -39,16 +40,15 @@ def find() -> None:
 def secrets(filter: str, only_vault: str, exact: bool, show_values: bool, output_format: str) -> None:
     ''' Find secrets across vaults '''
     logger.debug(f'Args: {str(locals())}')
-    scanner = MultiVaultScannerBuilder.create(
-        only_vault = only_vault,
-        exact_match = exact
-    )
+    vaults = get_vaults(only_vault = only_vault)
+    if not vaults:
+        logger.error('No vault(s) found!')
+        return
+    scanner = MultiVaultScannerBuilder.create(vaults = vaults, exact_match = exact)
     secrets: List[Dict] = scanner.find(
         filter = filter,
         is_value = show_values
     )
-    if not secrets:
-        return
     OutputHandler(
         format = OutputFormat(output_format)
     ).print(secrets)

@@ -1,7 +1,7 @@
 import os
 from typing import List, Dict
 
-from vaultscan.repositories.common import VaultRepository
+from vaultscan.repositories.vault.base import VaultRepository
 from vaultscan.engines.base import BaseVaultConfig
 from vaultscan.util.json import JsonFileManager
 from vaultscan.util.user import CurrentUser
@@ -36,7 +36,7 @@ class VaultRepositoryAsJson(VaultRepository):
                 break
         if exists:
             return False
-        vaults.append(new_vault.__dict__)
+        vaults.append(new_vault.to_dict())
         content['vaults'] = vaults
         self.file.write(content)
         return True

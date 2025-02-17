@@ -28,6 +28,8 @@ class OutputHandler:
         self.format = format
 
     def print(self, data: Any):
+        if not data:
+            return
         logger.debug(f'Printing using {self.format} format')
         if self.format == OutputFormat.JSON:
             return self.print_as_json(data)
