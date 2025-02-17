@@ -49,6 +49,7 @@ class KeyVaultSecretEngine(BaseVaultEngine):
         response = list()
         secrets: List[str] = self.client.get_all_secrets()
         for name in secrets:
+            name = name.lower()  # normalize the secret name
             if not self._is_match(name, filter, type):
                 continue
             value = ''
@@ -84,6 +85,6 @@ class KeyVaultSecretClient:
         return [ secret.name for secret in self.client.list_properties_of_secrets() ]
 
     def get_value(self, secret_name: str) -> str:
-        logger.debug(f'Getting value for {secret_name =}')
+        logger.debug(f'Getting value for {secret_name =} on {self.vault_name =}')
         secret = self.client.get_secret(secret_name)
         return str(secret.value)
