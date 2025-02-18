@@ -34,7 +34,7 @@ class ConfigRepositoryAsJson(ConfigRepository):
         self.file.write(content)
         return
 
-    def unset(self, name: str) -> bool:
+    def unset(self, name: str) -> None:
         content: Dict = self.file.read()
         configs: List[Dict] = content['configs']
         if not configs:

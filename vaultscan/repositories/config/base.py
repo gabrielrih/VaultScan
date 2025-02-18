@@ -24,7 +24,7 @@ class ConfigRepository(ABC):
     def initialize(self): pass
 
     @abstractmethod
-    def set(self, config: Config) -> None: pass
+    def set(self, new_config: Config) -> None: pass
 
     @abstractmethod
     def unset(self, name: str) -> None: pass

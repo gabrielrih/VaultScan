@@ -1,79 +1,147 @@
-import pytest
-
 from unittest import TestCase
-from unittest.mock import patch
 
-from vaultscan.core.configs import AvailableConfigs, OutputFormatConfig
+from vaultscan.repositories.config.base import Config
+from vaultscan.repositories.config.in_memory import InMemoryConfigRepository
+from vaultscan.core.configs import (
+    AvailableConfigs,
+    OutputFormatConfig,
+    ConfigManager,
+    ConfigValidator
+)
+
+
+
+class TestAvailableConfigs(TestCase):
+    def test_check_type_when_verbose_config(self):
+        config = AvailableConfigs.VERBOSE
+        self.assertTrue(
+            issubclass(config.value_type, bool),
+            msg = f'The value type of the config {config} should be BOOL'
+        )
+
+    def test_check_type_when_output_format_config(self):
+        config = AvailableConfigs.OUTPUT_FORMAT
+        self.assertTrue(
+            issubclass(config.value_type, OutputFormatConfig),
+            msg = f'The value type of the config {config} should de {OutputFormatConfig.__name__}'
+        )
+
+    def test_get_values(self):
+        expected_available_configs = ['verbose', 'output_format']
+        values = AvailableConfigs.get_values()
+        self.assertEqual(values, expected_available_configs)
+
+    def test_from_config_name(self):
+        expected_config_name = 'verbose'
+        config: AvailableConfigs = AvailableConfigs.from_config_name(expected_config_name)
+        self.assertIsInstance(config, AvailableConfigs)
+        self.assertEqual(config.config_name, expected_config_name)
 
 
 '''
     We must mock here the repository because the test must be performed simulating when the 
     config are using the default value and when it's using a value configured on the repository
 '''
-@pytest.mark.usefixtures("mock_repository")
-class TestAvailableConfigs(TestCase):
-    @pytest.fixture(autouse = True)
-    def mock_repository(self):
-        with patch("vaultscan.core.configs.repository") as mock_repository:
-            self.mock_repository = mock_repository
-            yield mock_repository
+class TestConfigManager(TestCase):
+    def setUp(self):
+        self.repository = InMemoryConfigRepository()
 
-    def test_verbose_config_when_default(self):
+    def test_get_value_when_default(self):
         # Given
-        self.mock_repository.get.return_value = {}
+        config = AvailableConfigs.VERBOSE
+        expected_default_value = False
         
         # When
-        is_verbose = AvailableConfigs.VERBOSE.value
-
+        manager = ConfigManager(config = config, repository = self.repository)
+        value = manager.get_value()
+        
         # Then
-        self.mock_repository.is_called_once()
-        self.assertIsInstance(is_verbose, bool)
-        self.assertFalse(
-            is_verbose,
-            msg = 'The expected default value should be False. See default_value on AvailableConfigs class.'
+        self.assertEqual(value, expected_default_value)
+    
+    def test_get_value_when_custom_config(self):
+        # Given
+        repository = InMemoryConfigRepository()
+        available_config = AvailableConfigs.VERBOSE
+        expected_value = True
+        
+        # When
+        # Setting a custom value for the verbose config
+        new_config = Config(
+            name = available_config.config_name,
+            value = str(expected_value)
         )
-
-    def test_verbose_config_when_custom(self): 
-        # Given
-        self.mock_repository.get.return_value = {
-            'name': AvailableConfigs.VERBOSE.config_name,
-            'value': 'true'
-        }
-        
-        # When
-        is_verbose = AvailableConfigs.VERBOSE.value
+        repository.set(new_config = new_config)
+        manager = ConfigManager(config = AvailableConfigs.VERBOSE, repository = repository)
+        value = manager.get_value()
 
         # Then
-        self.mock_repository.is_called_once()
-        self.assertIsInstance(is_verbose, bool)
+        self.assertEqual(value, expected_value)
+
+
+    def test_get_value_as_string_when_default(self):
+        # Given
+        config = AvailableConfigs.VERBOSE
+        expected_default_value = 'False'
+
+        # When
+        manager = ConfigManager(config = config, repository = self.repository)
+        value: str = manager.get_value_as_string()
+
+        # Then
+        self.assertEqual(value, expected_default_value)
+
+    def test_get_value_as_string_when_custom_config(self):
+        # Given
+        repository = InMemoryConfigRepository()
+        available_config = AvailableConfigs.VERBOSE
+        expected_value_as_string = 'True'
+        
+        # When
+        # Setting a custom value for the verbose config
+        new_config = Config(
+            name = available_config.config_name,
+            value = expected_value_as_string
+        )
+        repository.set(new_config = new_config)
+        manager = ConfigManager(config = AvailableConfigs.VERBOSE, repository = repository)
+        value = manager.get_value_as_string()
+
+        # Then
+        self.assertEqual(value, expected_value_as_string)
+
+
+
+class TestConfigValidator(TestCase):
+    def test_is_a_valid_value_when_true(self):
+        # Given
+        config: AvailableConfigs = AvailableConfigs.OUTPUT_FORMAT
+
+        # When
+        valid_value = 'json'
+        is_valid = ConfigValidator.is_a_valid_value(
+            config = config,
+            value = valid_value
+        )
+        
+        # Then
         self.assertTrue(
-            is_verbose,
-            msg = "The expected default value should be True. It''s getting the 'verbose' config from a mock repository"
+            is_valid,
+            msg = f'The value "{valid_value}" should be valid for the {config} config'
         )
 
-    def test_output_format_config_when_default(self):
+    def test_is_a_valid_value_when_false(self):
         # Given
-        self.mock_repository.get.return_value = {}
-        expected_default_value = OutputFormatConfig.JSON
+        config: AvailableConfigs = AvailableConfigs.OUTPUT_FORMAT
 
         # When
-        output_format = AvailableConfigs.OUTPUT_FORMAT.value
-
+        invalid_value = 'invalid_value'
+        is_valid = ConfigValidator.is_a_valid_value(
+            config = config,
+            value = invalid_value
+        )
+        
         # Then
-        self.assertIsInstance(output_format, OutputFormatConfig)
-        self.assertEqual(output_format, expected_default_value)
-
-    def test_output_format_config_when_custom(self):
-        # Given
-        self.mock_repository.get.return_value = {
-            'name': AvailableConfigs.OUTPUT_FORMAT.config_name,
-            'value': str(OutputFormatConfig.TABLE.value)
-        }
-        expected_default_value = OutputFormatConfig.TABLE
-
-        # When
-        output_format = AvailableConfigs.OUTPUT_FORMAT.value
-
-        # Then
-        self.assertIsInstance(output_format, OutputFormatConfig)
-        self.assertEqual(output_format, expected_default_value)
+        self.assertFalse(
+            is_valid,
+            msg = f'The value "{invalid_value}" should not be valid for the {config} config'
+        )

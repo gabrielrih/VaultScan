@@ -1,6 +1,6 @@
 import subprocess
 
-from vaultscan.settings import PACKAGE_NAME
+from vaultscan.util.package import PACKAGE_NAME
 
 
 class TestCliVersionCommand():

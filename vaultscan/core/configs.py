@@ -2,10 +2,8 @@ from enum import Enum
 from typing import List, Any, Type, Optional
 
 from vaultscan.repositories.config.base import Config
+from vaultscan.repositories.config.base import ConfigRepository
 from vaultscan.repositories.config.factory import ConfigRepositoryFactory
-
-
-repository = ConfigRepositoryFactory.create()
 
 
 class OutputFormatConfig(Enum):
@@ -15,11 +13,13 @@ class OutputFormatConfig(Enum):
 
     @classmethod
     def get_values(cls) -> List[str]:
-        return [e.value for e in cls]
+        return [ e.value for e in cls ]
 
 
 class AvailableConfigs(Enum):
     ''' 
+        Enum to define available configurations 
+
         The "value_type" must be the actual type to be used INSIDE THE CODE.
             Example, if the config is using an Enum, the value_type should be the class.
             If the values are True or False, the value_type should be bool.
@@ -36,45 +36,62 @@ class AvailableConfigs(Enum):
         self.default_value: str = default_value
         self.possible_values: List[str] = possible_values
 
-    def to_right_type(self, value: str) -> Any:
-        ''' Receive the value in string format and convert it to the right value_type '''
-        if isinstance(self.value_type, bool):
-            return value.lower() in ['true']
-        return self.value_type(value)
-    
-    @property
-    def value(self) -> Any:
-        ''' It returns the value using its original datatype (field value_type) '''
-        custom_config: Optional[Config] = get_custom_config_by_name(self.config_name)
+    @classmethod
+    def get_values(cls) -> List[str]:
+        return [ config.config_name for config in AvailableConfigs ]
+
+    @staticmethod
+    def from_config_name(config_name: str) -> 'AvailableConfigs':
+        """ Find an AvailableConfigs enum by name """
+        for config in AvailableConfigs:
+            if config.config_name == config_name:
+                return config
+        ''' It should never happen because the click.Choice are loading the right configs, but... '''
+        raise RuntimeError(f'Error when parsing config_name to {AvailableConfigs.__name__} class')
+
+
+class ConfigManager:
+    ''' Handles reading config values '''
+    def __init__(self, config: AvailableConfigs, repository: ConfigRepository = ConfigRepositoryFactory.create()):
+        self.config = config
+        self.repository = repository
+
+    def get_value(self) -> Any:
+        ''' Get the value of the given config, falling back to the default '''
+        custom_config: Optional[Config] = self._get_custom_config()
         if not custom_config:
-            return self.to_right_type(self.default_value)
-        return self.to_right_type(value = custom_config.value)
+            print('There is no custom_config')
+            return ConfigManager._convert_to_type(
+                value = self.config.default_value,
+                value_type = self.config.value_type
+            )
+        print('Found custom_config')
+        return ConfigManager._convert_to_type(
+            value = custom_config.value,
+            value_type = self.config.value_type
+        )
     
-    @property
-    def value_as_string(self) -> str:
+    def get_value_as_string(self) -> str:
         ''' It returns the value in string format (usefull to parse as json) '''
-        custom_config: Optional[Config] = get_custom_config_by_name(self.config_name)
-        if not custom_config:
-            return str(self.default_value)
-        return str(custom_config.value)
+        custom_config: Optional[Config] = self._get_custom_config()
+        return str(custom_config.value) if custom_config else str(self.config.default_value)
+
+    def _get_custom_config(self) -> Optional[Config]:
+        ''' Retrieve custom configuration from repository '''
+        custom_config = self.repository.get(name = self.config.config_name)
+        return Config.from_dict(custom_config) if custom_config else None
+    
+    @staticmethod
+    def _convert_to_type(value: str, value_type: Type) -> Any:
+        ''' Convert a string value to the appropriate type '''
+        if value_type is bool:
+            return value.lower() in ['true']
+        return value_type(value)
 
 
-def get_custom_config_by_name(config_name: str) -> Optional[Config]:
-    custom_config = repository.get(name = config_name)
-    if custom_config:
-        return Config.from_dict(custom_config)
-    return None
-
-
-def get_available_config_by_name(config_name: str) -> Optional[AvailableConfigs]:
-    for config in AvailableConfigs:
-        if config.config_name == config_name:
-            return config
-    return None  # Return None if no match is found
-
-
-def is_a_value_allowed_for_a_given_config(config: AvailableConfigs, value: str) -> bool:
-    for possible_value in config.possible_values:
-        if possible_value == value:
-            return True
-    return False
+class ConfigValidator:
+    """ Handles validation of configuration values """
+    @staticmethod
+    def is_a_valid_value(config: AvailableConfigs, value: str) -> bool:
+        """ Check if the given value is allowed for the specified config """
+        return value in config.possible_values

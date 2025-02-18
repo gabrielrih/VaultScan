@@ -1,11 +1,9 @@
 import click
 
-from typing import Optional
-
 from vaultscan.core.configs import (
     AvailableConfigs,
-    get_available_config_by_name,
-    is_a_value_allowed_for_a_given_config
+    ConfigManager,
+    ConfigValidator
 )
 from vaultscan.repositories.config.base import Config
 from vaultscan.repositories.config.factory import ConfigRepositoryFactory
@@ -28,7 +26,7 @@ def config() -> None:
 
 @config.command()
 @click.option('--name',
-              type = click.Choice( [ config.config_name for config in AvailableConfigs]),
+              type = click.Choice(AvailableConfigs.get_values()),
               required = True,
               help = 'Config name')
 @click.option('--value',
@@ -38,21 +36,12 @@ def config() -> None:
 def set(name: str, value: str) -> None:
     ''' Set configuration '''
     logger.debug(f'Args: {str(locals())}')
-
-    # Getting the AvailableConfig
-    config: Optional[AvailableConfigs] = get_available_config_by_name(config_name = name)
-    if not config:
-        ''' It should never happen because the click.Choice are loading the right configs, but... '''
-        raise RuntimeError(f'The value of config variable should be one of the type {AvailableConfigs.__name__}')
-    
-    # Checking if the given value is allowed for this config (looking at the possible_values)
-    is_valid_value = is_a_value_allowed_for_a_given_config(config = config, value = value)
+    config: AvailableConfigs = AvailableConfigs.from_config_name(config_name = name)
+    is_valid_value = ConfigValidator.is_a_valid_value(config = config, value = value)
     if not is_valid_value:
         message = f'The value "{value}" is not valid for the "{name}" configuration. The possible values are: {str(config.possible_values)}'
         logger.error(message)
         return
-    
-    # Save the custom configuration
     config = Config(
         name = name,
         value = value
@@ -63,24 +52,19 @@ def set(name: str, value: str) -> None:
 
 @config.command()
 @click.option('--name',
-              type = click.Choice( [ config.config_name for config in AvailableConfigs]),
+              type = click.Choice(AvailableConfigs.get_values()),
               required = True,
               help = 'Config name')
-def unset(name: str) -> None:
-    '''  Revert configuration to its original state '''
+def reset(name: str) -> None:
+    '''  Reset configuration to its original state '''
     logger.debug(f'Args: {str(locals())}')
-    
-    # Getting the AvailableConfig
-    config: Optional[AvailableConfigs] = get_available_config_by_name(config_name = name)
-    if not config:
-        ''' It should never happen because the click.Choice are loading the right configs, but... '''
-        raise RuntimeError(f'The value of config variable should be one of the type {AvailableConfigs.__name__}')
-    
-    # Reset to the default configuration
+    config: AvailableConfigs = AvailableConfigs.from_config_name(config_name = name)
     repository.unset(name = config.config_name)
     logger.success(f'The config "{config.config_name}" has been reverted to its original value!')
 
 
+# FIX IT
+# The the outputformat from configs.py
 @config.command()
 @click.option('--output-format', '-o',
               type = click.Choice(OutputFormat.get_values()),
@@ -92,11 +76,12 @@ def list(output_format: str) -> None:
     logger.debug(f'Args: {str(locals())}')
     format = OutputFormat(output_format)
     configs = []
-    for available_config in AvailableConfigs:
+    for config in AvailableConfigs:
+        manager = ConfigManager(config = config) 
         config = {
-            'name': available_config.config_name,
-            'current_value': available_config.value_as_string,
-            'default_value': str(available_config.default_value)
+            'name': config.config_name,
+            'current_value': manager.get_value_as_string(),
+            'default_value': config.default_value
         }
         configs.append(config)
     logger.info(f'{len(configs)} configs found!')
