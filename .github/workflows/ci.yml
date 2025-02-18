@@ -10,7 +10,7 @@ permissions:
 jobs:
   unit_tests:
     runs-on: ubuntu-latest
-    name: Lint
+    name: Unit Tests
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.11
@@ -21,14 +21,14 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
-      - name: Load cached dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pypoetry
-          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            poetry-${{ runner.os }}-
+      # - name: Load cached dependencies
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.cache/pypoetry
+      #     key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+      #     restore-keys: |
+      #       poetry-${{ runner.os }}-
       - name: Install dependencies
-        run: poetry install --no-interaction
+        run: poetry install --no-interaction --all-groups
       - name: Run tests
         run: poetry run pytest
