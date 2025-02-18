@@ -16,20 +16,22 @@ Supported vaults:
 - [Contribute](#contribute)
     - [Environment variables](#environment-variables)
     - [Testing](#testing)
+    - [Release](#release)
 
 # Installing it 
-The steps below are necessary to run the pipeline command anywhere on Windows.
+You can install this package by downloading the latest ```.whl``` file from GitHub Releases and using pip to install it.
 
-Using the Terminal inside the current repo (without the virtualenv activated)
+- Go to the Releases page.
+- Find the latest version and download the ```.whl``` file (e.g., ```vaultscan-0.1.4-py3-none-any.whl```).
+- After downloading the .whl file, install it using pip:
 
 ```ps1
-poetry build
-pip install --user .\dist\vaultscan-*.whl
+pip install --user vaultscan-0.1.4-py3-none-any.whl
 ```
 
-By doing that a pipeline.exe file will be created probably on the folder: ```C:\Users\user\AppData\Roaming\Python\Python312\Scripts```. So, you must add this folder on the user PATH.
+By doing that a ```vaultscan.exe``` file will be created probably on the folder: ```C:\Users\user\AppData\Roaming\Python\Python312\Scripts```. So, you must add this folder on the user PATH.
 
-Given that this automation uses env vars, you must create this variables are environment variables for the user, so you could run this script anywhere on Windows: 
+Finally you can run this script anywhere on the Terminal: 
 
 ```ps1
 vaultscan --help
@@ -111,7 +113,7 @@ vaultscan find secrets host --only-vault key_vault --show-values
 
 # Contribute
 
-To contribute with the development of this repo you could use poetry to control the dependencies.
+To contribute with the development of this repo you could use [Poetry](https://python-poetry.org/) to manage the Python version and control the dependencies.
 
 ```ps1
 poetry install
@@ -138,4 +140,14 @@ LOG_LEVEL = 'DEBUG'
 
 ```ps1
 pytest
+```
+
+## Release
+
+A new release is generated automatically by the [ci pipeline](.github/workflows/ci.yml) everytime you changed the package version on the [pyproject.toml](./pyproject.toml) file.
+
+```toml
+[project]
+name = "VaultScan"
+version = "0.1.4"
 ```
