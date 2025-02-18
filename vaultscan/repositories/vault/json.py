@@ -1,14 +1,8 @@
-import os
 from typing import List, Dict
 
 from vaultscan.repositories.vault.base import VaultRepository
+from vaultscan.repositories.file_handler import JSONFileHandler
 from vaultscan.engines.base import BaseVaultConfig, VaultStatus
-from vaultscan.util.json import JsonFileManager
-from vaultscan.util.user import CurrentUser
-from vaultscan.util.output.logger import LoggerFactory
-
-
-logger = LoggerFactory.get_logger(__name__)
 
 
 class VaultRepositoryAsJson(VaultRepository):
@@ -100,50 +94,3 @@ class VaultRepositoryAsJson(VaultRepository):
     
     def reset(self) -> None:
         self.initialize()
-
-
-class JSONFileHandler:
-    def __init__(self, folder_name: str, filename: str):
-        self._filename = filename
-        self.folder = DefaultConfigFolder(name = folder_name)
-        self.folder.create_if_doesnt_exist()
-
-    @property
-    def filename(self) -> str:
-        return self._filename
-
-    @property
-    def path(self) -> str:
-        return str(os.path.join(self.folder.path, self.filename))
-
-    @property
-    def exists(self) -> bool:
-        return os.path.exists(self.path)
-
-    def read(self) -> Dict:
-        if not self.exists:
-            logger.debug(f'File {self.path} doesnt exists!')
-            return {}
-        return JsonFileManager.load(self.path)
-    
-    def write(self, content: List[Dict]) -> None:
-        logger.debug(f'Writing file {self.path} on disk')
-        JsonFileManager.write(content, self.path)
-
-
-class DefaultConfigFolder:
-    def __init__(self, name: str):
-        self._folder_name = name
-        self._current_user = CurrentUser()
-
-    @property
-    def name(self) -> str:
-        return self._folder_name
-
-    @property
-    def path(self) -> str:
-        path = os.path.join(self._current_user.home_path, self.name)
-        return str(path)
-    
-    def create_if_doesnt_exist(self) -> None:
-        os.makedirs(self.path, exist_ok = True)

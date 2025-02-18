@@ -4,11 +4,18 @@ from unittest import TestCase
 from typing import Dict
 from json import dump
 
+from vaultscan.repositories.file_handler import JsonFileIO
 
-from vaultscan.util.json import JsonFileManager
+
+class TestJSONFileHandler(TestCase):
+    pass
 
 
-class TestJsonFileManager(TestCase):
+class TestDefaultConfigFolder(TestCase):
+    pass
+
+
+class TestJsonFileIO(TestCase):
     def setUp(self):
         self.utility = Utility()
 
@@ -18,7 +25,7 @@ class TestJsonFileManager(TestCase):
         self.utility.create_sample_json_file(filename)
 
         # When
-        content: Dict = JsonFileManager.load(path = filename)
+        content: Dict = JsonFileIO.load(path = filename)
 
         # Then
         self.assertIsInstance(content, Dict)
@@ -31,12 +38,13 @@ class TestJsonFileManager(TestCase):
         
         # When
         content: Dict = self.utility.get_sample_json_content()
-        JsonFileManager.write(content, filename)
+        JsonFileIO.write(content, filename)
 
         # Then
         self.assertTrue(
             Utility.is_file_exists(filename),
             msg = f'The file {filename} should exist on disk!')
+
 
 class Utility:
     @staticmethod

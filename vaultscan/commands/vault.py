@@ -17,7 +17,7 @@ logger = LoggerFactory.get_logger(__name__)
 
 @click.group()
 def vault() -> None:
-    ''' Manage vaults on the configuration '''
+    ''' Manage vaults '''
     pass
 
 
