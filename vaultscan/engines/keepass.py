@@ -43,18 +43,19 @@ class KeePassConfig(BaseVaultConfig):
 
     @classmethod
     def from_dict(cls, content: Dict) -> 'KeePassConfig':
-        kwargs = {}
+        response = {}
         for f in fields(cls):
             if f.name == 'type':  # skip 'type" to prevent TypeError
                 continue
             value = content.get(f.name)
             if f.name == 'status':
-                value = VaultStatus(value)
+                response[f.name] = VaultStatus(value)
+                continue
             if isinstance(value, Dict) and value.get("encrypted"):
-                kwargs[f.name] = cipher.decrypt(encrypted_value = value['value'])
-            else:
-                kwargs[f.name] = value
-        return cls(**kwargs)
+                response[f.name] = cipher.decrypt(encrypted_value = value['value'])
+                continue
+            response[f.name] = value
+        return cls(**response)
 
 
 class KeePassSecretEngine(BaseVaultEngine):

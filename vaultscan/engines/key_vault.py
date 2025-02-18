@@ -1,6 +1,6 @@
 
 from typing import List, Dict
-from dataclasses import dataclass
+from dataclasses import dataclass, fields
 
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
@@ -29,16 +29,18 @@ class KeyVaultConfig(BaseVaultConfig):
     def __post_init__(self):
         self.type = AZURE_KEY_VAULT
         return super().__post_init__()
-
+    
     @classmethod
     def from_dict(cls, content: Dict) -> 'KeyVaultConfig':
-        return KeyVaultConfig(
-            alias = content['alias'],
-            status = VaultStatus(content['status']),
-            subscription_id = content['subscription_id'],
-            resource_group_name = content['resource_group_name'],
-            vault_name = content['vault_name']
-        )
+        kwargs = {}
+        for f in fields(cls):
+            if f.name == 'type':  # skip 'type" to prevent TypeError
+                continue
+            value = content.get(f.name)
+            if f.name == 'status':
+                value = VaultStatus(value)
+            kwargs[f.name] = value
+        return cls(**kwargs)
 
 
 class KeyVaultSecretEngine(BaseVaultEngine):
