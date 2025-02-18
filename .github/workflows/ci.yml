@@ -12,7 +12,7 @@ permissions:
 jobs:
   unit_tests:
     runs-on: ubuntu-latest
-    name: Unit Tests
+    name: Unit tests
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.11
@@ -32,11 +32,33 @@ jobs:
           poetry run coverage run -m pytest test/unit
           echo "Code coverage report:"
           poetry run coverage report
+  # e2e_tests:
+  #   runs-on: ubuntu-latest
+  #   name: End to End tests
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Set up Python 3.11
+  #       uses: actions/setup-python@v3
+  #       with:
+  #         python-version: "3.11"
+  #     - name: Install Poetry
+  #       run: |
+  #         curl -sSL https://install.python-poetry.org | python3 -
+  #         echo "$HOME/.local/bin" >> $GITHUB_PATH
+  #         poetry --version
+  #     - name: Install dependencies
+  #       run: |
+  #         poetry install --no-interaction --all-groups
+  #     - name: Run tests
+  #       run: |
+  #         poetry run coverage run -m pytest test/e2e
+  #         echo "Code coverage report:"
+  #         poetry run coverage report
   release:
     runs-on: ubuntu-latest
     name: Create release and upload artifacts
     if: github.event_name == 'push'  # just when merge to main
-    needs: [unit_tests]
+    needs: [unit_tests, e2e_tests]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.11
