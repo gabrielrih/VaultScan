@@ -28,3 +28,27 @@ jobs:
           poetry run coverage run -m pytest test/unit
           echo "Code coverage report:"
           poetry run coverage report
+  publish_package:
+    runs-on: ubuntu-latest
+    name: Publish package
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+      - name: Configure Poetry to use GitHub Packages
+        run: |
+          poetry config repositories.github "https://npm.pkg.github.com/OWNER"
+          poetry config pypi-token.github ${{ secrets.GITHUB_TOKEN }}
+      - name: Install dependencies
+        run: poetry install --no-interaction
+      - name: Build package
+        run: poetry build
+      - name: Publish package to GitHub Packages
+        run: |
+          poetry publish -r github --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }}
