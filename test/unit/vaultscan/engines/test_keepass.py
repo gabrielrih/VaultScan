@@ -3,10 +3,10 @@ from unittest.mock import patch
 from typing import Dict
 
 from vaultscan.engines.base import VaultStatus
-from vaultscan.engines.keepass import (
-    KEEPASS,
-    KeePassConfig
-)
+# from vaultscan.engines.keepass import (
+#     KEEPASS,
+#     KeePassConfig
+# )
 
 
 class TestKeePassConfig(TestCase):

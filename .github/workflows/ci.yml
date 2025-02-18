@@ -21,16 +21,8 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
-      # - name: Load cached dependencies
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ~/.cache/pypoetry
-      #     key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
-      #     restore-keys: |
-      #       poetry-${{ runner.os }}-
       - name: Install dependencies
         run: poetry install --no-interaction --all-groups
       - name: Run tests
         run: |
-          poetry add keyrings.alt
           poetry run pytest
