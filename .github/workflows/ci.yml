@@ -55,12 +55,23 @@ jobs:
         run: |
           poetry install --no-interaction
           poetry build
-      - name: Create GitHub Release
+      - name: Create GitHub Release ${{ env.VERSION }}
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.VERSION }}
           name: ${{ env.VERSION }}
           body: "Automated release for version ${{ env.VERSION }}"
+          files: |
+            dist/*.tar.gz
+            dist/*.whl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Latest Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: latest
+          name: latest
+          body: "Automated release for the latest version"
           files: |
             dist/*.tar.gz
             dist/*.whl
