@@ -31,6 +31,7 @@ jobs:
   publish_package:
     runs-on: ubuntu-latest
     name: Publish package
+    needs: [unit_tests]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.11
