@@ -21,16 +21,18 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
+          poetry --version
       - name: Install dependencies
-        run: poetry install --no-interaction --all-groups
+        run: |
+          poetry install --no-interaction --all-groups
       - name: Run tests
         run: |
           poetry run coverage run -m pytest test/unit
           echo "Code coverage report:"
           poetry run coverage report
-  publish_package:
+  release:
     runs-on: ubuntu-latest
-    name: Publish package
+    name: Create release and upload artifacts
     needs: [unit_tests]
     steps:
       - uses: actions/checkout@v3
@@ -42,14 +44,21 @@ jobs:
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
-      - name: Configure Poetry to use GitHub Packages
+          poetry --version
+      - name: Get version from pyproject.toml
         run: |
-          poetry config repositories.github "https://pypi.pkg.github.com/gabrielrih"
-          poetry config pypi-token.github ${{ secrets.GITHUB_TOKEN }}
-      - name: Install dependencies
-        run: poetry install --no-interaction
+          echo "VERSION=$(poetry version -s)" >> $GITHUB_ENV
       - name: Build package
-        run: poetry build
-      - name: Publish package to GitHub Packages
         run: |
-          poetry publish -r github --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }}
+          poetry install --no-interaction
+          poetry build
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
+          body: "Automated release for version v${{ env.VERSION }}"
+          files: |
+            dist/*.whl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
