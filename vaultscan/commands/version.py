@@ -1,7 +1,7 @@
 import click
 import importlib.metadata
 
-from vaultscan.settings import PACKAGE_NAME
+from vaultscan.util.package import PACKAGE_NAME
 from vaultscan.util.output.logger import LoggerFactory
 from vaultscan.util.output.formatter import OutputFormat, OutputHandler
 

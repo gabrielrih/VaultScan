@@ -11,6 +11,8 @@ from vaultscan.util.output.logger import LoggerFactory
 logger = LoggerFactory.get_logger(__name__)
 
 
+# FIX IT
+# Get output from the AvailableConfigs
 class OutputFormat(Enum):
     JSON = "json"
     TABLE = "table"
