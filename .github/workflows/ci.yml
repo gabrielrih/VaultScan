@@ -44,7 +44,7 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
       - name: Configure Poetry to use GitHub Packages
         run: |
-          poetry config repositories.github "https://npm.pkg.github.com/OWNER"
+          poetry config repositories.github "https://pypi.pkg.github.com/gabrielrih"
           poetry config pypi-token.github ${{ secrets.GITHUB_TOKEN }}
       - name: Install dependencies
         run: poetry install --no-interaction
