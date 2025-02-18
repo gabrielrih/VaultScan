@@ -72,7 +72,7 @@ class KeePassSecretEngine(BaseVaultEngine):
         entries = self.client.find_entries(recursive = True)
         for entry in entries:
             entry_name = str(entry.title).lower()  # normalize the entry name
-            group_name = str(entry.group).lower()
+            group_name = str(entry.group).lower()  # normalize the group
             if not self.is_match([ entry_name, group_name ], filter, type):
                 continue
             value = ''
