@@ -4,7 +4,7 @@ from vaultscan.settings import PACKAGE_NAME
 
 
 class TestCliVersionCommand():
-    def test_version_command(self):
+    def test_show_version(self):
         # Given
         expected_output_message = f'{PACKAGE_NAME} version:'
 
@@ -19,11 +19,3 @@ class TestCliVersionCommand():
         assert result.returncode == 0  # Ensure the command ran successfully
         output_message = result.stdout.strip()
         assert expected_output_message in output_message
-
-
-class TestCliVaultCommand():
-    pass
-
-
-class TestCliSecretCommand():
-    pass

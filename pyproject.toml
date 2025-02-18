@@ -28,4 +28,5 @@ vaultscan = "vaultscan.main:main"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.4"
 coverage = "^7.6.12"
+pytest-console-scripts = "^1.4.1"
 
