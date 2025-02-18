@@ -55,7 +55,7 @@ jobs:
         run: |
           poetry install --no-interaction
           poetry build
-      - name: Create GitHub Release ${{ env.VERSION }}
+      - name: Create GitHub Release Version
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.VERSION }}
