@@ -115,7 +115,7 @@ def remove(alias: str) -> None:
               required = True,
               help = 'Vault new alias')
 def rename(old_alias: str, new_alias: str) -> None:
-    ''' Rename vault '''
+    ''' Rename a vault '''
     logger.debug(f'Args: {str(locals())}')
     renamed = repository.rename(old_alias, new_alias)
     if not renamed:
