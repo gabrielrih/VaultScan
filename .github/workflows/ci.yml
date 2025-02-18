@@ -25,4 +25,9 @@ jobs:
         run: poetry install --no-interaction --all-groups
       - name: Run tests
         run: |
-          poetry run pytest
+          coverage run -m pytest test/unit
+          coverage xml
+          echo "Code coverage report:"
+          coverage report
+          #poetry run pytest
+
