@@ -22,11 +22,17 @@ Supported vaults:
 You can install this package by downloading the latest ```.whl``` file from GitHub Releases and using pip to install it.
 
 - Go to the Releases page.
-- Find the latest version and download the ```.whl``` file (e.g., ```vaultscan-0.1.4-py3-none-any.whl```).
+- Find the latest version and download the ```.whl``` file.
+Or you can download it from the terminal:
+
+```ps1
+wget -O vaultscan-latest-py3-none-any.whl https://github.com/gabrielrih/VaultScan/releases/download/latest/vaultscan-latest-py3-none-any.whl 
+```
+
 - After downloading the .whl file, install it using pip:
 
 ```ps1
-pip install --user vaultscan-0.1.4-py3-none-any.whl
+pip install --user vaultscan-latest-py3-none-any.whl
 ```
 
 By doing that a ```vaultscan.exe``` file will be created probably on the folder: ```C:\Users\user\AppData\Roaming\Python\Python312\Scripts```. So, you must add this folder on the user PATH.
