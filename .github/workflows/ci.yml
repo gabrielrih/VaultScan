@@ -31,4 +31,6 @@ jobs:
       - name: Install dependencies
         run: poetry install --no-interaction --all-groups
       - name: Run tests
-        run: poetry run pytest
+        run: |
+          poetry add keyring.alt
+          poetry run pytest
