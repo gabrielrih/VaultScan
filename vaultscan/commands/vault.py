@@ -2,10 +2,10 @@ import click
 
 from vaultscan.core.engines.key_vault import KeyVaultConfig
 from vaultscan.core.engines.keepass import KeePassConfig
+from vaultscan.core.output.formatter import OutputHandler, OutputFormat
+from vaultscan.core.output.logger import LoggerFactory
 from vaultscan.repositories.vault.base import VaultStatus
 from vaultscan.repositories.vault.factory import VaultRepositoryFactory
-from vaultscan.util.output.formatter import OutputFormat, OutputHandler
-from vaultscan.util.output.logger import LoggerFactory
 
 
 repository = VaultRepositoryFactory.create()
@@ -130,10 +130,11 @@ def reset() -> None:
 def list(output_format: str) -> None:
     ''' List vaults '''
     logger.debug(f'Args: {str(locals())}')
-    format = OutputFormat(output_format)
     vaults = repository.get_all()
     logger.info(f'{len(vaults)} vault(s) found!')
-    OutputHandler(format).print(vaults)
+    OutputHandler(
+        format = OutputFormat(output_format)
+    ).print(vaults)
 
 @vault.command()
 @click.option('--alias',

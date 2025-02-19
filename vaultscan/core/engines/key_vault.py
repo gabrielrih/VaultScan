@@ -10,8 +10,8 @@ from vaultscan.core.engines.base import (
     BaseVaultEngine,
     Secret
 )
+from vaultscan.core.output.logger import LoggerFactory
 from vaultscan.repositories.vault.base import VaultStatus
-from vaultscan.util.output.logger import LoggerFactory
 
 
 logger = LoggerFactory.get_logger(__name__)

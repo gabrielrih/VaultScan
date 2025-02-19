@@ -3,16 +3,7 @@ from typing import List, Any, Type, Optional
 
 from vaultscan.repositories.config.base import Config, ConfigRepository
 from vaultscan.repositories.config.factory import ConfigRepositoryFactory
-
-
-class OutputFormatConfig(Enum):
-    JSON = "json"
-    TABLE = "table"
-    STANDARD = "standard"
-
-    @classmethod
-    def get_values(cls) -> List[str]:
-        return [ e.value for e in cls ]
+from vaultscan.core.output.formatter import OutputFormat
 
 
 class AvailableConfigs(Enum):
@@ -27,7 +18,7 @@ class AvailableConfigs(Enum):
             It's important because this parameters are used by user (by typing it).
     '''
     VERBOSE = ('verbose', bool, 'False', [ 'True', 'False' ])
-    OUTPUT_FORMAT = ('output_format', OutputFormatConfig, OutputFormatConfig.JSON.value, OutputFormatConfig.get_values())
+    OUTPUT_FORMAT = ('output_format', OutputFormat, OutputFormat.JSON.value, OutputFormat.get_values())
 
     def __init__(self, config_name: str, value_type: Type, default_value: str, possible_values: List[str]):
         self.config_name: str = config_name

@@ -9,9 +9,9 @@ from vaultscan.core.engines.base import (
     Secret
 )
 from vaultscan.core.cipher import DataCipher
+from vaultscan.core.output.logger import LoggerFactory
 from vaultscan.repositories.vault.base import VaultStatus
 from vaultscan.repositories.secure_key.factory import SecureKeyRepositoryFactory
-from vaultscan.util.output.logger import LoggerFactory
 
 
 logger = LoggerFactory.get_logger(__name__)

@@ -1,10 +1,10 @@
 import click
 
-from vaultscan.core.configs import AvailableConfigs, ConfigManager, ConfigValidator
 from vaultscan.repositories.config.base import Config
 from vaultscan.repositories.config.factory import ConfigRepositoryFactory
-from vaultscan.util.output.formatter import OutputFormat, OutputHandler
-from vaultscan.util.output.logger import LoggerFactory
+from vaultscan.core.configs import AvailableConfigs, ConfigManager, ConfigValidator
+from vaultscan.core.output.formatter import OutputHandler, OutputFormat
+from vaultscan.core.output.logger import LoggerFactory
 
 
 repository = ConfigRepositoryFactory.create()
@@ -53,8 +53,7 @@ def reset(name: str) -> None:
     repository.unset(name = config.config_name)
     logger.success(f'The config "{config.config_name}" has been reverted to its original value!')
 
-# FIX IT
-# The the outputformat from configs.py
+# FIX IT: Get the default from configs.py
 @config.command()
 @click.option('--output-format', '-o',
               type = click.Choice(OutputFormat.get_values()),
@@ -64,7 +63,6 @@ def reset(name: str) -> None:
 def list(output_format: str) -> None:
     ''' List configurations '''
     logger.debug(f'Args: {str(locals())}')
-    format = OutputFormat(output_format)
     configs = []
     for config in AvailableConfigs:
         manager = ConfigManager(config = config) 
@@ -78,4 +76,6 @@ def list(output_format: str) -> None:
     response = {
         'configs': configs
     }
-    OutputHandler(format).print(response)
+    OutputHandler(
+        format = OutputFormat(output_format)
+    ).print(response)

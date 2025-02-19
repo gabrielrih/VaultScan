@@ -2,7 +2,7 @@ from cryptography.fernet import Fernet
 
 from vaultscan.repositories.secure_key.base import SecureKeyRepository
 from vaultscan.repositories.secure_key.keyring import KeyRingSecureKeyRepository
-from vaultscan.util.output.logger import LoggerFactory
+from vaultscan.core.output.logger import LoggerFactory
 
 
 logger = LoggerFactory.get_logger(__name__)

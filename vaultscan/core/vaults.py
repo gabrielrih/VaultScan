@@ -1,5 +1,5 @@
+from vaultscan.core.output.logger import LoggerFactory
 from vaultscan.repositories.vault.factory import VaultRepositoryFactory
-from vaultscan.util.output.logger import LoggerFactory
 
 
 from typing import List, Dict

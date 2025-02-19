@@ -2,9 +2,9 @@ from unittest import TestCase
 
 from vaultscan.repositories.config.base import Config
 from vaultscan.repositories.config.in_memory import InMemoryConfigRepository
+from vaultscan.core.output.formatter import OutputFormat
 from vaultscan.core.configs import (
     AvailableConfigs,
-    OutputFormatConfig,
     ConfigManager,
     ConfigValidator
 )
@@ -22,8 +22,8 @@ class TestAvailableConfigs(TestCase):
     def test_check_type_when_output_format_config(self):
         config = AvailableConfigs.OUTPUT_FORMAT
         self.assertTrue(
-            issubclass(config.value_type, OutputFormatConfig),
-            msg = f'The value type of the config {config} should de {OutputFormatConfig.__name__}'
+            issubclass(config.value_type, OutputFormat),
+            msg = f'The value type of the config {config} should de {OutputFormat.__name__}'
         )
 
     def test_get_values(self):

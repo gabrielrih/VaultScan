@@ -4,8 +4,8 @@ from typing import List, Dict
 
 from vaultscan.core.vaults import get_vaults
 from vaultscan.core.scanner import MultiVaultScannerBuilder
-from vaultscan.util.output.formatter import OutputFormat, OutputHandler
-from vaultscan.util.output.logger import LoggerFactory
+from vaultscan.core.output.formatter import OutputHandler, OutputFormat
+from vaultscan.core.output.logger import LoggerFactory
 
 
 logger = LoggerFactory.get_logger(__name__)
@@ -17,6 +17,7 @@ def find() -> None:
     pass
 
 
+# FIX IT: Get the default from configs
 @find.command()
 @click.argument("filter")
 @click.option('--only-vault',

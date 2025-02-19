@@ -1,10 +1,11 @@
 import logging
 import logging.config
 
+from vaultscan.core.configs import AvailableConfigs, ConfigManager
 
-# FIX IT
-# Get from where?
-LOG_LEVEL = 'DEBUG'
+
+IS_VERBOSE = ConfigManager(AvailableConfigs.VERBOSE).get_value()
+LOG_LEVEL = 'DEBUG' if IS_VERBOSE else 'INFO'
 
 
 class LoggerFactory:
