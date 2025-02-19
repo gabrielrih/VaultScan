@@ -22,8 +22,6 @@ AZURE_KEY_VAULT = 'key_vault'
 
 @dataclass
 class KeyVaultConfig(BaseVaultConfig):
-    subscription_id: str
-    resource_group_name: str
     vault_name: str
 
     def __post_init__(self):

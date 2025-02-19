@@ -34,22 +34,12 @@ def add() -> None:
               type = click.STRING,
               required = True,
               help = 'Azure Key Vault name')
-@click.option('--resource-group-name', '--rg',
-              type = click.STRING,
-              required = True,
-              help = 'Azure Resource Group Name')
-@click.option('--subscription-id',
-              type = click.STRING,
-              required = True,
-              help = 'Azure Subscription ID')
-def kv(alias: str, vault_name: str, resource_group_name: str, subscription_id: str) -> None:
+def kv(alias: str, vault_name: str) -> None:
     ''' Add an Azure Key Vault on the configuration '''
     logger.debug(f'Args: {str(locals())}')
     vault = KeyVaultConfig(
         alias = alias,
         status = VaultStatus.ENABLED.value,
-        subscription_id = subscription_id,
-        resource_group_name = resource_group_name,
         vault_name = vault_name
     )
     created = repository.add(vault)
