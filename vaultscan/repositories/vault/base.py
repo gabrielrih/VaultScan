@@ -38,6 +38,9 @@ class VaultRepository(ABC):
     def remove(self, alias: str) -> bool: pass
 
     @abstractmethod
+    def remove_all(self) -> None: pass
+
+    @abstractmethod
     def rename(self, old_alias: str, new_alias: str) -> bool: pass
 
     @abstractmethod
@@ -48,6 +51,3 @@ class VaultRepository(ABC):
 
     @abstractmethod
     def get_all(self) -> List[Dict]: pass
-
-    @abstractmethod
-    def reset(self) -> None: pass

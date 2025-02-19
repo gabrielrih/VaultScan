@@ -53,6 +53,9 @@ class VaultRepositoryAsJson(VaultRepository):
                 break
         return removed
 
+    def remove_all(self) -> None:
+        self.initialize()
+
     def rename(self, old_alias: str, new_alias: str) -> bool:
         content: Dict = self.file.read()
         vaults: List[Dict] = content['vaults']
@@ -94,6 +97,3 @@ class VaultRepositoryAsJson(VaultRepository):
     def get_all(self) -> List[Dict]:
         content: Dict = self.file.read()
         return content['vaults']
-    
-    def reset(self) -> None:
-        self.initialize()

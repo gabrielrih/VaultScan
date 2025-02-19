@@ -2,4 +2,6 @@ import click
 
 
 @click.group()
-def main(): pass
+def main():
+    ''' Searching objects across vaults '''
+    pass
