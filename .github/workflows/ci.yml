@@ -29,7 +29,7 @@ jobs:
           poetry install --no-interaction --all-groups
       - name: Run tests
         run: |
-          poetry run coverage run -m pytest test/unit
+          poetry run coverage run -m pytest test/vaultscan/unit
           echo "Code coverage report:"
           poetry run coverage report
   # e2e_tests:
@@ -51,7 +51,7 @@ jobs:
   #         poetry install --no-interaction --all-groups
   #     - name: Run tests
   #       run: |
-  #         poetry run coverage run -m pytest test/e2e
+  #         poetry run coverage run -m pytest test/vaultscan/e2e
   #         echo "Code coverage report:"
   #         poetry run coverage report
   release:

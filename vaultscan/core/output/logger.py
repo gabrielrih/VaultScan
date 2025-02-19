@@ -1,10 +1,11 @@
 import logging
 import logging.config
 
-from vaultscan.settings import GlobalSettings, LogLevel
+from vaultscan.core.configs import AvailableConfigs, ConfigManager
 
 
-settings = GlobalSettings()
+IS_VERBOSE = ConfigManager(AvailableConfigs.VERBOSE).get_value()
+LOG_LEVEL = 'DEBUG' if IS_VERBOSE else 'INFO'
 
 
 class LoggerFactory:
@@ -58,15 +59,15 @@ class Logger:
     def get_logger(name):
         logging.addLevelName(25, 'SUCCESS')  # Between INFO 20 and WARNING 30
         logger = logging.getLogger(name)
-        logger.setLevel(settings.log_level.name)
+        logger.setLevel(LOG_LEVEL)
 
         handler = logging.StreamHandler()
-        handler.setLevel(settings.log_level.name)
+        handler.setLevel(LOG_LEVEL)
 
         # Define different formats
         # When running in debug mode, add more information on the logs
         format = "%(levelname)s: %(message)s"
-        if settings.log_level == LogLevel.DEBUG:
+        if LOG_LEVEL == 'DEBUG':
             format = "%(levelname)s - %(message)s [%(name)s] [%(filename)s:%(lineno)d]"
         
         # Apply debug format only for DEBUG level

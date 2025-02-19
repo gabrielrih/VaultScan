@@ -5,8 +5,7 @@ class InMemorySecureKeyRepository(SecureKeyRepository):
     def __init__(self):
         self.keys = list()
 
-    def initialize(self):
-        self.keys.content = list()
+    def initialize(self): pass
 
     def add(self, name: str, value: str) -> None:
         content = {

@@ -1,29 +1,27 @@
 import click
 
+from vaultscan.core.engines.key_vault import KeyVaultConfig
+from vaultscan.core.engines.keepass import KeePassConfig
+from vaultscan.core.configs import AvailableConfigs, ConfigManager
+from vaultscan.core.output.formatter import OutputHandler, OutputFormat
+from vaultscan.core.output.logger import LoggerFactory
+from vaultscan.repositories.vault.base import VaultStatus
 from vaultscan.repositories.vault.factory import VaultRepositoryFactory
-from vaultscan.engines.base import VaultStatus
-from vaultscan.engines.key_vault import KeyVaultConfig
-from vaultscan.engines.keepass import KeePassConfig
-from vaultscan.util.output.formatter import OutputFormat, OutputHandler
-from vaultscan.util.output.logger import LoggerFactory
 
 
 repository = VaultRepositoryFactory.create()
-
-
 logger = LoggerFactory.get_logger(__name__)
-
 
 
 @click.group()
 def vault() -> None:
-    ''' Manage vaults on the configuration '''
+    ''' Configure a list of vaults used for searching objects '''
     pass
 
 
 @vault.group
 def add() -> None:
-    ''' Add a vault '''
+    ''' Add a vault on the configuration '''
     pass
 
 
@@ -39,13 +37,13 @@ def add() -> None:
 @click.option('--resource-group-name', '--rg',
               type = click.STRING,
               required = True,
-              help = 'Azure Resource Group Name where the vault is located')
+              help = 'Azure Resource Group Name')
 @click.option('--subscription-id',
               type = click.STRING,
               required = True,
-              help = 'Azure Subscription ID where the vault is located')
+              help = 'Azure Subscription ID')
 def kv(alias: str, vault_name: str, resource_group_name: str, subscription_id: str) -> None:
-    ''' Azure Key Vault '''
+    ''' Add an Azure Key Vault on the configuration '''
     logger.debug(f'Args: {str(locals())}')
     vault = KeyVaultConfig(
         alias = alias,
@@ -71,7 +69,7 @@ def kv(alias: str, vault_name: str, resource_group_name: str, subscription_id: s
               required = True,
               help = 'Path of KDBX file')
 def keepass(alias: str, path: str) -> None:
-    ''' KeePass database '''
+    ''' Add a KeePass database on the configuration '''
     logger.debug(f'Args: {str(locals())}')
     if repository.get(alias = alias):  # check in the first time to avoid prompting the password and them generating the error
         logger.warning(f'The alias "{alias}" is already registered! It must be unique.')
@@ -96,7 +94,7 @@ def keepass(alias: str, path: str) -> None:
               required = True,
               help = 'Vault alias')
 def remove(alias: str) -> None:
-    ''' Remove a vault '''
+    ''' Remove a vault from the configuration '''
     logger.debug(f'Args: {str(locals())}')
     removed = repository.remove(alias)
     if not removed:
@@ -109,13 +107,13 @@ def remove(alias: str) -> None:
 @click.option('--old-alias',
               type = click.STRING,
               required = True,
-              help = 'Vault old alias')
+              help = 'Old vault alias')
 @click.option('--new-alias',
               type = click.STRING,
               required = True,
-              help = 'Vault new alias')
+              help = 'New vault alias')
 def rename(old_alias: str, new_alias: str) -> None:
-    ''' Rename a vault '''
+    ''' Change the vault alias '''
     logger.debug(f'Args: {str(locals())}')
     renamed = repository.rename(old_alias, new_alias)
     if not renamed:
@@ -125,25 +123,11 @@ def rename(old_alias: str, new_alias: str) -> None:
 
 
 @vault.command()
-def reset() -> None:
-    ''' Reset the vaults'''
-    repository.reset()
-    logger.success('The configuration has been reset!')
+def remove_all() -> None:
+    ''' Remove all vaults from the configuration '''
+    repository.remove_all()
+    logger.success('All the vaults has been removed from the configuration!')
 
-
-@vault.command()
-@click.option('--output-format', '-o',
-              type = click.Choice(OutputFormat.get_values()),
-              required = False,
-              default = OutputFormat.JSON.value,
-              help = 'Output format')
-def list(output_format: str) -> None:
-    ''' List vaults '''
-    logger.debug(f'Args: {str(locals())}')
-    format = OutputFormat(output_format)
-    vaults = repository.get_all()
-    logger.info(f'{len(vaults)} vault(s) found!')
-    OutputHandler(format).print(vaults)
 
 @vault.command()
 @click.option('--alias',
@@ -151,7 +135,7 @@ def list(output_format: str) -> None:
               required = True,
               help = 'Vault alias')
 def disable(alias: str) -> None:
-    ''' Disable vault '''
+    ''' Ignore a vault for future searches '''
     logger.debug(f'Args: {str(locals())}')
     status = VaultStatus.DISABLED
     disabled = repository.change_status(alias = alias, status = status)
@@ -160,13 +144,14 @@ def disable(alias: str) -> None:
         return
     logger.success(f'The status of alias "{alias}" has been changed to "{status.value}"!')
 
+
 @vault.command()
 @click.option('--alias',
               type = click.STRING,
               required = True,
               help = 'Vault alias')
 def enable(alias: str) -> None:
-    ''' Enable vault '''
+    ''' Enable a vault for future searches '''
     logger.debug(f'Args: {str(locals())}')
     status = VaultStatus.ENABLED
     disabled = repository.change_status(alias = alias, status = status)
@@ -174,3 +159,20 @@ def enable(alias: str) -> None:
         logger.warning(f'The alias "{alias}" was not found on the configuration!')
         return
     logger.success(f'The status of alias "{alias}" has been changed to "{status.value}"!')
+
+
+DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(AvailableConfigs.OUTPUT_FORMAT).get_value()  # getting it from user configuration
+@vault.command()
+@click.option('--output-format', '-o',
+              type = click.Choice(OutputFormat.get_values()),
+              required = False,
+              default = DEFAULT_OUTPUT_FORMAT.value,
+              help = 'Output format')
+def list(output_format: str) -> None:
+    ''' List all vaults on the configuration '''
+    logger.debug(f'Args: {str(locals())}')
+    vaults = repository.get_all()
+    logger.info(f'{len(vaults)} vault(s) found!')
+    OutputHandler(
+        format = OutputFormat(output_format)
+    ).print(vaults)

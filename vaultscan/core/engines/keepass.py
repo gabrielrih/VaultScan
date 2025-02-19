@@ -2,16 +2,16 @@ from typing import Dict, List
 from dataclasses import dataclass, field, fields
 from pykeepass import PyKeePass
 
-from vaultscan.engines.base import (
+from vaultscan.core.engines.base import (
     FilterType,
     BaseVaultConfig,
     BaseVaultEngine,
-    Secret,
-    VaultStatus
+    Secret
 )
+from vaultscan.core.cipher import DataCipher
+from vaultscan.core.output.logger import LoggerFactory
+from vaultscan.repositories.vault.base import VaultStatus
 from vaultscan.repositories.secure_key.factory import SecureKeyRepositoryFactory
-from vaultscan.repositories.secure_key.cipher import DataCipher
-from vaultscan.util.output.logger import LoggerFactory
 
 
 logger = LoggerFactory.get_logger(__name__)
@@ -98,7 +98,9 @@ class KeePassSecretEngine(BaseVaultEngine):
     def format_secret_name(group: str, secret: str) -> str:
         if not group:
             return f'/{secret}'
-        # Initial value: Group: "Group1/Group2"
-        # Expected output: Group1/Group2
+        '''
+        Initial value: Group: "Group1/Group2"
+        Expected output: Group1/Group2
+        '''
         group = group.replace('Group: ', '').replace('"', '')
         return f'{group}/{secret}'

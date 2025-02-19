@@ -1,12 +1,8 @@
 from abc import ABC, abstractmethod
 
 
-from vaultscan.settings import PACKAGE_NAME
-
-
 class SecureKeyRepository(ABC):
-    SERVICE_NAME = PACKAGE_NAME
-    
+    ''' Base class to a repository of secure keys '''
     @abstractmethod
     def initialize(self): pass
 

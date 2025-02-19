@@ -1,9 +1,9 @@
 import click
 import importlib.metadata
 
-from vaultscan.settings import PACKAGE_NAME
-from vaultscan.util.output.logger import LoggerFactory
-from vaultscan.util.output.formatter import OutputFormat, OutputHandler
+from vaultscan.core.output.logger import LoggerFactory
+from vaultscan.core.output.formatter import OutputHandler, OutputFormat
+from vaultscan.util.package import PACKAGE_NAME
 
 
 logger = LoggerFactory.get_logger(__name__)
@@ -18,5 +18,5 @@ def version() -> None:
         logger.error(f'{PACKAGE_NAME} is not installed via pip!')
     message = f'{PACKAGE_NAME} version: {version}'
     OutputHandler(
-        format = OutputFormat(OutputFormat.STANDARD.value)
+        format = OutputFormat.STANDARD
     ).print(message)

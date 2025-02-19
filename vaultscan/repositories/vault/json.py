@@ -1,14 +1,11 @@
-import os
 from typing import List, Dict
 
-from vaultscan.repositories.vault.base import VaultRepository
-from vaultscan.engines.base import BaseVaultConfig, VaultStatus
-from vaultscan.util.json import JsonFileManager
-from vaultscan.util.user import CurrentUser
-from vaultscan.util.output.logger import LoggerFactory
-
-
-logger = LoggerFactory.get_logger(__name__)
+from vaultscan.repositories.vault.base import (
+    VaultRepository,
+    BaseVaultConfig,
+    VaultStatus
+)
+from vaultscan.repositories.file_handler import JSONFileHandler
 
 
 class VaultRepositoryAsJson(VaultRepository):
@@ -56,6 +53,9 @@ class VaultRepositoryAsJson(VaultRepository):
                 break
         return removed
 
+    def remove_all(self) -> None:
+        self.initialize()
+
     def rename(self, old_alias: str, new_alias: str) -> bool:
         content: Dict = self.file.read()
         vaults: List[Dict] = content['vaults']
@@ -97,53 +97,3 @@ class VaultRepositoryAsJson(VaultRepository):
     def get_all(self) -> List[Dict]:
         content: Dict = self.file.read()
         return content['vaults']
-    
-    def reset(self) -> None:
-        self.initialize()
-
-
-class JSONFileHandler:
-    def __init__(self, folder_name: str, filename: str):
-        self._filename = filename
-        self.folder = DefaultConfigFolder(name = folder_name)
-        self.folder.create_if_doesnt_exist()
-
-    @property
-    def filename(self) -> str:
-        return self._filename
-
-    @property
-    def path(self) -> str:
-        return str(os.path.join(self.folder.path, self.filename))
-
-    @property
-    def exists(self) -> bool:
-        return os.path.exists(self.path)
-
-    def read(self) -> Dict:
-        if not self.exists:
-            logger.debug(f'File {self.path} doesnt exists!')
-            return {}
-        return JsonFileManager.load(self.path)
-    
-    def write(self, content: List[Dict]) -> None:
-        logger.debug(f'Writing file {self.path} on disk')
-        JsonFileManager.write(content, self.path)
-
-
-class DefaultConfigFolder:
-    def __init__(self, name: str):
-        self._folder_name = name
-        self._current_user = CurrentUser()
-
-    @property
-    def name(self) -> str:
-        return self._folder_name
-
-    @property
-    def path(self) -> str:
-        path = os.path.join(self._current_user.home_path, self.name)
-        return str(path)
-    
-    def create_if_doesnt_exist(self) -> None:
-        os.makedirs(self.path, exist_ok = True)

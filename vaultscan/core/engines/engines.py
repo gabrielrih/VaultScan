@@ -1,8 +1,8 @@
 from enum import Enum
 
-from vaultscan.engines.base import BaseVaultConfig, BaseVaultEngine
-from vaultscan.engines.key_vault import AZURE_KEY_VAULT, KeyVaultConfig, KeyVaultSecretEngine
-from vaultscan.engines.keepass import KEEPASS, KeePassConfig, KeePassSecretEngine
+from vaultscan.core.engines.base import BaseVaultConfig, BaseVaultEngine
+from vaultscan.core.engines.key_vault import AZURE_KEY_VAULT, KeyVaultConfig, KeyVaultSecretEngine
+from vaultscan.core.engines.keepass import KEEPASS, KeePassConfig, KeePassSecretEngine
 
 
 class AvailableEngines(Enum):

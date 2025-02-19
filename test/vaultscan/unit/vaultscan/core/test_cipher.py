@@ -2,7 +2,7 @@ from unittest import TestCase, skip
 from unittest.mock import patch
 
 from vaultscan.repositories.secure_key.in_memory import InMemorySecureKeyRepository
-from vaultscan.repositories.secure_key.cipher import DataCipher
+from vaultscan.core.cipher import DataCipher
 
 
 class TestEncryption(TestCase):
