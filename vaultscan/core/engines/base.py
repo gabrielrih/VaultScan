@@ -30,5 +30,5 @@ class BaseVaultEngine(ABC):
 
     def is_match(self, values: List[str], filter: str, type: FilterType) -> bool:
         if not isinstance(type, FilterType):
-            raise ValueError(f'Invalid FilterType {str(type)}!')
+            raise ValueError(f'Invalid {FilterType.__class__} {str(type)}!')
         return any(type.matcher(value, filter) for value in values)
