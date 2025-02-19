@@ -8,7 +8,6 @@ from vaultscan.util.output.logger import LoggerFactory
 
 
 repository = ConfigRepositoryFactory.create()
-
 logger = LoggerFactory.get_logger(__name__)
 
 

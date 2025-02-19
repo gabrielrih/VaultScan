@@ -4,10 +4,6 @@ from json import load, dump
 from typing import List, Dict
 
 from vaultscan.util.user import CurrentUser
-from vaultscan.util.output.logger import LoggerFactory
-
-
-logger = LoggerFactory.get_logger(__name__)
 
 
 class JSONFileHandler:
@@ -29,13 +25,11 @@ class JSONFileHandler:
         return os.path.exists(self.path)
 
     def read(self) -> Dict:
-        if not self.exists:
-            logger.debug(f'File {self.path} doesnt exists!')
-            return {}
-        return JsonFileIO.load(self.path)
+        if self.exists:
+            return JsonFileIO.load(self.path)
+        return {}
     
     def write(self, content: List[Dict]) -> None:
-        logger.debug(f'Writing file {self.path} on disk')
         JsonFileIO.write(content, self.path)
 
 

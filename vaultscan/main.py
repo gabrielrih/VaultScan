@@ -1,13 +1,8 @@
-import click
-
+from vaultscan.commands.main import main
 from vaultscan.commands.config import config
 from vaultscan.commands.vault import vault
 from vaultscan.commands.find import find
 from vaultscan.commands.version import version
-
-
-@click.group()
-def main(): pass
 
 
 main.add_command(vault)
