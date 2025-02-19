@@ -1,6 +1,5 @@
 from typing import List, Dict
 
-
 from vaultscan.repositories.config.base import ConfigRepository, Config
 
 

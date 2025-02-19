@@ -1,18 +1,15 @@
 import click
 
+from vaultscan.core.engines.key_vault import KeyVaultConfig
+from vaultscan.core.engines.keepass import KeePassConfig
+from vaultscan.repositories.vault.base import VaultStatus
 from vaultscan.repositories.vault.factory import VaultRepositoryFactory
-from vaultscan.engines.base import VaultStatus
-from vaultscan.engines.key_vault import KeyVaultConfig
-from vaultscan.engines.keepass import KeePassConfig
 from vaultscan.util.output.formatter import OutputFormat, OutputHandler
 from vaultscan.util.output.logger import LoggerFactory
 
 
 repository = VaultRepositoryFactory.create()
-
-
 logger = LoggerFactory.get_logger(__name__)
-
 
 
 @click.group()
@@ -20,12 +17,10 @@ def vault() -> None:
     ''' Manage vaults '''
     pass
 
-
 @vault.group
 def add() -> None:
     ''' Add a vault '''
     pass
-
 
 @add.command()
 @click.option('--alias',
@@ -60,7 +55,6 @@ def kv(alias: str, vault_name: str, resource_group_name: str, subscription_id: s
         return
     logger.success('The vault was added on the configuration!')
 
-
 @add.command
 @click.option('--alias',
               type = click.STRING,
@@ -89,7 +83,6 @@ def keepass(alias: str, path: str) -> None:
         return
     logger.success('The vault was added on the configuration!')
 
-
 @vault.command()
 @click.option('--alias',
               type = click.STRING,
@@ -103,7 +96,6 @@ def remove(alias: str) -> None:
         logger.warning(f'The alias "{alias}" was not found on the configuration!')
         return
     logger.success(f'The alias "{alias}" was removed from the configuration!')
-
 
 @vault.command()
 @click.option('--old-alias',
@@ -123,13 +115,11 @@ def rename(old_alias: str, new_alias: str) -> None:
         return
     logger.success(f'The alias "{old_alias}" has been renamed to "{new_alias}"!')
 
-
 @vault.command()
 def reset() -> None:
     ''' Reset the vaults'''
     repository.reset()
     logger.success('The configuration has been reset!')
-
 
 @vault.command()
 @click.option('--output-format', '-o',

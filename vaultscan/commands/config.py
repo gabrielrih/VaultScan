@@ -1,10 +1,6 @@
 import click
 
-from vaultscan.core.configs import (
-    AvailableConfigs,
-    ConfigManager,
-    ConfigValidator
-)
+from vaultscan.core.configs import AvailableConfigs, ConfigManager, ConfigValidator
 from vaultscan.repositories.config.base import Config
 from vaultscan.repositories.config.factory import ConfigRepositoryFactory
 from vaultscan.util.output.formatter import OutputFormat, OutputHandler
@@ -13,16 +9,13 @@ from vaultscan.util.output.logger import LoggerFactory
 
 repository = ConfigRepositoryFactory.create()
 
-
 logger = LoggerFactory.get_logger(__name__)
-
 
 
 @click.group()
 def config() -> None:
     ''' Manage configurations '''
     pass
-
 
 @config.command()
 @click.option('--name',
@@ -49,7 +42,6 @@ def set(name: str, value: str) -> None:
     repository.set(new_config = config)
     logger.success(f'The config "{name}" was set using the given value!')
 
-
 @config.command()
 @click.option('--name',
               type = click.Choice(AvailableConfigs.get_values()),
@@ -61,7 +53,6 @@ def reset(name: str) -> None:
     config: AvailableConfigs = AvailableConfigs.from_config_name(config_name = name)
     repository.unset(name = config.config_name)
     logger.success(f'The config "{config.config_name}" has been reverted to its original value!')
-
 
 # FIX IT
 # The the outputformat from configs.py

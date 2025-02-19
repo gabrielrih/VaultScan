@@ -1,5 +1,6 @@
-from vaultscan.engines.engines import get_engine_from_type
-from vaultscan.engines.base import Secret, FilterType, VaultStatus
+from vaultscan.core.engines.engines import get_engine_from_type
+from vaultscan.core.engines.base import Secret, FilterType
+from vaultscan.repositories.vault.base import VaultStatus
 from vaultscan.util.output.logger import LoggerFactory
 
 from abc import ABC, abstractmethod

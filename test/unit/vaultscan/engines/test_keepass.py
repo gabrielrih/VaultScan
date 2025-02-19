@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch
 from typing import Dict
 
-from vaultscan.engines.base import VaultStatus
+#from vaultscan.core.engines.base import VaultStatus
 # from vaultscan.engines.keepass import (
 #     KEEPASS,
 #     KeePassConfig

@@ -1,8 +1,11 @@
 from typing import List, Dict
 
-from vaultscan.repositories.vault.base import VaultRepository
+from vaultscan.repositories.vault.base import (
+    VaultRepository,
+    BaseVaultConfig,
+    VaultStatus
+)
 from vaultscan.repositories.file_handler import JSONFileHandler
-from vaultscan.engines.base import BaseVaultConfig, VaultStatus
 
 
 class VaultRepositoryAsJson(VaultRepository):

@@ -1,16 +1,16 @@
 
 from typing import List, Dict
 from dataclasses import dataclass, fields
-
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
-from vaultscan.engines.base import (
+
+from vaultscan.core.engines.base import (
     FilterType,
     BaseVaultConfig,
     BaseVaultEngine,
-    Secret,
-    VaultStatus
+    Secret
 )
+from vaultscan.repositories.vault.base import VaultStatus
 from vaultscan.util.output.logger import LoggerFactory
 
 

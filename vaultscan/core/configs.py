@@ -1,8 +1,7 @@
 from enum import Enum
 from typing import List, Any, Type, Optional
 
-from vaultscan.repositories.config.base import Config
-from vaultscan.repositories.config.base import ConfigRepository
+from vaultscan.repositories.config.base import Config, ConfigRepository
 from vaultscan.repositories.config.factory import ConfigRepositoryFactory
 
 
@@ -47,7 +46,14 @@ class AvailableConfigs(Enum):
             if config.config_name == config_name:
                 return config
         ''' It should never happen because the click.Choice are loading the right configs, but... '''
-        raise RuntimeError(f'Error when parsing config_name to {AvailableConfigs.__name__} class')
+        raise ConfigNotFoundError(
+            f'Configuration "{config_name}" not found in {AvailableConfigs.__name__}'
+        )
+
+
+class ConfigNotFoundError(Exception):
+    ''' Raised when a configuration is not found '''
+    pass
 
 
 class ConfigManager:
@@ -60,12 +66,10 @@ class ConfigManager:
         ''' Get the value of the given config, falling back to the default '''
         custom_config: Optional[Config] = self._get_custom_config()
         if not custom_config:
-            print('There is no custom_config')
             return ConfigManager._convert_to_type(
                 value = self.config.default_value,
                 value_type = self.config.value_type
             )
-        print('Found custom_config')
         return ConfigManager._convert_to_type(
             value = custom_config.value,
             value_type = self.config.value_type
@@ -74,7 +78,9 @@ class ConfigManager:
     def get_value_as_string(self) -> str:
         ''' It returns the value in string format (usefull to parse as json) '''
         custom_config: Optional[Config] = self._get_custom_config()
-        return str(custom_config.value) if custom_config else str(self.config.default_value)
+        if custom_config:
+            return str(custom_config.value)
+        return str(self.config.default_value)
 
     def _get_custom_config(self) -> Optional[Config]:
         ''' Retrieve custom configuration from repository '''
@@ -84,14 +90,14 @@ class ConfigManager:
     @staticmethod
     def _convert_to_type(value: str, value_type: Type) -> Any:
         ''' Convert a string value to the appropriate type '''
-        if value_type is bool:
-            return value.lower() in ['true']
+        if issubclass(value_type, bool):
+            return value.lower() == 'true'
         return value_type(value)
 
 
 class ConfigValidator:
     """ Handles validation of configuration values """
-    @staticmethod
-    def is_a_valid_value(config: AvailableConfigs, value: str) -> bool:
+    @classmethod
+    def is_a_valid_value(cls, config: AvailableConfigs, value: str) -> bool:
         """ Check if the given value is allowed for the specified config """
         return value in config.possible_values

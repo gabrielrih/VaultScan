@@ -1,7 +1,30 @@
 from typing import List, Dict
 from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
+from enum import Enum
 
-from vaultscan.engines.base import BaseVaultConfig, VaultStatus
+
+class VaultStatus(Enum):
+    ENABLED = 'enabled'
+    DISABLED = 'disabled'
+
+
+@dataclass
+class BaseVaultConfig:
+    alias: str
+    type: str = field(init = False)  # Each subclass should set this
+    # FIX IT: Change it to VaultStatus
+    status: str
+
+    def __post_init__(self):
+        if not hasattr(self, "type"):
+            raise NotImplementedError("Subclasses must define a 'type attribute")
+
+    def to_dict(self) -> Dict:
+        return self.__dict__
+
+    @classmethod
+    def from_dict(cls, content: Dict) -> 'BaseVaultConfig': pass
 
 
 class VaultRepository(ABC):

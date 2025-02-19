@@ -2,13 +2,13 @@ from typing import Dict, List
 from dataclasses import dataclass, field, fields
 from pykeepass import PyKeePass
 
-from vaultscan.engines.base import (
+from vaultscan.core.engines.base import (
     FilterType,
     BaseVaultConfig,
     BaseVaultEngine,
-    Secret,
-    VaultStatus
+    Secret
 )
+from vaultscan.repositories.vault.base import VaultStatus
 from vaultscan.repositories.secure_key.factory import SecureKeyRepositoryFactory
 from vaultscan.repositories.secure_key.cipher import DataCipher
 from vaultscan.util.output.logger import LoggerFactory
