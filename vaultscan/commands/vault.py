@@ -173,6 +173,7 @@ def list(output_format: str) -> None:
     logger.debug(f'Args: {str(locals())}')
     vaults = repository.get_all()
     logger.info(f'{len(vaults)} vault(s) found!')
+    logger.debug(f'Vaults before the print: {vaults}')
     OutputHandler(
         format = OutputFormat(output_format)
     ).print(vaults)

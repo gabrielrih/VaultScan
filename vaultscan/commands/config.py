@@ -1,5 +1,7 @@
 import click
 
+from typing import Dict, List
+
 from vaultscan.repositories.config.base import Config
 from vaultscan.repositories.config.factory import ConfigRepositoryFactory
 from vaultscan.core.configs import AvailableConfigs, ConfigManager, ConfigValidator
@@ -66,19 +68,23 @@ DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(AvailableConfigs.OUTPUT_FORM
 def list(output_format: str) -> None:
     ''' List configurations '''
     logger.debug(f'Args: {str(locals())}')
-    configs = []
-    for config in AvailableConfigs:
-        manager = ConfigManager(config = config) 
-        config = {
-            'name': config.config_name,
-            'current_value': manager.get_value_as_string(),
-            'default_value': config.default_value
-        }
-        configs.append(config)
+    configs = get_configs_current_and_default_values()
     logger.info(f'{len(configs)} configs found!')
-    response = {
-        'configs': configs
-    }
+    logger.debug(f'Configs before the print: {configs}')
     OutputHandler(
         format = OutputFormat(output_format)
-    ).print(response)
+    ).print(configs)
+
+
+# FIX IT
+# It should be here?
+def get_configs_current_and_default_values() -> List[Dict]:
+    response = []
+    for available_config in AvailableConfigs:
+        available_config = {
+            'name': available_config.config_name,
+            'current_value': ConfigManager(available_config).get_value_as_string(),
+            'default_value': available_config.default_value
+        }
+        response.append(available_config)
+    return response
