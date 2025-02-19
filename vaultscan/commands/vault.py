@@ -2,6 +2,7 @@ import click
 
 from vaultscan.core.engines.key_vault import KeyVaultConfig
 from vaultscan.core.engines.keepass import KeePassConfig
+from vaultscan.core.configs import AvailableConfigs, ConfigManager
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
 from vaultscan.core.output.logger import LoggerFactory
 from vaultscan.repositories.vault.base import VaultStatus
@@ -17,10 +18,12 @@ def vault() -> None:
     ''' Manage vaults '''
     pass
 
+
 @vault.group
 def add() -> None:
     ''' Add a vault '''
     pass
+
 
 @add.command()
 @click.option('--alias',
@@ -55,6 +58,7 @@ def kv(alias: str, vault_name: str, resource_group_name: str, subscription_id: s
         return
     logger.success('The vault was added on the configuration!')
 
+
 @add.command
 @click.option('--alias',
               type = click.STRING,
@@ -83,6 +87,7 @@ def keepass(alias: str, path: str) -> None:
         return
     logger.success('The vault was added on the configuration!')
 
+
 @vault.command()
 @click.option('--alias',
               type = click.STRING,
@@ -96,6 +101,7 @@ def remove(alias: str) -> None:
         logger.warning(f'The alias "{alias}" was not found on the configuration!')
         return
     logger.success(f'The alias "{alias}" was removed from the configuration!')
+
 
 @vault.command()
 @click.option('--old-alias',
@@ -115,26 +121,13 @@ def rename(old_alias: str, new_alias: str) -> None:
         return
     logger.success(f'The alias "{old_alias}" has been renamed to "{new_alias}"!')
 
+
 @vault.command()
 def reset() -> None:
     ''' Reset the vaults'''
     repository.reset()
     logger.success('The configuration has been reset!')
 
-@vault.command()
-@click.option('--output-format', '-o',
-              type = click.Choice(OutputFormat.get_values()),
-              required = False,
-              default = OutputFormat.JSON.value,
-              help = 'Output format')
-def list(output_format: str) -> None:
-    ''' List vaults '''
-    logger.debug(f'Args: {str(locals())}')
-    vaults = repository.get_all()
-    logger.info(f'{len(vaults)} vault(s) found!')
-    OutputHandler(
-        format = OutputFormat(output_format)
-    ).print(vaults)
 
 @vault.command()
 @click.option('--alias',
@@ -151,6 +144,7 @@ def disable(alias: str) -> None:
         return
     logger.success(f'The status of alias "{alias}" has been changed to "{status.value}"!')
 
+
 @vault.command()
 @click.option('--alias',
               type = click.STRING,
@@ -165,3 +159,20 @@ def enable(alias: str) -> None:
         logger.warning(f'The alias "{alias}" was not found on the configuration!')
         return
     logger.success(f'The status of alias "{alias}" has been changed to "{status.value}"!')
+
+
+DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(AvailableConfigs.OUTPUT_FORMAT).get_value()  # getting it from user configuration
+@vault.command()
+@click.option('--output-format', '-o',
+              type = click.Choice(OutputFormat.get_values()),
+              required = False,
+              default = DEFAULT_OUTPUT_FORMAT.value,
+              help = 'Output format')
+def list(output_format: str) -> None:
+    ''' List vaults '''
+    logger.debug(f'Args: {str(locals())}')
+    vaults = repository.get_all()
+    logger.info(f'{len(vaults)} vault(s) found!')
+    OutputHandler(
+        format = OutputFormat(output_format)
+    ).print(vaults)

@@ -16,6 +16,7 @@ def config() -> None:
     ''' Manage configurations '''
     pass
 
+
 @config.command()
 @click.option('--name',
               type = click.Choice(AvailableConfigs.get_values()),
@@ -41,6 +42,7 @@ def set(name: str, value: str) -> None:
     repository.set(new_config = config)
     logger.success(f'The config "{name}" was set using the given value!')
 
+
 @config.command()
 @click.option('--name',
               type = click.Choice(AvailableConfigs.get_values()),
@@ -53,12 +55,13 @@ def reset(name: str) -> None:
     repository.unset(name = config.config_name)
     logger.success(f'The config "{config.config_name}" has been reverted to its original value!')
 
-# FIX IT: Get the default from configs.py
+
+DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(AvailableConfigs.OUTPUT_FORMAT).get_value()  # getting it from user configuration
 @config.command()
 @click.option('--output-format', '-o',
               type = click.Choice(OutputFormat.get_values()),
               required = False,
-              default = OutputFormat.JSON.value,
+              default = DEFAULT_OUTPUT_FORMAT.value,
               help = 'Output format')
 def list(output_format: str) -> None:
     ''' List configurations '''
