@@ -20,6 +20,7 @@ class Config:
 
 
 class ConfigRepository(ABC):
+    ''' Base class to a repository of configs '''
     @abstractmethod
     def initialize(self): pass
 

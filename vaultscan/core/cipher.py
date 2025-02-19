@@ -9,6 +9,7 @@ logger = LoggerFactory.get_logger(__name__)
 
 
 class DataCipher:
+    ''' It allows to encrypt/decrypt data using a global key generated automatically '''
     def __init__(self, repository: SecureKeyRepository = KeyRingSecureKeyRepository()):
         self.repository = repository
         self.key_name = 'global_key'

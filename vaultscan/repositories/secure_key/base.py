@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 
 class SecureKeyRepository(ABC):
+    ''' Base class to a repository of secure keys '''
     @abstractmethod
     def initialize(self): pass
 

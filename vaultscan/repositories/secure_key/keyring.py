@@ -5,7 +5,6 @@ from vaultscan.util.package import PACKAGE_NAME
 
 
 class KeyRingSecureKeyRepository(SecureKeyRepository):
-    
     def initialize(self):
         pass
 

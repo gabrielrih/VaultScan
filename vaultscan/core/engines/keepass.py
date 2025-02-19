@@ -8,9 +8,9 @@ from vaultscan.core.engines.base import (
     BaseVaultEngine,
     Secret
 )
+from vaultscan.core.cipher import DataCipher
 from vaultscan.repositories.vault.base import VaultStatus
 from vaultscan.repositories.secure_key.factory import SecureKeyRepositoryFactory
-from vaultscan.repositories.secure_key.cipher import DataCipher
 from vaultscan.util.output.logger import LoggerFactory
 
 
@@ -98,7 +98,9 @@ class KeePassSecretEngine(BaseVaultEngine):
     def format_secret_name(group: str, secret: str) -> str:
         if not group:
             return f'/{secret}'
-        # Initial value: Group: "Group1/Group2"
-        # Expected output: Group1/Group2
+        '''
+        Initial value: Group: "Group1/Group2"
+        Expected output: Group1/Group2
+        '''
         group = group.replace('Group: ', '').replace('"', '')
         return f'{group}/{secret}'

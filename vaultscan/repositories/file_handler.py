@@ -7,6 +7,7 @@ from vaultscan.util.user import CurrentUser
 
 
 class JSONFileHandler:
+    ''' It handles a JSON file on a given folder '''
     def __init__(self, folder_name: str, filename: str):
         self._filename = filename
         self.folder = DefaultConfigFolder(name = folder_name)
@@ -34,6 +35,7 @@ class JSONFileHandler:
 
 
 class DefaultConfigFolder:
+    ''' It manages the current user home folder '''
     def __init__(self, name: str):
         self._folder_name = name
         self._current_user = CurrentUser()
@@ -52,6 +54,7 @@ class DefaultConfigFolder:
 
 
 class JsonFileIO:
+    ''' Write and load json file on disk '''
     @staticmethod
     def load(path: str) -> Dict:
         with open(path, "r") as file:
