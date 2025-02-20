@@ -12,9 +12,11 @@ class VaultFriendlyMessages(Enum):
     VAULT_NOT_FOUND = 'The alias "{alias}" was not found on the configuration!'
     VAULT_STATUS_CHANGED = 'The status of vault "{alias}" has been changed to "{status}"!'
     VAULT_ALREADY_EXISTS = 'The alias "{alias}" already exists!'
+    VAULT_DISABLED = 'Ignoring vault "{alias}" because it is disabled'
     ALL_VAULTS_REMOVED = 'All the vaults has been removed from the configuration!'
     NO_VAULTS = 'No vaults found!'
     NUMBER_OF_VAULTS_FOUND = '{quantity} vaults found!'
+    SEARCHING_ON_VAULT = 'Searching on vault "{alias}" of type "{type}"'
 
 
 class ConfigFriendlyMessages(Enum):
@@ -27,3 +29,7 @@ class ConfigFriendlyMessages(Enum):
 class VersionFriendlyMessages(Enum):
     PACKAGE_NOT_INSTALLED = '{package_name} is not installed via pip!'
     INSTALLED_VERSION = '{package_name} version: {version}'
+
+
+class SecretFriendlyMessages(Enum):
+    NUMBER_OF_SECRETS_FOUND = '{quantity} secrets found!'
