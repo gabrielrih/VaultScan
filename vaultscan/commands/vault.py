@@ -3,7 +3,7 @@ import click
 from vaultscan.core.engines.key_vault import KeyVaultConfig
 from vaultscan.core.engines.keepass import KeePassConfig
 from vaultscan.core.configs import AvailableConfigs, ConfigManager
-from vaultscan.core.friendly_messages import VaultFriendlyMessages
+from vaultscan.core.friendly_messages import VaultMessages
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
 from vaultscan.core.output.logger import LoggerFactory
 from vaultscan.repositories.vault.base import VaultStatus
@@ -45,10 +45,10 @@ def kv(alias: str, vault_name: str) -> None:
     )
     created = repository.add(vault)
     if not created:
-        message = VaultFriendlyMessages.VAULT_ALREADY_EXISTS.value.format(alias = alias)
+        message = VaultMessages.VAULT_ALREADY_EXISTS.value.format(alias = alias)
         logger.warning(message)
         return
-    message = VaultFriendlyMessages.VAULT_ADDED.value.format(alias = alias)
+    message = VaultMessages.VAULT_ADDED.value.format(alias = alias)
     logger.success(message)
 
 
@@ -66,7 +66,7 @@ def keepass(alias: str, path: str) -> None:
     logger.debug(f'Args: {str(locals())}')
     # checking it in the first time to avoid prompting the password when the alias already exists
     if repository.get(alias = alias):
-        message = VaultFriendlyMessages.VAULT_ALREADY_EXISTS.value.format(alias = alias)
+        message = VaultMessages.VAULT_ALREADY_EXISTS.value.format(alias = alias)
         logger.warning(message)
         return
     password = click.prompt(f'Password for "{path}"', hide_input = True, type = str)
@@ -79,10 +79,10 @@ def keepass(alias: str, path: str) -> None:
     created = repository.add(vault)
     # Checking again because technically the vault could have been created from another terminal
     if not created:
-        message = VaultFriendlyMessages.VAULT_ALREADY_EXISTS.value.format(alias = alias)
+        message = VaultMessages.VAULT_ALREADY_EXISTS.value.format(alias = alias)
         logger.warning(message)
         return
-    logger.success(VaultFriendlyMessages.VAULT_ADDED.value.format(alias = alias))
+    logger.success(VaultMessages.VAULT_ADDED.value.format(alias = alias))
 
 
 @vault.command()
@@ -95,10 +95,10 @@ def remove(alias: str) -> None:
     logger.debug(f'Args: {str(locals())}')
     removed = repository.remove(alias)
     if not removed:
-        message = VaultFriendlyMessages.VAULT_NOT_FOUND.value.format(alias = alias)
+        message = VaultMessages.VAULT_NOT_FOUND.value.format(alias = alias)
         logger.warning(message)
         return
-    message = VaultFriendlyMessages.VAULT_REMOVED.value.format(alias = alias)
+    message = VaultMessages.VAULT_REMOVED.value.format(alias = alias)
     logger.success(message)
 
 
@@ -116,10 +116,10 @@ def rename(old_alias: str, new_alias: str) -> None:
     logger.debug(f'Args: {str(locals())}')
     renamed = repository.rename(old_alias, new_alias)
     if not renamed:
-        message = VaultFriendlyMessages.VAULT_NOT_FOUND.value.format(alias = old_alias)
+        message = VaultMessages.VAULT_NOT_FOUND.value.format(alias = old_alias)
         logger.warning(message)
         return
-    message = VaultFriendlyMessages.VAULT_RENAMED.value.format(old_alias = old_alias, new_alias = new_alias)
+    message = VaultMessages.VAULT_RENAMED.value.format(old_alias = old_alias, new_alias = new_alias)
     logger.success(message)
 
 
@@ -127,7 +127,7 @@ def rename(old_alias: str, new_alias: str) -> None:
 def remove_all() -> None:
     ''' Remove all vaults from the configuration '''
     repository.remove_all()
-    logger.success(VaultFriendlyMessages.ALL_VAULTS_REMOVED.value)
+    logger.success(VaultMessages.ALL_VAULTS_REMOVED.value)
 
 
 @vault.command()
@@ -141,10 +141,10 @@ def disable(alias: str) -> None:
     status = VaultStatus.DISABLED
     disabled = repository.change_status(alias = alias, status = status)
     if not disabled:
-        message = VaultFriendlyMessages.VAULT_NOT_FOUND.value.format(alias = alias)
+        message = VaultMessages.VAULT_NOT_FOUND.value.format(alias = alias)
         logger.warning(message)
         return
-    message = VaultFriendlyMessages.VAULT_STATUS_CHANGED.value.format(alias = alias, status = status.value)
+    message = VaultMessages.VAULT_STATUS_CHANGED.value.format(alias = alias, status = status.value)
     logger.success(message)
 
 
@@ -159,10 +159,10 @@ def enable(alias: str) -> None:
     status = VaultStatus.ENABLED
     disabled = repository.change_status(alias = alias, status = status)
     if not disabled:
-        message = VaultFriendlyMessages.VAULT_NOT_FOUND.value.format(alias = alias)
+        message = VaultMessages.VAULT_NOT_FOUND.value.format(alias = alias)
         logger.warning(message)
         return
-    message = VaultFriendlyMessages.VAULT_STATUS_CHANGED.value.format(alias = alias, status = status.value)
+    message = VaultMessages.VAULT_STATUS_CHANGED.value.format(alias = alias, status = status.value)
     logger.success(message)
 
 
@@ -181,7 +181,7 @@ def list(output_format: str) -> None:
     logger.debug(f'Args: {str(locals())}')
     vaults = repository.get_all()
     logger.info(
-        VaultFriendlyMessages.NUMBER_OF_VAULTS_FOUND.value.format(quantity = len(vaults))
+        VaultMessages.NUMBER_OF_VAULTS_FOUND.value.format(quantity = len(vaults))
     )
     OutputHandler(
         format = OutputFormat(output_format)

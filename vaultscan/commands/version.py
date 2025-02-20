@@ -3,7 +3,7 @@ import importlib.metadata
 
 from vaultscan.core.output.logger import LoggerFactory
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
-from vaultscan.core.friendly_messages import VersionFriendlyMessages
+from vaultscan.core.friendly_messages import VersionMessages
 from vaultscan.util.package import PACKAGE_NAME
 
 
@@ -16,12 +16,12 @@ def version() -> None:
     try:
         version = importlib.metadata.version(PACKAGE_NAME)
     except importlib.metadata.PackageNotFoundError:
-        message = VersionFriendlyMessages.PACKAGE_NOT_INSTALLED.value.format(
+        message = VersionMessages.PACKAGE_NOT_INSTALLED.value.format(
             package_name = PACKAGE_NAME
         )
         logger.error(message)
         return
-    message = VersionFriendlyMessages.INSTALLED_VERSION.value.format(
+    message = VersionMessages.INSTALLED_VERSION.value.format(
         package_name = PACKAGE_NAME,
         version = version
     )

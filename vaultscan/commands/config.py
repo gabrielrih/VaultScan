@@ -5,7 +5,7 @@ from typing import Dict, List
 from vaultscan.repositories.config.base import Config
 from vaultscan.repositories.config.factory import ConfigRepositoryFactory
 from vaultscan.core.configs import AvailableConfigs, ConfigManager, ConfigValidator
-from vaultscan.core.friendly_messages import ConfigFriendlyMessages
+from vaultscan.core.friendly_messages import ConfigMessages
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
 from vaultscan.core.output.logger import LoggerFactory
 
@@ -35,8 +35,9 @@ def set(name: str, value: str) -> None:
     config: AvailableConfigs = AvailableConfigs.from_config_name(config_name = name)
     is_valid_value = ConfigValidator.is_a_valid_value(config = config, value = value)
     if not is_valid_value:
-        ''' It should never get in here because the click should validate the right option when using the click.Choice type '''
-        message = ConfigFriendlyMessages.INVALID_VALUE.value.format(
+        ''' It should never get in here because the click should validate
+            the right option when using the click.Choice type '''
+        message = ConfigMessages.INVALID_VALUE.value.format(
             value = value,
             config = name,
             possible_values = str(config.possible_values)
@@ -48,7 +49,7 @@ def set(name: str, value: str) -> None:
         value = value
     )
     repository.set(new_config = config)
-    message = ConfigFriendlyMessages.CONFIG_SET.value.format(config = name)
+    message = ConfigMessages.CONFIG_SET.value.format(config = name)
     logger.success(message)
 
 
@@ -62,7 +63,7 @@ def reset(name: str) -> None:
     logger.debug(f'Args: {str(locals())}')
     config: AvailableConfigs = AvailableConfigs.from_config_name(config_name = name)
     repository.unset(name = config.config_name)
-    message = ConfigFriendlyMessages.CONFIG_RESET.value.format(config = config.config_name)
+    message = ConfigMessages.CONFIG_RESET.value.format(config = config.config_name)
     logger.success(message)
 
 
@@ -80,7 +81,7 @@ def list(output_format: str) -> None:
     ''' List configurations '''
     logger.debug(f'Args: {str(locals())}')
     configs = get_configs_current_and_default_values()
-    message = ConfigFriendlyMessages.NUMBER_OF_CONFIGS_FOUND.value.format(quantity = len(configs))
+    message = ConfigMessages.NUMBER_OF_CONFIGS_FOUND.value.format(quantity = len(configs))
     logger.info(message)
     OutputHandler(
         format = OutputFormat(output_format)
