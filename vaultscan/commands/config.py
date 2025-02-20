@@ -5,6 +5,7 @@ from typing import Dict, List
 from vaultscan.repositories.config.base import Config
 from vaultscan.repositories.config.factory import ConfigRepositoryFactory
 from vaultscan.core.configs import AvailableConfigs, ConfigManager, ConfigValidator
+from vaultscan.core.friendly_messages import ConfigFriendlyMessages
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
 from vaultscan.core.output.logger import LoggerFactory
 
@@ -34,7 +35,12 @@ def set(name: str, value: str) -> None:
     config: AvailableConfigs = AvailableConfigs.from_config_name(config_name = name)
     is_valid_value = ConfigValidator.is_a_valid_value(config = config, value = value)
     if not is_valid_value:
-        message = f'The value "{value}" is not valid for the "{name}" configuration. The possible values are: {str(config.possible_values)}'
+        ''' It should never get in here because the click should validate the right option when using the click.Choice type '''
+        message = ConfigFriendlyMessages.INVALID_VALUE.value.format(
+            value = value,
+            config = name,
+            possible_values = str(config.possible_values)
+        )
         logger.error(message)
         return
     config = Config(
@@ -42,7 +48,8 @@ def set(name: str, value: str) -> None:
         value = value
     )
     repository.set(new_config = config)
-    logger.success(f'The config "{name}" was set using the given value!')
+    message = ConfigFriendlyMessages.CONFIG_SET.value.format(config = name)
+    logger.success(message)
 
 
 @config.command()
@@ -55,10 +62,14 @@ def reset(name: str) -> None:
     logger.debug(f'Args: {str(locals())}')
     config: AvailableConfigs = AvailableConfigs.from_config_name(config_name = name)
     repository.unset(name = config.config_name)
-    logger.success(f'The config "{config.config_name}" has been reverted to its original value!')
+    message = ConfigFriendlyMessages.CONFIG_RESET.value.format(config = config.config_name)
+    logger.success(message)
 
 
-DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(AvailableConfigs.OUTPUT_FORMAT).get_value()  # getting it from user configuration
+DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(
+    AvailableConfigs.OUTPUT_FORMAT
+).get_value()  # getting it from user configuration
+
 @config.command()
 @click.option('--output-format', '-o',
               type = click.Choice(OutputFormat.get_values()),
@@ -69,8 +80,8 @@ def list(output_format: str) -> None:
     ''' List configurations '''
     logger.debug(f'Args: {str(locals())}')
     configs = get_configs_current_and_default_values()
-    logger.info(f'{len(configs)} configs found!')
-    logger.debug(f'Configs before the print: {configs}')
+    message = ConfigFriendlyMessages.NUMBER_OF_CONFIGS_FOUND.value.format(quantity = len(configs))
+    logger.info(message)
     OutputHandler(
         format = OutputFormat(output_format)
     ).print(configs)

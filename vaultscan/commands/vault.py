@@ -82,7 +82,7 @@ def keepass(alias: str, path: str) -> None:
         message = VaultFriendlyMessages.VAULT_ALREADY_EXISTS.value.format(alias = alias)
         logger.warning(message)
         return
-    logger.success(VaultFriendlyMessages.VAULT_ADDED.value)
+    logger.success(VaultFriendlyMessages.VAULT_ADDED.value.format(alias = alias))
 
 
 @vault.command()
@@ -166,7 +166,10 @@ def enable(alias: str) -> None:
     logger.success(message)
 
 
-DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(AvailableConfigs.OUTPUT_FORMAT).get_value()  # getting it from user configuration
+DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(
+    AvailableConfigs.OUTPUT_FORMAT
+).get_value()  # getting it from user configuration
+
 @vault.command()
 @click.option('--output-format', '-o',
               type = click.Choice(OutputFormat.get_values()),
@@ -178,9 +181,8 @@ def list(output_format: str) -> None:
     logger.debug(f'Args: {str(locals())}')
     vaults = repository.get_all()
     logger.info(
-        VaultFriendlyMessages.X_VAULTS_FOUND.value.format(quantity = len(vaults))
+        VaultFriendlyMessages.NUMBER_OF_VAULTS_FOUND.value.format(quantity = len(vaults))
     )
-    logger.debug(f'Vaults before the print: {vaults}')
     OutputHandler(
         format = OutputFormat(output_format)
     ).print(vaults)
