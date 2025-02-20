@@ -15,7 +15,7 @@ logger = LoggerFactory.get_logger(__name__)
 
 @click.group()
 def find() -> None:
-    ''' Find objects on vaults  '''
+    ''' Find objects across vaults  '''
     pass
 
 
