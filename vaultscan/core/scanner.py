@@ -3,6 +3,7 @@ from typing import List, Dict
 
 from vaultscan.core.engines.engines import get_engine_from_type
 from vaultscan.core.engines.base import Secret, FilterType
+from vaultscan.core.friendly_messages import VaultMessages, SecretMessages
 from vaultscan.core.output.logger import LoggerFactory
 from vaultscan.repositories.vault.base import VaultStatus
 
@@ -42,10 +43,15 @@ class MultiVaultScanner(Scanner):
             vault = engine.config.from_dict(vault)
             # Ignoring disabled vault
             if vault.status == VaultStatus.DISABLED:
-                logger.debug(f'Ignoring vault {vault.alias} because it''s DISABLED!')
+                message = VaultMessages.VAULT_DISABLED.value.format(alias = vault.alias)
+                logger.info(message)
                 continue
             # Searching secrets
-            logger.info(f'Searching on vault {vault.alias} ({vault.type =})')
+            message = VaultMessages.SEARCHING_ON_VAULT.value.format(
+                alias = vault.alias,
+                type = vault.type
+            )
+            logger.info(message)
             secrets: List[Secret] = engine.engine(vault).find(
                 filter = filter,
                 type = self.filter_type,
@@ -53,5 +59,6 @@ class MultiVaultScanner(Scanner):
             )
             for secret in secrets:
                 response.append(secret.__dict__)
-        logger.info(f'{len(response)} secret(s) found!')
+        message = SecretMessages.NUMBER_OF_SECRETS_FOUND.value.format(quantity = len(response))
+        logger.info(message)
         return response

@@ -5,6 +5,7 @@ from typing import List, Dict
 from vaultscan.core.vaults import get_vaults
 from vaultscan.core.scanner import MultiVaultScannerBuilder
 from vaultscan.core.configs import AvailableConfigs, ConfigManager
+from vaultscan.core.friendly_messages import VaultMessages
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
 from vaultscan.core.output.logger import LoggerFactory
 
@@ -44,7 +45,7 @@ def secrets(filter: str, only_vault: str, exact: bool, show_values: bool, output
     logger.debug(f'Args: {str(locals())}')
     vaults = get_vaults(only_vault = only_vault)
     if not vaults:
-        logger.error('No vault(s) found!')
+        logger.error(VaultMessages.NO_VAULTS.value)
         return
     scanner = MultiVaultScannerBuilder.create(vaults = vaults, exact_match = exact)
     secrets: List[Dict] = scanner.find(
