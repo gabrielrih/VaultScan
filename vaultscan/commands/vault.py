@@ -69,7 +69,7 @@ def keepass(alias: str, path: str) -> None:
         message = VaultFriendlyMessages.VAULT_ALREADY_EXISTS.value.format(alias = alias)
         logger.warning(message)
         return
-    password = click.prompt(f'Password for {path}', hide_input = True, type = str)
+    password = click.prompt(f'Password for "{path}"', hide_input = True, type = str)
     vault = KeePassConfig(
         alias = alias,
         status = VaultStatus.ENABLED.value,
