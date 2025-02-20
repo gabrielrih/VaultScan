@@ -23,14 +23,15 @@ vaultscan/
 
 ## Component architecture
 **Higher level**
-- CLI Interface: The user-facing part of your tool. Using the [click](#) library.
-- Vault Engines: To define the engine implementations and how to interact with that.
-- Output: Classes to print out messages.
+- CLI Interface: The user-facing part of your tool. See [click](https://click.palletsprojects.com/en/stable/) library.
+- Output: Classes to print out messages. See [logging](https://docs.python.org/3/library/logging.html).
+- DataCipher: It allows to encrypt/decrypt data using a global key generated automatically. See [cryptography.fernet](https://cryptography.io/en/latest/fernet/).
 - Scanner: The main and more abastract class to search secrets on vaults.
 - GlobalConfigs: For managing configuration values.
 
 **Lower level**
-- Repositories: Persistent storage for vaults, configs, secure keys, etc.
+- Vault Engines: To define the engine implementations and how to interact with that. See [azure-keyvault-secrets](https://pypi.org/project/azure-keyvault-secrets/) and [pykeepass](https://pypi.org/project/pykeepass/).
+- Repositories: Persistent storage for vaults, configs, secure keys, etc. See [json](https://docs.python.org/3/library/json.html) and [keyring](https://pypi.org/project/keyring/).
 - Os discovery: To find out the current OS and the user informations.
 - File System/JSON file hander: For saving json files on disk.
 
@@ -55,7 +56,7 @@ I also recomend the use of [pyenv](https://github.com/pyenv-win/pyenv-win) to al
 
 1. **Classes in lower level shouldn't know about classes in higher level**
 
-E.g., a [vault repository](./vaultscan/repositories/vault/base.py) implementation can know nothing about a [engine](./vaultscan/core/engines/base.py) implementation.
+E.g., a [vault repository](./vaultscan/repositories/vault/base.py) implementation can know nothing about a [GlobalConfig](./vaultscan/core/configs.py) implementation.
 
 2. **We use *factories* on the *repositories* classes to be easy to add a new implementation if needed**
 
