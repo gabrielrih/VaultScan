@@ -84,9 +84,19 @@ Actually use the new configuration on code: As you can see in the example of the
 
 ## Testing 
 
-```ps1
-pytest
+You're able to manually run the unit tests:
+
 ```
+pytest .\test\vaultscan\unit
+```
+
+... or you could run the end to end tests:
+
+```
+pytest .\test\vaultscan\e2e
+```
+
+⚠️ **Work in progress!** We still don't have enought unit tests to consider it OK, so we're working on it.
 
 ## Release Process
 
