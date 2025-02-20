@@ -7,10 +7,10 @@ VaultScan is a CLI tool for searching objects across multiple vault engines, sup
     - [Via GitHub Releases](#via-github-releases)
 - [Usage](#usage)
     - [Configuring the vaults](#configuring-the-vaults)
-    - [Authentication & Engine Configuration](#authentication--engine-configuration)
+    - [Authentication & Engine configuration](#authentication--engine-configuration)
     - [Searching secrets by its exact name](#searching-secrets-by-their-names)
     - [Searching secrets using regex](#searching-secrets-using-regex)
-- [Supported Operating Systems & Limitations](#supported-operating-systems--limitations)
+- [Supported OS & Limitations](#supported-os--limitations)
 - [Contributing](#Contributing)
 
 # Features
@@ -24,19 +24,20 @@ The main group commands available on this tool are:
 # Installation
 
 ## Via GitHub Releases
-You can install this package by downloading the latest ```.whl``` file from GitHub Releases and using pip to install it.
+You can install this tool by downloading the latest ```.whl``` file from GitHub Releases and using pip.
 
 - Go to the [Releases page](https://github.com/gabrielrih/VaultScan/releases/tag/latest).
 - Find the latest version and download the ```.whl``` file (Example, ```vaultscan-0.1.5-py3-none-any.whl```).
+
 Or you can download it from the terminal:
 
-```ps1
+```
 wget -O "vaultscan-0.1.5-py3-none-any.whl" "https://github.com/gabrielrih/VaultScan/releases/download/latest/vaultscan-0.1.5-py3-none-any.whl"
 ```
 
 - After downloading the .whl file, install it using pip:
 
-```ps1
+```
 pip install --user vaultscan-0.1.5-py3-none-any.whl
 ```
 
@@ -44,7 +45,7 @@ By doing that a ```vaultscan.exe``` file will be created probably on the folder:
 
 To see the installed version you can run:
 
-```ps1
+```
 pip show vaultscan
 ```
 
@@ -52,7 +53,7 @@ pip show vaultscan
 
 After installation, run the CLI with:
 
-```ps1
+```
 vaultscan --help
 ```
 
@@ -61,30 +62,34 @@ First of all you must configure the vaults you want to use in the tool. This is 
 
 ### Configuring an Azure Key Vault
 
-```ps1
-vaultscan vault add kv --alias mykv --vault-name vault --resource-group-name rg --subscription-id id 
 ```
+vaultscan vault add kv --alias mykv --vault-name vault
+```
+
+> vault_name on Azure are unique, so you does not need more information than that.
 
 ### Configuring a Keepass database
 
-```ps1
+```
 vaultscan vault add keepass --alias my_keepass --path "C:\databases\passwords.kdbx"
 ```
 
-To look at the configured vaults you can run:
+Look at the configured vaults just running:
 
-```ps1
+```
 vaultscan vault list
 ```
 
-## Authentication & Engine Configuration
+## Authentication & Engine configuration
 Each vault engine has its own authentication method. Below is an overview of how authentication works for supported engines:
 
 ### Azure Key Vault
 
-The [Azure Key Vault](https://azure.microsoft.com/en-us/) engine uses the [```DefaultAzureCredential```](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.defaultazurecredential?view=azure-dotnet) class to authentication and authorization. This class can use environment variable, managed identity or even the ```az cli```.
+The [Azure Key Vault](https://azure.microsoft.com/en-us/) engine uses the [```DefaultAzureCredential```](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.defaultazurecredential?view=azure-dotnet) class for authentication and authorization. This class can uses environment variable, managed identity or even the ```az cli```.
 
-The easiest and recommended way to authenticate is using az cli. By using service principal you should set the following environment variables:
+The easiest and **recommended** way to authenticate is by using az cli. 
+
+But, you could also use a service principal by setting the following environment variables:
 
 On Windows:
 ```ps1
@@ -106,57 +111,55 @@ export AZURE_CLIENT_SECRET="your-client-secret"
 
 [Keepass](https://keepass.info/) is a free open source password manager, which helps you to manage your passwords in a secure way. You can store all your passwords in one database, which is locked with a master key. So you only have to remember one single master key to unlock the whole database.
 
-It means the authentication of the keepass database is by using a master key provided by the user when configuring the vault.
+It means the authorization for the keepass database is through a password provided by the user when configuring the vault.
 
 ```
 vaultscan vault add keepass --help
 ```
 
-> The password is securely encrypted and saved.
+> The password is securely encrypted and saved on your local machine.
 
 
 ## Searching secrets by its exact name
 
-It will search all the secrets that match this exact name:
+Search for all secrets that match an exact name:
 
-```ps1
+```
 vaultscan find secrets my_secret_name --exact
 ```
 
-You can also include the values
+Search for all secrets that match an exact name showing its values:
 
-```ps1
+```
 vaultscan find secrets my_secret_name --exact --show-values
 ```
 
-And you can also search in an specific vault:
+Search for all secrets that match an exact name in an specific vault:
 
-```ps1
-vaultscan find secrets my_secret_name --only-vault key_vault --exact --show-values
+```
+vaultscan find secrets my_secret_name --only-vault key_vault --exact
 ```
 
 ## Searching secrets using regex
 
-It will search all the secrets looking for the ```host``` regex:
-
-```ps1
+Search for all secrets that match a given regex:
+```
 vaultscan find secrets host
 ```
 
-You can also include the values
-
-```ps1
+Search for all secrets that match a given regex with its corresponding value:
+```
 vaultscan find secrets host --show-values
 ```
 
-And you can also search in an specific vault:
+Search for all secrets that match a given regex in an specific vault:
 
-```ps1
-vaultscan find secrets host --only-vault key_vault --show-values
+```
+vaultscan find secrets host --only-vault key_vault
 ```
 
 
-# Supported Operating Systems & Limitations
+# Supported OS & Limitations
 
 **Supported Operating Systems**
 - Windows
@@ -164,7 +167,7 @@ vaultscan find secrets host --only-vault key_vault --show-values
 
 **Limitations**
 - Keyring Support:
-    - On Windows and WSL, secure keyring backends require additional configuration. Is common to have the following error on WSL:
+    - On Windows and WSL, secure keyring backends require additional configuration. It's common to have the following error on WSL:
 
 ```
 keyring.errors.NoKeyringError: No recommended backend was available. Install a recommended 3rd party backend package; or, install the keyrings.alt package if you want to use the non-recommended backends.
@@ -174,6 +177,7 @@ keyring.errors.NoKeyringError: No recommended backend was available. Install a r
     - Some features (like colored output) may depend on terminal capabilities.
 - Environment Variables:
     - Ensure your system’s PATH includes directories like ```~/.local/bin``` (Linux/macOS) or ```%APPDATA%\Python\Scripts``` (Windows) for proper command discovery.
+    - This is important so that you can run the ```vaultscan``` tool anywhere on the terminal.
 
 # Contributing
 
