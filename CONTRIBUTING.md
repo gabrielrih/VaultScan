@@ -56,31 +56,31 @@ I also recomend the use of [pyenv](https://github.com/pyenv-win/pyenv-win) to al
 
 1. **Classes in lower level shouldn't know about classes in higher level**
 
-E.g., a [vault repository](./vaultscan/repositories/vault/base.py) implementation can know nothing about a [GlobalConfig](./vaultscan/core/configs.py) implementation.
+E.g., a [vault repository](./vaultscan/repositories/vault/base.py) implementation can know nothing about the [GlobalConfig](./vaultscan/core/configs.py) class.
 
-2. **We use *factories* on the *repositories* classes to be easy to add a new implementation if needed**
+2. **We use *factories* on the *repositories* to be easy to add a new implementation**
 
-E.g, in the _secure_key_ repository we have the _keyring_ implementation for real usage and _in_memory_ implementation for unit tests. But, we could easily create a new implementation if you wanted to replace the _keyring_ one.
+E.g, in the *secure_key* repository we have the [keyring](./vaultscan/repositories/secure_key/keyring.py) implementation for real usage and [in_memory](./vaultscan/repositories/secure_key/in_memory.py) implementation for unit tests. But, we could easily create a new implementation if you wanted to.
 
-3. **All the messages printed for the user should be defined on the [friendly_messages](./vaultscan/core/friendly_messages.py) file**
+3. **All the messages printed to the user should be defined on the [friendly_messages](./vaultscan/core/friendly_messages.py) file**
 
 It makes it easy to manage and add new friendly user messages.
 
-To print messages it uses the [logger](./vaultscan/core/output/logger.py) implementation. It allow us to customize the type of message by: info, warning, error, success and debug.
+To print messages it uses the [logger](./vaultscan/core/output/logger.py) implementation. The *logger* allow us to customize the type of message by info, warning, error, success and debug.
 
-> Note that the debug message is not consider a friendly message since its content is not should be default for the user, so it does not make sense to put those messages on the [friendly_messages](./vaultscan/core/friendly_messages.py) class.
+> Note that the debug message is not consider a friendly message since it's not show by default to the user. So it does not make sense to put those messages on the [friendly_messages](./vaultscan/core/friendly_messages.py) class.
 
 4. **When implementing a new engine you should:**
 
 Code the real vault implementation: See [BaseVaultConfig](./vaultscan/repositories/vault/base.py), [BaseVaultEngine](./vaultscan/core/engines/base.py) and [AvailableEngines](./vaultscan/core/engines/engines.py).
 
-Code the command to add the new vault engine: See the [vault commands file](./vaultscan/commands/vault.py).
+Code the command to add the new vault engine: See the [vault commands](./vaultscan/commands/vault.py) file.
 
 5. **When implementing a new configuration you should:**
 
-Code the basics of the new config: See the *AvailableConfigs* class on the [configs.py](./vaultscan/core/configs.py) file. In that class you should add the config name, its type, its default value and its possible values.
+Code the basics of the new config: See [AvailableConfigs](./vaultscan/core/configs.py). In that class you should add the config name, its type, its default value and its possible values.
 
-Actually use the new configuration on code: Like in the example of the file [vault.py](./vaultscan/commands/vault.py) when you define the variable *DEFAULT_OUTPUT_FORMAT* getting the current value for the *AvailableConfigs.OUTPUT_FORMAT* config.
+Actually use the new configuration on code: As you can see in the example of the [vault.py](./vaultscan/commands/vault.py) file, when it defines a variable called *DEFAULT_OUTPUT_FORMAT* that stores the current value for the *AvailableConfigs.OUTPUT_FORMAT* config.
 
 ## Testing 
 
