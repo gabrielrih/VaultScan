@@ -1,12 +1,12 @@
 from enum import Enum
 
 from vaultscan.core.engines.base import BaseVaultConfig, BaseVaultEngine
-from vaultscan.core.engines.key_vault import AZURE_KEY_VAULT, KeyVaultConfig, KeyVaultSecretEngine
+from vaultscan.core.engines.key_vault import AZURE_KEY_VAULT, KeyVaultConfig, KeyVaultSecretEngineProvider
 from vaultscan.core.engines.keepass import KEEPASS, KeePassConfig, KeePassSecretEngine
 
 
 class AvailableEngines(Enum):
-    AZURE_KEY_VAULT = (AZURE_KEY_VAULT, KeyVaultConfig, KeyVaultSecretEngine)
+    AZURE_KEY_VAULT = (AZURE_KEY_VAULT, KeyVaultConfig, KeyVaultSecretEngineProvider.create())
     KEEPASS = (KEEPASS, KeePassConfig, KeePassSecretEngine)
 
     def __init__(self, type: str, config: BaseVaultConfig, engine: BaseVaultEngine):

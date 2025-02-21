@@ -38,7 +38,7 @@ class MultiVaultSearcher(Searcher):
 
     def find(self, filter: str, is_value: bool = False) -> List[Dict]:
         secrets: List[Dict] = list()
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers = 5) as executor:
             futures = [
                 executor.submit(self._find_on_vault, vault, filter, is_value)
                 for vault in self.vaults
