@@ -27,7 +27,7 @@ class TestAvailableConfigs(TestCase):
         )
 
     def test_get_values(self):
-        expected_available_configs = ['verbose', 'output_format']
+        expected_available_configs = ['verbose', 'output_format', 'enable_concurrency']
         values = AvailableConfigs.get_values()
         self.assertEqual(values, expected_available_configs)
 
