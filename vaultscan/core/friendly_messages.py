@@ -28,7 +28,7 @@ class ConfigMessages(Enum):
 
 class VersionMessages(Enum):
     PACKAGE_NOT_INSTALLED = '{package_name} is not installed via pip!'
-    INSTALLED_VERSION = '{package_name} version: {version}'
+    INSTALLED_VERSION = '{package_name} installed version: {version}'
 
 
 class SecretMessages(Enum):
