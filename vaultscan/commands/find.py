@@ -3,7 +3,7 @@ import click
 from typing import List, Dict
 
 from vaultscan.core.vaults import get_vaults
-from vaultscan.core.scanner import MultiVaultSearcherFactory
+from vaultscan.core.searcher import MultiVaultSearcherFactory
 from vaultscan.core.configs import AvailableConfigs, ConfigManager
 from vaultscan.core.friendly_messages import VaultMessages
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
