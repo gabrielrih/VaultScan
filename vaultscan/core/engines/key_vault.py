@@ -1,5 +1,6 @@
+import concurrent.futures
 
-from typing import List, Dict
+from typing import List, Dict, Optional
 from dataclasses import dataclass, fields
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
@@ -67,6 +68,37 @@ class KeyVaultSecretEngine(BaseVaultEngine):
             )
         logger.debug(f'{len(response)} secrets found on KV {self.vault.alias} mathing the regex {filter}')
         return response
+    
+    # def find(self, filter: str, type: FilterType, is_value: bool = False) -> List[Secret]:
+    #     filter = filter.lower()  # normalize the filter
+    #     secrets: List[str] = self.client.get_all_secrets()
+    #     with concurrent.futures.ThreadPoolExecutor(max_workers = 5) as executor:
+    #         futures = [
+    #             executor.submit(self._is_match(secret_name = secret, filter = filter, type = type, is_value = is_value))
+    #             for secret in secrets
+    #         ]
+    #         response = list()
+    #         for future in concurrent.futures.as_completed(futures):
+    #             try:
+    #                 secret = future.result()
+    #                 if secret:
+    #                     response.append(secret)
+    #             except Exception as e:
+    #                 logger.error("Error validating if secret match: %s", e)
+    #     logger.debug(f'{len(response)} secrets found on KV {self.vault.alias} mathing the regex {filter}')
+    #     return response
+
+    # def _is_match(self, secret_name: str, filter: str, type: FilterType, is_value: bool) -> Optional[Secret]:
+    #     name = secret_name.lower()  # normalize the secret name
+    #     if self.is_match([ name ], filter, type):
+    #         if is_value:
+    #             value = self.client.get_value(name)
+    #         return Secret(
+    #                 vault = self.vault.alias,
+    #                 name = name,
+    #                 value = value if is_value else ''
+    #             )
+    #     return None
 
 
 class KeyVaultSecretClient:
