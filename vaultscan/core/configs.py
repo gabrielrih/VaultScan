@@ -19,6 +19,7 @@ class AvailableConfigs(Enum):
     '''
     VERBOSE = ('verbose', bool, 'False', [ 'True', 'False' ])
     OUTPUT_FORMAT = ('output_format', OutputFormat, OutputFormat.JSON.value, OutputFormat.get_values())
+    ENABLE_CONCURRENCY = ('enable_concurrency', bool, 'False', [ 'True', 'False' ])
 
     def __init__(self, config_name: str, value_type: Type, default_value: str, possible_values: List[str]):
         self.config_name: str = config_name

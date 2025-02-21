@@ -6,6 +6,7 @@ from vaultscan.core.vaults import get_vaults
 from vaultscan.core.searcher import MultiVaultSearcherFactory
 from vaultscan.core.configs import AvailableConfigs, ConfigManager
 from vaultscan.core.friendly_messages import VaultMessages
+from vaultscan.core.output.time_execution import time_execution
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
 from vaultscan.core.output.logger import LoggerFactory
 
@@ -43,6 +44,7 @@ DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(
               required = False,
               default = DEFAULT_OUTPUT_FORMAT.value,
               help = 'Output format')
+@time_execution
 def secrets(filter: str, only_vault: str, exact: bool, show_values: bool, output_format: str) -> None:
     ''' Find secrets across vaults '''
     logger.debug(f'Args: {str(locals())}')

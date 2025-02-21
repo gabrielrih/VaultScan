@@ -1,6 +1,6 @@
 import concurrent.futures
 
-from typing import List, Dict, Optional
+from typing import List, Dict, Type
 from dataclasses import dataclass, fields
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
@@ -11,6 +11,7 @@ from vaultscan.core.engines.base import (
     BaseVaultEngine,
     Secret
 )
+from vaultscan.core.configs import AvailableConfigs, ConfigManager
 from vaultscan.core.output.logger import LoggerFactory
 from vaultscan.repositories.vault.base import VaultStatus
 
@@ -42,8 +43,48 @@ class KeyVaultConfig(BaseVaultConfig):
         return cls(**kwargs)
 
 
+ENABLE_CONCURRENCY: bool = ConfigManager(
+    AvailableConfigs.ENABLE_CONCURRENCY
+).get_value()  # getting it from user configuration
+
+class KeyVaultSecretEngineProvider:
+    @staticmethod
+    def create() -> Type[BaseVaultEngine]:
+        if ENABLE_CONCURRENCY:
+            return KeyVaultSecretEngineConcurrent
+        return KeyVaultSecretEngine
+
+
 class KeyVaultSecretEngine(BaseVaultEngine):
     '''' Vault implementation for the Azure Key Vault engine '''
+    def __init__(self, vault: KeyVaultConfig):
+        super().__init__(vault)
+        self.client = KeyVaultSecretClient(vault_name = vault.vault_name)
+
+    def find(self, filter: str, type: FilterType, is_value: bool = False) -> List[Secret]:
+        filter = filter.lower()  # normalize the filter
+        response = list()
+        secrets: List[str] = self.client.get_all_secrets()
+        for name in secrets:
+            name = name.lower()  # normalize the secret name
+            if not self.is_match([ name ], filter, type):
+                continue
+            value = ''
+            if is_value:
+                value = self.client.get_value(name)
+            response.append(
+                Secret(
+                    vault = self.vault.alias,
+                    name = name,
+                    value = value
+                )
+            )
+        logger.debug(f'{len(response)} secrets found on KV {self.vault.alias} mathing the regex {filter}')
+        return response
+
+
+class KeyVaultSecretEngineConcurrent(BaseVaultEngine):
+    '''' Vault implementation for the Azure Key Vault engine (using concurrent) '''
     def __init__(self, vault: KeyVaultConfig):
         super().__init__(vault)
         self.client = KeyVaultSecretClient(vault_name = vault.vault_name)
@@ -52,7 +93,7 @@ class KeyVaultSecretEngine(BaseVaultEngine):
         # Fetching all the secrets on the vault (without filter)
         secrets: List[str] = self.client.get_all_secrets()
 
-        # Filterinf secret names based on your matching function.
+        # Filtering secret names based on your matching function.
         # This reduces the set that may need the expensive "get_value" call.
         filter = filter.lower()  # normalize the filter
         matching_secrets = [ secret_name for secret_name in secrets if self.is_match([ secret_name.lower() ], filter, type) ]
@@ -71,7 +112,7 @@ class KeyVaultSecretEngine(BaseVaultEngine):
             return response
 
         # Return secrets with its value
-        with concurrent.futures.ThreadPoolExecutor(max_workers = 3) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers = 5) as executor:
             future_to_name = { executor.submit(self._fetch_secret_with_its_value, secret_name): secret_name for secret_name in matching_secrets }
             for future in concurrent.futures.as_completed(future_to_name):
                 try:
@@ -88,75 +129,6 @@ class KeyVaultSecretEngine(BaseVaultEngine):
             name = secret_name,
             value = value
         )
-
-        # for name in secrets:
-        #     name = name.lower()  # normalize the secret name
-        #     if not self.is_match([ name ], filter, type):
-        #         continue
-        #     value = ''
-        #     if is_value:
-        #         value = self.client.get_value(name)
-        #     response.append(
-        #         Secret(
-        #             vault = self.vault.alias,
-        #             name = name,
-        #             value = value
-        #         )
-        #     )
-        # logger.debug(f'{len(response)} secrets found on KV {self.vault.alias} mathing the regex {filter}')
-        # return response
-
-    # def find(self, filter: str, type: FilterType, is_value: bool = False) -> List[Secret]:
-    #     filter = filter.lower()  # normalize the filter
-    #     response = list()
-    #     secrets: List[str] = self.client.get_all_secrets()
-    #     for name in secrets:
-    #         name = name.lower()  # normalize the secret name
-    #         if not self.is_match([ name ], filter, type):
-    #             continue
-    #         value = ''
-    #         if is_value:
-    #             value = self.client.get_value(name)
-    #         response.append(
-    #             Secret(
-    #                 vault = self.vault.alias,
-    #                 name = name,
-    #                 value = value
-    #             )
-    #         )
-    #     logger.debug(f'{len(response)} secrets found on KV {self.vault.alias} mathing the regex {filter}')
-    #     return response
-    
-    # def find(self, filter: str, type: FilterType, is_value: bool = False) -> List[Secret]:
-    #     filter = filter.lower()  # normalize the filter
-    #     secrets: List[str] = self.client.get_all_secrets()
-    #     with concurrent.futures.ThreadPoolExecutor(max_workers = 5) as executor:
-    #         futures = [
-    #             executor.submit(self._is_match(secret_name = secret, filter = filter, type = type, is_value = is_value))
-    #             for secret in secrets
-    #         ]
-    #         response = list()
-    #         for future in concurrent.futures.as_completed(futures):
-    #             try:
-    #                 secret = future.result()
-    #                 if secret:
-    #                     response.append(secret)
-    #             except Exception as e:
-    #                 logger.error("Error validating if secret match: %s", e)
-    #     logger.debug(f'{len(response)} secrets found on KV {self.vault.alias} mathing the regex {filter}')
-    #     return response
-
-    # def _is_match(self, secret_name: str, filter: str, type: FilterType, is_value: bool) -> Optional[Secret]:
-    #     name = secret_name.lower()  # normalize the secret name
-    #     if self.is_match([ name ], filter, type):
-    #         if is_value:
-    #             value = self.client.get_value(name)
-    #         return Secret(
-    #                 vault = self.vault.alias,
-    #                 name = name,
-    #                 value = value if is_value else ''
-    #             )
-    #     return None
 
 
 class KeyVaultSecretClient:
