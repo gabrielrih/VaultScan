@@ -1,6 +1,6 @@
 [project]
 name = "VaultScan"
-version = "0.3.0"
+version = "0.3.1"
 description = "Searching objects across vaults"
 authors = [
     {name = "gabrielrih@gmail.com"}
