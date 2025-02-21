@@ -11,7 +11,7 @@ class AvailableConfigs(Enum):
         Enum to define available configurations 
 
         The "value_type" must be the actual type to be used INSIDE THE CODE.
-            Example, if the config is using an Enum, the value_type should be the class.
+            Example, if the config is using an Enum, the value_type should be the Enum class.
             If the values are True or False, the value_type should be bool.
 
         The "config_name", "default_value" and "possible_values" should be in a STRING format even if the value_type is not a string.
@@ -32,11 +32,10 @@ class AvailableConfigs(Enum):
 
     @staticmethod
     def from_config_name(config_name: str) -> 'AvailableConfigs':
-        """ Find an AvailableConfigs enum by name """
+        ''' Get an AvailableConfigs enum from name '''
         for config in AvailableConfigs:
             if config.config_name == config_name:
                 return config
-        ''' It should never happen because the click.Choice are loading the right configs, but... '''
         raise ConfigNotFoundError(
             f'Configuration "{config_name}" not found in {AvailableConfigs.__name__}'
         )
@@ -87,8 +86,8 @@ class ConfigManager:
 
 
 class ConfigValidator:
-    """ Handles validation of configuration values """
+    ''' Handles validation of configuration values '''
     @classmethod
     def is_a_valid_value(cls, config: AvailableConfigs, value: str) -> bool:
-        """ Check if the given value is allowed for the specified config """
+        ''' Check if the given value is allowed for the specified config '''
         return value in config.possible_values

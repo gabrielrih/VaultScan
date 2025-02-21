@@ -22,6 +22,7 @@ class FilterType(Enum):
 
 
 class BaseVaultEngine(ABC):
+    ''' Base class for a vault engine implementation '''
     def __init__(self, vault: BaseVaultConfig):
         self.vault = vault
 

@@ -5,6 +5,7 @@ from vaultscan.util.package import PACKAGE_NAME
 
 
 class KeyRingSecureKeyRepository(SecureKeyRepository):
+    ''' Repository implementation to persist secure keys using the keyring library '''
     def initialize(self):
         pass
 

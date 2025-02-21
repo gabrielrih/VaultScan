@@ -7,12 +7,10 @@ from vaultscan.core.configs import AvailableConfigs, ConfigManager
 IS_VERBOSE = ConfigManager(AvailableConfigs.VERBOSE).get_value()
 LOG_LEVEL = 'DEBUG' if IS_VERBOSE else 'INFO'
 
-
 class LoggerFactory:
     @staticmethod
     def get_logger(name):
         return Logger.get_logger(name)
-
 
 class LogColors:
     RESET = "\033[0m"
@@ -23,7 +21,6 @@ class LogColors:
     MAGENTA = "\033[95m"
     CYAN = "\033[96m"
     GRAY = "\033[90m"
-
 
 class ColoredFormatter(logging.Formatter):
     COLORS = {
@@ -40,7 +37,6 @@ class ColoredFormatter(logging.Formatter):
         log_message = super().format(record)
         return f"{log_color}{log_message}{LogColors.RESET}"
 
-
 # Define a new log level for success messages
 SUCCESS_LEVEL = 25  # Between INFO (20) and WARNING (30)
 logging.addLevelName(SUCCESS_LEVEL, "SUCCESS")
@@ -52,7 +48,6 @@ def success(self, message, *args, **kwargs):
 
 # Add the method dynamically to logging.Logger
 logging.Logger.success = success
-
 
 class Logger:
     @staticmethod

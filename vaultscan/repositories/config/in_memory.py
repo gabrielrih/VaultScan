@@ -4,6 +4,7 @@ from vaultscan.repositories.config.base import ConfigRepository, Config
 
 
 class InMemoryConfigRepository(ConfigRepository):
+    ''' Repository implementation to save configs in memory (not persistent)'''
     def __init__(self):
         self.configs = list()
 

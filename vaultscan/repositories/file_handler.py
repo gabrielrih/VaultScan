@@ -35,7 +35,7 @@ class JSONFileHandler:
 
 
 class DefaultConfigFolder:
-    ''' It manages the current user home folder '''
+    ''' It manages the user home folder '''
     def __init__(self, name: str):
         self._folder_name = name
         self._current_user = CurrentUser()

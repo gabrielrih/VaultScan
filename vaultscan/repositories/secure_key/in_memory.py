@@ -2,6 +2,7 @@ from vaultscan.repositories.secure_key.base import SecureKeyRepository
 
 
 class InMemorySecureKeyRepository(SecureKeyRepository):
+    ''' Repository implementation to save secure keys in memory (not persistent)'''
     def __init__(self):
         self.keys = list()
 

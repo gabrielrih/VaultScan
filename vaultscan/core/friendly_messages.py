@@ -1,9 +1,9 @@
 from enum import Enum
 
 ''' 
-    All messages that will be printed for the user should be here
-    It guarantee its reuse and make it easy to change the message for Better understanding
-    DEBUG and RAISE EXCEPTION messages SHOULDN'T BE HERE. That is because those messages are just used by devs.
+    All messages that will be printed out to user should be here
+    It guarantees its reuse and makes it easy to change the message for better understanding
+    IMPORTANT: DEBUG and RAISE EXCEPTION messages SHOULDN'T BE HERE. That is because there is no need to those messages be user friendly.
 '''
 class VaultMessages(Enum):
     VAULT_ADDED = 'The vault "{alias}" was added on the configuration!'
