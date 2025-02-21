@@ -42,6 +42,7 @@ class KeyVaultConfig(BaseVaultConfig):
 
 
 class KeyVaultSecretEngine(BaseVaultEngine):
+    '''' Vault implementation for the Azure Key Vault engine '''
     def __init__(self, vault: KeyVaultConfig):
         super().__init__(vault)
         self.client = KeyVaultSecretClient(vault_name = vault.vault_name)

@@ -3,7 +3,7 @@ import click
 from typing import List, Dict
 
 from vaultscan.core.vaults import get_vaults
-from vaultscan.core.scanner import MultiVaultScannerBuilder
+from vaultscan.core.scanner import MultiVaultSearcherFactory
 from vaultscan.core.configs import AvailableConfigs, ConfigManager
 from vaultscan.core.friendly_messages import VaultMessages
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
@@ -19,7 +19,10 @@ def find() -> None:
     pass
 
 
-DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(AvailableConfigs.OUTPUT_FORMAT).get_value()  # getting it from user configuration
+DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(
+    AvailableConfigs.OUTPUT_FORMAT
+).get_value()  # getting it from user configuration
+
 @find.command()
 @click.argument("filter")
 @click.option('--only-vault',
@@ -47,7 +50,7 @@ def secrets(filter: str, only_vault: str, exact: bool, show_values: bool, output
     if not vaults:
         logger.error(VaultMessages.NO_VAULTS.value)
         return
-    scanner = MultiVaultScannerBuilder.create(vaults = vaults, exact_match = exact)
+    scanner = MultiVaultSearcherFactory.create(vaults = vaults, exact_match = exact)
     secrets: List[Dict] = scanner.find(
         filter = filter,
         is_value = show_values

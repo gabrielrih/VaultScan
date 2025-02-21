@@ -59,6 +59,7 @@ class KeePassConfig(BaseVaultConfig):
 
 
 class KeePassSecretEngine(BaseVaultEngine):
+    '''' Vault implementation for the Keepass engine '''
     def __init__(self, vault: KeePassConfig):
         super().__init__(vault)
         self.client = PyKeePass(filename = vault.path, password = vault.password)

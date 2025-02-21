@@ -15,10 +15,9 @@ class AvailableEngines(Enum):
         self.config = config
         self.engine = engine
 
-
-def get_engine_from_type(type: str) -> AvailableEngines:
-    if type == AvailableEngines.AZURE_KEY_VAULT.type:
-        return AvailableEngines.AZURE_KEY_VAULT
-    if type == AvailableEngines.KEEPASS.type:
-        return AvailableEngines.KEEPASS
-    raise ValueError(f'Vault type not valid or not specified {type}')
+    @classmethod
+    def from_type(cls, type: str) -> 'AvailableEngines':
+        try:
+            return next(e for e in cls if e.type == type)
+        except StopIteration:
+            raise ValueError(f'Vault type not valid or not specified {type}')

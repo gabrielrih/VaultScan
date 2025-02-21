@@ -18,6 +18,7 @@ class OutputFormat(Enum):
 
 
 class OutputHandler:
+    ''' It prints out data in different formats '''
     def __init__(self, format: OutputFormat):
         self.format = format
 

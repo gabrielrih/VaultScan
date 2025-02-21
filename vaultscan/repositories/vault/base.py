@@ -11,6 +11,7 @@ class VaultStatus(Enum):
 
 @dataclass
 class BaseVaultConfig:
+    ''' The basic vault fields '''
     alias: str
     type: str = field(init = False)  # Each subclass should set this
     status: str

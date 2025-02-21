@@ -5,6 +5,7 @@ from vaultscan.repositories.file_handler import JSONFileHandler
 
 
 class ConfigRepositoryAsJson(ConfigRepository):
+    ''' Repository implementation to persist the configurations on a file '''
     def __init__(self):
         self.file = JSONFileHandler(
             folder_name = '.vaultscan',

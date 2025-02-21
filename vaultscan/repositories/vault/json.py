@@ -9,6 +9,7 @@ from vaultscan.repositories.file_handler import JSONFileHandler
 
 
 class VaultRepositoryAsJson(VaultRepository):
+    ''' Repository implementation to persist vaults on a file '''
     def __init__(self):
         self.file = JSONFileHandler(
             folder_name = '.vaultscan',
