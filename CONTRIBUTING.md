@@ -49,7 +49,7 @@ To use the cli just run:
 vaultscan --help
 ```
 
-I also recomend the use of [pyenv](https://github.com/pyenv-win/pyenv-win) to allow you to install and manage multiple Python version in your machine.
+I also recommend the use of [pyenv](https://github.com/pyenv-win/pyenv-win) to allow you to install and manage multiple Python version in your machine.
 
 
 ## Guidelines
