@@ -68,7 +68,7 @@ It makes it easy to manage and add new friendly user messages.
 
 To print messages it uses the [logger](./vaultscan/core/output/logger.py) implementation. The *logger* allow us to customize the type of message by info, warning, error, success and debug.
 
-> Note that the debug message is not consider a friendly message since it's not show by default to the user. So it does not make sense to put those messages on the [friendly_messages](./vaultscan/core/friendly_messages.py) class.
+> Note that the debug message is not consider a friendly message since it's not shown by default to the user. So it does not make sense to put those messages on the [friendly_messages](./vaultscan/core/friendly_messages.py) class.
 
 4. **When implementing a new engine you should:**
 
