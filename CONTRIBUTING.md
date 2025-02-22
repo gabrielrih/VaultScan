@@ -26,7 +26,7 @@ vaultscan/
 - CLI Interface: The user-facing part of your tool. See [click](https://click.palletsprojects.com/en/stable/) library.
 - Output: Classes to print out messages. See [logging](https://docs.python.org/3/library/logging.html).
 - DataCipher: It allows to encrypt/decrypt data using a global key. See [cryptography.fernet](https://cryptography.io/en/latest/fernet/).
-- Scanner: The main and more abastract class to search secrets on vaults.
+- Scanner: The main and more abstract class to search secrets on vaults.
 - GlobalConfigs: For managing configuration values.
 
 **Lower level**
