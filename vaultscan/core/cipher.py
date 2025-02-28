@@ -32,7 +32,6 @@ class DataCipher:
         )
         return str(key)
 
-
     def encrypt(self, value: str) -> str:
         encrypted_value = self.cipher.encrypt(
             data = value.encode(self.encoding)

@@ -46,7 +46,6 @@ class KeyVaultConfig(BaseVaultConfig):
 ENABLE_CONCURRENCY: bool = ConfigManager(
     AvailableConfigs.ENABLE_CONCURRENCY
 ).get_value()  # getting it from user configuration
-
 class KeyVaultSecretEngineProvider:
     @staticmethod
     def create() -> Type[BaseVaultEngine]:
@@ -138,7 +137,7 @@ class KeyVaultSecretClient:
             vault_url = f"https://{vault_name}.vault.azure.net",
             credential = DefaultAzureCredential()
         )
-        
+
     def get_all_secrets(self) -> List[str]:
         return [ secret.name for secret in self.client.list_properties_of_secrets() ]
 

@@ -25,12 +25,10 @@ def add() -> None:
     ''' Add a vault on the configuration '''
     pass
 
+alias = click.option('--alias', type = click.STRING, required = True, help = 'Vault alias')
 
 @add.command()
-@click.option('--alias',
-              type = click.STRING,
-              required = True,
-              help = 'Vault alias')
+@alias
 @click.option('--vault-name', '--name',
               type = click.STRING,
               required = True,
@@ -53,10 +51,7 @@ def kv(alias: str, vault_name: str) -> None:
 
 
 @add.command
-@click.option('--alias',
-              type = click.STRING,
-              required = True,
-              help = 'Vault alias')
+@alias
 @click.option('--path',
               type = click.STRING,
               required = True,
@@ -86,10 +81,7 @@ def keepass(alias: str, path: str) -> None:
 
 
 @vault.command()
-@click.option('--alias',
-              type = click.STRING,
-              required = True,
-              help = 'Vault alias')
+@alias
 def remove(alias: str) -> None:
     ''' Remove a vault from the configuration '''
     logger.debug(f'Args: {str(locals())}')
@@ -103,23 +95,20 @@ def remove(alias: str) -> None:
 
 
 @vault.command()
-@click.option('--old-alias',
-              type = click.STRING,
-              required = True,
-              help = 'Old vault alias')
+@alias
 @click.option('--new-alias',
               type = click.STRING,
               required = True,
               help = 'New vault alias')
-def rename(old_alias: str, new_alias: str) -> None:
+def rename(alias: str, new_alias: str) -> None:
     ''' Change the vault alias '''
     logger.debug(f'Args: {str(locals())}')
-    renamed = repository.rename(old_alias, new_alias)
+    renamed = repository.rename(alias, new_alias)
     if not renamed:
-        message = VaultMessages.VAULT_NOT_FOUND.value.format(alias = old_alias)
+        message = VaultMessages.VAULT_NOT_FOUND.value.format(alias = alias)
         logger.warning(message)
         return
-    message = VaultMessages.VAULT_RENAMED.value.format(old_alias = old_alias, new_alias = new_alias)
+    message = VaultMessages.VAULT_RENAMED.value.format(old_alias = alias, new_alias = new_alias)
     logger.success(message)
 
 
@@ -131,10 +120,7 @@ def remove_all() -> None:
 
 
 @vault.command()
-@click.option('--alias',
-              type = click.STRING,
-              required = True,
-              help = 'Vault alias')
+@alias
 def disable(alias: str) -> None:
     ''' Ignore a vault for future searches '''
     logger.debug(f'Args: {str(locals())}')
@@ -149,10 +135,7 @@ def disable(alias: str) -> None:
 
 
 @vault.command()
-@click.option('--alias',
-              type = click.STRING,
-              required = True,
-              help = 'Vault alias')
+@alias
 def enable(alias: str) -> None:
     ''' Enable a vault for future searches '''
     logger.debug(f'Args: {str(locals())}')
