@@ -52,7 +52,7 @@ jobs:
     - name: Run Semantic Release (Versioning Only)
       run: |
         semantic-release --noop --verbose version
-        #semantic-release version
+        #semantic-release version --print
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # e2e_tests:

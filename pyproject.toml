@@ -31,4 +31,6 @@ coverage = "^7.6.12"
 pytest-console-scripts = "^1.4.1"
 
 [tool.semantic_release]
-version_variable = "vaultscan/main.py:__version__"
+version_variables = [
+    "vaultscan/main.py:__version__"
+]
