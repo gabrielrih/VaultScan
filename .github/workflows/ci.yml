@@ -37,7 +37,11 @@ jobs:
     name: Versioning
     needs: [unit_tests]
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref }}
+        fetch-depth: 0
     - name: Set up Python 3.11
       uses: actions/setup-python@v3
       with:
