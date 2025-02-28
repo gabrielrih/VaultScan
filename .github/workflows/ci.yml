@@ -51,7 +51,7 @@ jobs:
         pip install python-semantic-release
     - name: Run Semantic Release (Versioning Only)
       run: |
-        semantic-release version --dry-run --branch feat/semver
+        semantic-release version --branch feat/semver
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # e2e_tests:
