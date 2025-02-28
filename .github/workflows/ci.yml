@@ -51,8 +51,8 @@ jobs:
         pip install python-semantic-release
     - name: Run Semantic Release (Versioning Only)
       run: |
-        semantic-release --noop --verbose
-        semantic-release version
+        semantic-release --noop --verbose version
+        #semantic-release version
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # e2e_tests:
