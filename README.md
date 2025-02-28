@@ -37,13 +37,13 @@ You can install this tool by downloading the latest ```.whl``` file from GitHub 
 Or you can download it from the terminal:
 
 ```
-wget -O "vaultscan-0.1.5-py3-none-any.whl" "https://github.com/gabrielrih/VaultScan/releases/download/latest/vaultscan-0.1.5-py3-none-any.whl"
+wget -O "vaultscan-0.3.3-py3-none-any.whl" "https://github.com/gabrielrih/VaultScan/releases/download/latest/vaultscan-0.3.3-py3-none-any.whl"
 ```
 
 - After downloading the .whl file, install it using pip:
 
 ```
-pip install --user vaultscan-0.1.5-py3-none-any.whl
+pip install --user vaultscan-0.3.3-py3-none-any.whl
 ```
 
 By doing that a ```vaultscan.exe``` file will be created probably on the folder: ```C:\Users\user\AppData\Roaming\Python\Python312\Scripts```. So, you must add this folder on the user PATH.
