@@ -32,7 +32,7 @@ pytest-console-scripts = "^1.4.1"
 
 [tool.semantic_release]
 version_variable = "vaultscan/main.py:__version__"
-branch = "main"
+branch = "*"
 tag_format = "{version}"
 commit_parser = "conventional"
 changelog_file = "CHANGELOG.md"
