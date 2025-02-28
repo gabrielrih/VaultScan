@@ -68,7 +68,7 @@ First of all you must configure the vaults you want to use in the tool. This is 
 ### Configuring an Azure Key Vault
 
 ```
-vaultscan vault add kv --alias mykv --vault-name vault
+vaultscan vault add keyvault --alias mykv --vault-name vault
 ```
 
 > vault_name on Azure are unique, so you does not need more information than that.
