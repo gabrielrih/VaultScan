@@ -4,6 +4,7 @@ VaultScan is a CLI tool for searching objects across multiple vault engines, sup
 # Index
 - [Features](#features)
 - [Installation](#installation)
+    - [Requirements](#requirements)
     - [Via GitHub Releases](#via-github-releases)
 - [Usage](#usage)
     - [Configuring the vaults](#configuring-the-vaults)
@@ -22,6 +23,10 @@ The main group commands available on this tool are:
 - **Config:** To manage configurations
 
 # Installation
+
+## Requirements
+
+- [Python](https://www.python.org/downloads/): >= 3.11
 
 ## Via GitHub Releases
 You can install this tool by downloading the latest ```.whl``` file from GitHub Releases and using pip.
@@ -119,6 +124,7 @@ vaultscan vault add keepass --help
 
 > The password is securely encrypted and saved on your local machine.
 
+**Limitation**: It supports Keepass database when using master key. If you're using a [Key File](https://keepass.info/help/base/keys.html) to protect your secrets the cli won't work.
 
 ## Searching secrets by its exact name
 

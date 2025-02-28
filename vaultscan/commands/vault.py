@@ -33,7 +33,7 @@ alias = click.option('--alias', type = click.STRING, required = True, help = 'Va
               type = click.STRING,
               required = True,
               help = 'Azure Key Vault name')
-def kv(alias: str, vault_name: str) -> None:
+def keyvault(alias: str, vault_name: str) -> None:
     ''' Add an Azure Key Vault on the configuration '''
     logger.debug(f'Args: {str(locals())}')
     vault = KeyVaultConfig(
