@@ -20,11 +20,10 @@ def config() -> None:
     pass
 
 
+config_name = click.option('--name', type = click.Choice(AvailableConfigs.get_values()), required = True, help = 'Config name')
+
 @config.command()
-@click.option('--name',
-              type = click.Choice(AvailableConfigs.get_values()),
-              required = True,
-              help = 'Config name')
+@config_name
 @click.option('--value',
               type = click.STRING,
               required = True,
@@ -54,10 +53,7 @@ def set(name: str, value: str) -> None:
 
 
 @config.command()
-@click.option('--name',
-              type = click.Choice(AvailableConfigs.get_values()),
-              required = True,
-              help = 'Config name')
+@config_name
 def reset(name: str) -> None:
     '''  Reset configuration to its original state '''
     logger.debug(f'Args: {str(locals())}')
