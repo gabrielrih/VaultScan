@@ -34,7 +34,7 @@ jobs:
           poetry run coverage report
   semver:
     runs-on: ubuntu-latest
-    name: Versioning using semver
+    name: Versioning
     needs: [unit_tests]
     steps:
     - uses: actions/checkout@v3
@@ -76,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Create release and upload artifacts
     if: github.event_name == 'push'  # just when merge to main
-    needs: [unit_tests]
+    needs: [unit_tests, semver]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.11
