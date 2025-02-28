@@ -30,3 +30,9 @@ pytest = "^8.3.4"
 coverage = "^7.6.12"
 pytest-console-scripts = "^1.4.1"
 
+[tool.semantic_release]
+version_variable = "pyproject.toml:__version__"
+branch = "main"
+tag_format = "{version}"
+commit_parser = "angular"
+changelog_file = "CHANGELOG.md"

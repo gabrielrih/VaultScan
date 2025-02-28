@@ -32,6 +32,24 @@ jobs:
           poetry run coverage run -m pytest test/vaultscan/unit
           echo "Code coverage report:"
           poetry run coverage report
+    semver:
+      runs-on: ubuntu-latest
+      name: Versioning using semver
+      needs: [unit_tests]
+      steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+      - name: Install python-semantic-release
+        run: |
+          pip install python-semantic-release
+      - name: Run Semantic Release (Versioning Only)
+        run: |
+          semantic-release version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # e2e_tests:
   #   runs-on: ubuntu-latest
   #   name: End to End tests
