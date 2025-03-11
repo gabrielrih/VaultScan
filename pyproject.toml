@@ -34,3 +34,13 @@ pytest-console-scripts = "^1.4.1"
 version_variables = [
     "vaultscan/main.py:__version__"
 ]
+
+[tool.semantic_release.branches.main]
+match = "(main|master)"
+prerelease_token = "rc"
+prerelease = true
+
+[tool.semantic_release.branches.semver]
+match = "feat/semver"
+prerelease_token = "rc"
+prerelease = true
