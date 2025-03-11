@@ -32,9 +32,9 @@ jobs:
           poetry run coverage run -m pytest test/vaultscan/unit
           echo "Code coverage report:"
           poetry run coverage report
-  semver:
+  release:
     runs-on: ubuntu-latest
-    name: Versioning
+    name: Versioning and release
     needs: [unit_tests]
     steps:
     - name: Checkout repository
@@ -56,8 +56,8 @@ jobs:
         pip install python-semantic-release
     - name: Run Semantic Release (Versioning Only)
       run: |
-        echo "🔹Generating a new package version using semver"
-        semantic-release version --no-tag --no-vcs-release
+        echo "🔹Generating a new package version and a tag using semver"
+        semantic-release version --no-vcs-release
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Inject new version on Poetry
@@ -77,48 +77,48 @@ jobs:
         semantic-release publish
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  release:
-    runs-on: ubuntu-latest
-    name: Create release and upload artifacts
-    if: github.event_name == 'push'  # just when merge to main
-    needs: [unit_tests, semver]
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python 3.11
-        uses: actions/setup-python@v3
-        with:
-          python-version: "3.11"
-      - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          poetry --version
-      - name: Get version from pyproject.toml
-        run: |
-          echo "VERSION=$(poetry version -s)" >> $GITHUB_ENV
-      - name: Build package
-        run: |
-          poetry install --no-interaction
-          poetry build
-      - name: Create GitHub Release Version
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ env.VERSION }}
-          name: ${{ env.VERSION }}
-          body: "Automated release for version ${{ env.VERSION }}"
-          files: |
-            dist/*.tar.gz
-            dist/*.whl
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Create GitHub Latest Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: latest
-          name: latest
-          body: "Automated release for the latest version"
-          files: |
-            dist/*.tar.gz
-            dist/*.whl
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # release:
+  #   runs-on: ubuntu-latest
+  #   name: Create release and upload artifacts
+  #   if: github.event_name == 'push'  # just when merge to main
+  #   needs: [unit_tests, semver]
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Set up Python 3.11
+  #       uses: actions/setup-python@v3
+  #       with:
+  #         python-version: "3.11"
+  #     - name: Install Poetry
+  #       run: |
+  #         curl -sSL https://install.python-poetry.org | python3 -
+  #         echo "$HOME/.local/bin" >> $GITHUB_PATH
+  #         poetry --version
+  #     - name: Get version from pyproject.toml
+  #       run: |
+  #         echo "VERSION=$(poetry version -s)" >> $GITHUB_ENV
+  #     - name: Build package
+  #       run: |
+  #         poetry install --no-interaction
+  #         poetry build
+  #     - name: Create GitHub Release Version
+  #       uses: softprops/action-gh-release@v1
+  #       with:
+  #         tag_name: ${{ env.VERSION }}
+  #         name: ${{ env.VERSION }}
+  #         body: "Automated release for version ${{ env.VERSION }}"
+  #         files: |
+  #           dist/*.tar.gz
+  #           dist/*.whl
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     - name: Create GitHub Latest Release
+  #       uses: softprops/action-gh-release@v1
+  #       with:
+  #         tag_name: latest
+  #         name: latest
+  #         body: "Automated release for the latest version"
+  #         files: |
+  #           dist/*.tar.gz
+  #           dist/*.whl
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
