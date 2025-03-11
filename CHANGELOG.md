@@ -29,6 +29,12 @@
 - Generating new version
   ([`bea1845`](https://github.com/gabrielrih/VaultScan/commit/bea1845bd1c619fce7b23fefa2f41992108bd453))
 
+- Generating release on GitHub
+  ([`4479fd7`](https://github.com/gabrielrih/VaultScan/commit/4479fd720c6d5827565f7584eb14763a95ef99dd))
+
+- Generating tag on versioning
+  ([`ad2d0fa`](https://github.com/gabrielrih/VaultScan/commit/ad2d0fa427dbf5d72812336afcd5b015d7268bf1))
+
 - Increase the version
   ([`0f87567`](https://github.com/gabrielrih/VaultScan/commit/0f875674ca2e611842021c1a77dd34f7cb948be8))
 
@@ -94,6 +100,10 @@
 - Create a release
   ([`6e9f1db`](https://github.com/gabrielrih/VaultScan/commit/6e9f1dbaec7c4895c414a2193d3af30c180c43e7))
 
+- Generate new version using semantic-release, updating version on Poetry and then publishing the
+  package
+  ([`d48a941`](https://github.com/gabrielrih/VaultScan/commit/d48a941be3d90961783013a274142cc86c2e9960))
+
 - Generating a latest release
   ([`d2fd021`](https://github.com/gabrielrih/VaultScan/commit/d2fd021fdb937a8758eda7ff23c0406ecc1a8e36))
 
@@ -102,6 +112,9 @@
 
 - Run release just when merging to main
   ([`1dedfda`](https://github.com/gabrielrih/VaultScan/commit/1dedfdab0d634bac71f2cd714126307bbf3aace1))
+
+- Testing inject new version on Poetry
+  ([`523fa1d`](https://github.com/gabrielrih/VaultScan/commit/523fa1dbedb773c6e1eab76958283b077f864f2c))
 
 - Testing inject new version on Poetry
   ([`1015ac1`](https://github.com/gabrielrih/VaultScan/commit/1015ac1316e385659bc6a85a2906ee2077834bf9))
