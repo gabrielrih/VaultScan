@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.1.0-rc.2 (2025-03-11)
+
+### Bug Fixes
+
+- Generating new version
+  ([`46e3bbc`](https://github.com/gabrielrih/VaultScan/commit/46e3bbca4c4ceea0cf018997437a0833acd9862f))
+
+- Generating new version
+  ([`3b11efe`](https://github.com/gabrielrih/VaultScan/commit/3b11efee5555edb4d44240110c78bd4a12932d09))
+
+
 ## v0.1.0-rc.1 (2025-03-11)
 
 ### Bug Fixes
