@@ -1,17 +1,6 @@
 # CHANGELOG
 
 
-## v0.1.0-rc.2 (2025-03-11)
-
-### Bug Fixes
-
-- Generating new version
-  ([`46e3bbc`](https://github.com/gabrielrih/VaultScan/commit/46e3bbca4c4ceea0cf018997437a0833acd9862f))
-
-- Generating new version
-  ([`3b11efe`](https://github.com/gabrielrih/VaultScan/commit/3b11efee5555edb4d44240110c78bd4a12932d09))
-
-
 ## v0.1.0-rc.1 (2025-03-11)
 
 ### Bug Fixes
@@ -30,6 +19,12 @@
 
 - Comment out unit test using keyring without mock
   ([`a148bae`](https://github.com/gabrielrih/VaultScan/commit/a148bae237cc94b8786182842a0a5ed583ea03a9))
+
+- Generating new version
+  ([`46e3bbc`](https://github.com/gabrielrih/VaultScan/commit/46e3bbca4c4ceea0cf018997437a0833acd9862f))
+
+- Generating new version
+  ([`3b11efe`](https://github.com/gabrielrih/VaultScan/commit/3b11efee5555edb4d44240110c78bd4a12932d09))
 
 - Generating new version
   ([`bea1845`](https://github.com/gabrielrih/VaultScan/commit/bea1845bd1c619fce7b23fefa2f41992108bd453))
@@ -107,6 +102,18 @@
 
 - Run release just when merging to main
   ([`1dedfda`](https://github.com/gabrielrih/VaultScan/commit/1dedfdab0d634bac71f2cd714126307bbf3aace1))
+
+- Testing inject new version on Poetry
+  ([`1015ac1`](https://github.com/gabrielrih/VaultScan/commit/1015ac1316e385659bc6a85a2906ee2077834bf9))
+
+- Testing inject new version on Poetry
+  ([`27d52e4`](https://github.com/gabrielrih/VaultScan/commit/27d52e4f0de8ed22986cb46f01be4c4d171ab8b4))
+
+- Testing inject new version on Poetry
+  ([`8fe71a5`](https://github.com/gabrielrih/VaultScan/commit/8fe71a57a3a487563472ac42ff3fd7d026881e67))
+
+- Testing inject new version on Poetry
+  ([`e27dda0`](https://github.com/gabrielrih/VaultScan/commit/e27dda008180cbae3686e4ffe59e36806a4e085b))
 
 - Trying to install keyrings.alt to be used on github actions
   ([`a33bbbe`](https://github.com/gabrielrih/VaultScan/commit/a33bbbe10bcd019eea5c94112a4a30514f303077))
