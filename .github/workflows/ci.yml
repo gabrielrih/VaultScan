@@ -55,6 +55,16 @@ jobs:
         #semantic-release version --print
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Inject new version on Poetry
+      run: |
+        PACKAGE_VERSION=$(python -c "from vaultscan import __version__; print(__version__)")
+        poetry version $PACKAGE_VERSION
+        cat pyproject.toml
+        # FIX IT
+        # Push the change on PR
+    - name: Checking releases on dist folder
+      run: |
+        ls ./dist/
   # e2e_tests:
   #   runs-on: ubuntu-latest
   #   name: End to End tests

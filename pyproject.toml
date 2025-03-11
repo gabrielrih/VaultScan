@@ -37,6 +37,7 @@ pytest-console-scripts = "^1.4.1"
 version_variables = [
     "vaultscan/__init__.py:__version__"
 ]
+#build_command = "poetry build"
 
 [tool.semantic_release.branches.main]
 match = "(main|master)"
