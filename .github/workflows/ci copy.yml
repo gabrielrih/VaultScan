@@ -1,10 +1,4 @@
-name: Python application
-
-on:
-  pull_request:
-    branches: [ "main" ]
-  push:
-    branches: [ "main" ]
+name: OLD Python application
 
 permissions:
   contents: write
@@ -46,18 +40,12 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: "3.11"
-    - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          poetry --version
     - name: Install python-semantic-release
       run: |
         pip install python-semantic-release
     - name: Run Semantic Release (Versioning Only)
       run: |
-        # FIX IT
-        semantic-release version --no-tag
+        semantic-release version
         #semantic-release version --print
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -71,6 +59,28 @@ jobs:
     - name: Checking releases on dist folder
       run: |
         ls ./dist/
+  # e2e_tests:
+  #   runs-on: ubuntu-latest
+  #   name: End to End tests
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Set up Python 3.11
+  #       uses: actions/setup-python@v3
+  #       with:
+  #         python-version: "3.11"
+  #     - name: Install Poetry
+  #       run: |
+  #         curl -sSL https://install.python-poetry.org | python3 -
+  #         echo "$HOME/.local/bin" >> $GITHUB_PATH
+  #         poetry --version
+  #     - name: Install dependencies
+  #       run: |
+  #         poetry install --no-interaction --all-groups
+  #     - name: Run tests
+  #       run: |
+  #         poetry run coverage run -m pytest test/vaultscan/e2e
+  #         echo "Code coverage report:"
+  #         poetry run coverage report
   release:
     runs-on: ubuntu-latest
     name: Create release and upload artifacts

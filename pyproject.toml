@@ -38,6 +38,10 @@ version_variables = [
     "vaultscan/__init__.py:__version__"
 ]
 #build_command = "poetry build"
+assets = [
+    "dist/*.tar.gz",
+    "dist/*.whl"
+]
 
 [tool.semantic_release.branches.main]
 match = "(main|master)"
