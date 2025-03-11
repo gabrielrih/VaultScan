@@ -4,10 +4,6 @@ from vaultscan.commands.vault import vault
 from vaultscan.commands.find import find
 from vaultscan.commands.version import version
 
-
-__version__ = "0.1.0-rc.1"
-
-
 main.add_command(vault)
 main.add_command(config)
 main.add_command(find)
