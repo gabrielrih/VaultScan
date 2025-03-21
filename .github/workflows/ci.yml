@@ -57,7 +57,8 @@ jobs:
     - name: Run Semantic Release (Versioning Only)
       run: |
         echo "🔹Generating a new package version and a tag using semver"
-        semantic-release version --no-vcs-release --skip-build
+        #semantic-release version --no-vcs-release --skip-build
+        semantic-release version --prelease --vcs-release --tag --skip-build
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Build package
