@@ -1,6 +1,27 @@
 # CHANGELOG
 
 
+## v0.1.1-rc.1 (2025-03-21)
+
+### Bug Fixes
+
+- Prerelease generation on pipeline
+  ([`cacace7`](https://github.com/gabrielrih/VaultScan/commit/cacace72c95f9276b1f62e7b7db83400c7dc1557))
+
+### Continuous Integration
+
+- Generating prerelease on the PR
+  ([`3fe40a1`](https://github.com/gabrielrih/VaultScan/commit/3fe40a1dc51090dc8fb309fcdba9952fa35776b5))
+
+- Generating prerelease on the PR
+  ([`0b7de06`](https://github.com/gabrielrih/VaultScan/commit/0b7de06bbf8fcd0e6abfe1300543db05aef4635e))
+
+### Testing
+
+- Unit test for vault repository
+  ([`0609bbb`](https://github.com/gabrielrih/VaultScan/commit/0609bbbc67fc0ca013df8430196a33200242622f))
+
+
 ## v0.1.0 (2025-03-21)
 
 ### Bug Fixes

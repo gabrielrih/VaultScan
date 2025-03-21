@@ -5,16 +5,13 @@ from vaultscan.repositories.vault.base import (
     BaseVaultConfig,
     VaultStatus
 )
-from vaultscan.repositories.file_handler import JSONFileHandler
+from vaultscan.repositories.file_handler import FileHandler
 
 
 class VaultRepositoryAsJson(VaultRepository):
     ''' Repository implementation to persist vaults on a file '''
-    def __init__(self):
-        self.file = JSONFileHandler(
-            folder_name = '.vaultscan',
-            filename = 'vaults.json'
-        )
+    def __init__(self, file: FileHandler):
+        self.file = file
         if not self.file.exists:
             self.initialize()
 
@@ -42,8 +39,6 @@ class VaultRepositoryAsJson(VaultRepository):
     def remove(self, alias: str) -> bool:
         content: Dict = self.file.read()
         vaults: List[Dict] = content['vaults']
-        if not vaults:
-            return False
         removed = False
         for vault in vaults:
             if vault['alias'] == alias:
@@ -60,8 +55,6 @@ class VaultRepositoryAsJson(VaultRepository):
     def rename(self, old_alias: str, new_alias: str) -> bool:
         content: Dict = self.file.read()
         vaults: List[Dict] = content['vaults']
-        if not vaults:
-            return False
         renamed = False
         for vault in vaults:
             if vault['alias'] == old_alias:
@@ -75,8 +68,6 @@ class VaultRepositoryAsJson(VaultRepository):
     def change_status(self, alias: str, status: VaultStatus) -> bool:
         content: Dict = self.file.read()
         vaults: List[Dict] = content['vaults']
-        if not vaults:
-            return False
         changed = False
         for vault in vaults:
             if vault['alias'] == alias:
