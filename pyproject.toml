@@ -41,6 +41,7 @@ assets = [
     "dist/*.tar.gz",
     "dist/*.whl"
 ]
+build_command = ".\build_package.sh"
 
 [tool.semantic_release.branches.main]
 match = "(main|master)"
@@ -49,5 +50,5 @@ prerelease = false
 
 [tool.semantic_release.branches.semver]
 match = "feat/semver"
-prerelease_token = "rc"
-prerelease = true
+#prerelease_token = "rc"
+#prerelease = true
