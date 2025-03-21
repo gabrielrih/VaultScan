@@ -34,7 +34,7 @@ jobs:
           poetry run coverage report
   release:
     runs-on: ubuntu-latest
-    name: Versioning and release
+    name: Versioning and pre-release
     needs: [unit_tests]
     steps:
     - name: Checkout repository
@@ -51,18 +51,30 @@ jobs:
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           poetry --version
-    - name: Install python-semantic-release
-      run: |
-        pip install python-semantic-release
-    - name: Release
-      run: |
-        echo "🔹Using semantic-release to generate the new pre-release version"
-        semantic-release version --as-prerelease --vcs-release --tag
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Upload artifacts on release
-      uses: softprops/action-gh-release@v1
+    # - name: Install python-semantic-release
+    #   run: |
+    #     pip install python-semantic-release
+    # - name: Release
+    #   run: |
+    #     echo "🔹Using semantic-release to generate the new pre-release version"
+    #     semantic-release version --as-prerelease --vcs-release --tag
+    #   env:
+    #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name:  Semantic Version Release
+      id: release
+      uses: python-semantic-release/python-semantic-release@v9.21.0
       with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        git_committer_name: "github-actions"
+        git_committer_email: "actions@users.noreply.github.com"
+
+    - name: Upload artifacts on release
+      id: upload
+      uses: softprops/action-gh-release@v1
+      if: steps.release.outputs.released == 'true'
+      with:
+        tag_name: ${{ steps.release.outputs.tag }}
         files: "dist/*"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
