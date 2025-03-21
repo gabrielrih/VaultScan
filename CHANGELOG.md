@@ -1,6 +1,22 @@
 # CHANGELOG
 
 
+## v0.1.0-rc.2 (2025-03-21)
+
+### Bug Fixes
+
+- Remove unused file
+  ([`faa363e`](https://github.com/gabrielrih/VaultScan/commit/faa363e47ef035584bb233c883519e62452f00be))
+
+### Continuous Integration
+
+- Changing messages
+  ([`28917da`](https://github.com/gabrielrih/VaultScan/commit/28917dad46d62f1933a9b64cd08c76333abb7db0))
+
+- Remove unecessary code
+  ([`10739d4`](https://github.com/gabrielrih/VaultScan/commit/10739d40f6aa7c1ddcaff17d64f58f921f098fee))
+
+
 ## v0.1.0-rc.1 (2025-03-21)
 
 ### Bug Fixes
