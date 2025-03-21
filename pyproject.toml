@@ -37,7 +37,6 @@ pytest-console-scripts = "^1.4.1"
 version_variables = [
     "vaultscan/__init__.py:__version__"
 ]
-#assets = [ "dist/*" ]
 #assets = [
 #    "./dist/*.tar.gz",
 #    "./dist/*.whl"
