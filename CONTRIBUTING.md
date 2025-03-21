@@ -100,10 +100,6 @@ pytest .\test\vaultscan\e2e
 
 ## Release Process
 
-A new release is generated automatically by the [ci pipeline](.github/workflows/ci.yml) everytime you changed the package version on the [pyproject.toml](./pyproject.toml) file.
+A new release is generated automatically by the [ci pipeline](.github/workflows/ci.yml) using the Semantic Version concept and the [python-semantic package](https://python-semantic-release.readthedocs.io/en/latest/index.html).
 
-```toml
-[project]
-name = "VaultScan"
-version = "0.1.4"
-```
+> You would see version definitions on the [pyproject.toml](./pyproject.toml), [__init__.py](./vaultscan/__init__.py) file and maybe in more files. You must not change it manually.
