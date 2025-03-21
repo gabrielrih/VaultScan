@@ -31,19 +31,19 @@ The main group commands available on this tool are:
 ## Via GitHub Releases
 You can install this tool by downloading the latest ```.whl``` file from GitHub Releases and using pip.
 
-- Go to the [Releases page](https://github.com/gabrielrih/VaultScan/releases/tag/latest).
-- Find the latest version and download the ```.whl``` file (Example, ```vaultscan-0.1.5-py3-none-any.whl```).
+- Go to the [Releases page](https://github.com/gabrielrih/VaultScan/releases/).
+- Find the latest version and download the ```.whl``` file (Example, ```vaultscan-0.1.0-py3-none-any.whl```).
 
 Or you can download it from the terminal:
 
 ```
-wget -O "vaultscan-0.3.3-py3-none-any.whl" "https://github.com/gabrielrih/VaultScan/releases/download/latest/vaultscan-0.3.3-py3-none-any.whl"
+wget -O "vaultscan-0.1.0-py3-none-any.whl" "https://github.com/gabrielrih/VaultScan/releases/download/v0.1.0/vaultscan-0.1.0-py3-none-any.whl"
 ```
 
 - After downloading the .whl file, install it using pip:
 
 ```
-pip install --user vaultscan-0.3.3-py3-none-any.whl
+pip install --user vaultscan-0.1.0-py3-none-any.whl
 ```
 
 By doing that a ```vaultscan.exe``` file will be created probably on the folder: ```C:\Users\user\AppData\Roaming\Python\Python312\Scripts```. So, you must add this folder on the user PATH.
