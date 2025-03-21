@@ -1,9 +1,20 @@
 # CHANGELOG
 
 
+## v0.1.0-rc.3 (2025-03-21)
+
+### Bug Fixes
+
+- Poetry build
+  ([`cc3e5d4`](https://github.com/gabrielrih/VaultScan/commit/cc3e5d4503096169cc11f8cc5f6fd95e39fa955e))
+
+
 ## v0.1.0-rc.2 (2025-03-21)
 
 ### Continuous Integration
+
+- Building poetry on semantic-release command
+  ([`b46d9c6`](https://github.com/gabrielrih/VaultScan/commit/b46d9c6aca4f6deff1e8a577f466905db24caf4a))
 
 - Fix the publish error (it didnt upload the dist files)
   ([`d930403`](https://github.com/gabrielrih/VaultScan/commit/d930403dc95ed2deab244975d7e3e39954edd177))
