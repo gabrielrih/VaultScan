@@ -1,22 +1,6 @@
 # CHANGELOG
 
 
-## v0.1.0-rc.2 (2025-03-21)
-
-### Bug Fixes
-
-- Remove unused file
-  ([`faa363e`](https://github.com/gabrielrih/VaultScan/commit/faa363e47ef035584bb233c883519e62452f00be))
-
-### Continuous Integration
-
-- Changing messages
-  ([`28917da`](https://github.com/gabrielrih/VaultScan/commit/28917dad46d62f1933a9b64cd08c76333abb7db0))
-
-- Remove unecessary code
-  ([`10739d4`](https://github.com/gabrielrih/VaultScan/commit/10739d40f6aa7c1ddcaff17d64f58f921f098fee))
-
-
 ## v0.1.0-rc.1 (2025-03-21)
 
 ### Bug Fixes
@@ -95,6 +79,9 @@
   ([`e3f4125`](https://github.com/gabrielrih/VaultScan/commit/e3f41255899046783e0fab175bc2f98416027b70))
 
 - Remove unused file
+  ([`faa363e`](https://github.com/gabrielrih/VaultScan/commit/faa363e47ef035584bb233c883519e62452f00be))
+
+- Remove unused file
   ([`0794303`](https://github.com/gabrielrih/VaultScan/commit/07943034bebf3d1ab5e4806dda99040b28fe622c))
 
 - Removing not usaed unit tests
@@ -132,6 +119,12 @@
 - Change semantic_release configuration to be generic for all the branches
   ([`ad88909`](https://github.com/gabrielrih/VaultScan/commit/ad889097f6ab7f100423db08a8d12782489fd551))
 
+- Change tag output from env to output style
+  ([`ec779bf`](https://github.com/gabrielrih/VaultScan/commit/ec779bf0690a15a14ecb5eb65a6db64d66e70412))
+
+- Changing messages
+  ([`28917da`](https://github.com/gabrielrih/VaultScan/commit/28917dad46d62f1933a9b64cd08c76333abb7db0))
+
 - Create a release
   ([`b740e4e`](https://github.com/gabrielrih/VaultScan/commit/b740e4ec1cd745a2101582f5ed3f772b6093f6c2))
 
@@ -143,6 +136,12 @@
 
 - Fix the publish error (it didnt upload the dist files)
   ([`cccafce`](https://github.com/gabrielrih/VaultScan/commit/cccafced4daddea2365e96029d8979ca5ec59383))
+
+- Fixing warning message 'The set-output command is deprecated '
+  ([`5757241`](https://github.com/gabrielrih/VaultScan/commit/5757241174c1db73d18ac4b90492b3192bd4eeee))
+
+- Fixing warning message 'The set-output command is deprecated '
+  ([`8623423`](https://github.com/gabrielrih/VaultScan/commit/8623423879ae27adef7eab8673124e45ae43dd5d))
 
 - Generate new version using semantic-release, updating version on Poetry and then publishing the
   package
@@ -156,6 +155,9 @@
 
 - Publish package on GitHub Packages
   ([`829aa79`](https://github.com/gabrielrih/VaultScan/commit/829aa794f4ee36ca9fbb5e1fe0267ce9c7a82716))
+
+- Remove unecessary code
+  ([`10739d4`](https://github.com/gabrielrih/VaultScan/commit/10739d40f6aa7c1ddcaff17d64f58f921f098fee))
 
 - Run release just when merging to main
   ([`1dedfda`](https://github.com/gabrielrih/VaultScan/commit/1dedfdab0d634bac71f2cd714126307bbf3aace1))
