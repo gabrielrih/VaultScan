@@ -1,22 +1,6 @@
 # CHANGELOG
 
 
-## v0.1.1-rc.1 (2025-03-21)
-
-### Bug Fixes
-
-- Conflicts
-  ([`d759c13`](https://github.com/gabrielrih/VaultScan/commit/d759c1303c49f01b65bbfbc5ea084dea0c757d3f))
-
-
-## v0.1.0-rc.1 (2025-03-21)
-
-### Bug Fixes
-
-- Conflicts
-  ([`7bed9b4`](https://github.com/gabrielrih/VaultScan/commit/7bed9b40469bea31bb92076eb10f141c98450153))
-
-
 ## v0.1.0 (2025-03-21)
 
 ### Bug Fixes
@@ -35,6 +19,12 @@
 
 - Comment out unit test using keyring without mock
   ([`a148bae`](https://github.com/gabrielrih/VaultScan/commit/a148bae237cc94b8786182842a0a5ed583ea03a9))
+
+- Conflicts
+  ([`d759c13`](https://github.com/gabrielrih/VaultScan/commit/d759c1303c49f01b65bbfbc5ea084dea0c757d3f))
+
+- Conflicts
+  ([`7bed9b4`](https://github.com/gabrielrih/VaultScan/commit/7bed9b40469bea31bb92076eb10f141c98450153))
 
 - Generating new version
   ([`46e3bbc`](https://github.com/gabrielrih/VaultScan/commit/46e3bbca4c4ceea0cf018997437a0833acd9862f))
