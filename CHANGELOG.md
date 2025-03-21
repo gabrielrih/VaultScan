@@ -1,7 +1,23 @@
 # CHANGELOG
 
 
+## v0.1.1-rc.1 (2025-03-21)
+
+### Bug Fixes
+
+- Conflicts
+  ([`d759c13`](https://github.com/gabrielrih/VaultScan/commit/d759c1303c49f01b65bbfbc5ea084dea0c757d3f))
+
+
 ## v0.1.0-rc.1 (2025-03-21)
+
+### Bug Fixes
+
+- Conflicts
+  ([`7bed9b4`](https://github.com/gabrielrih/VaultScan/commit/7bed9b40469bea31bb92076eb10f141c98450153))
+
+
+## v0.1.0 (2025-03-21)
 
 ### Bug Fixes
 
