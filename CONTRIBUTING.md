@@ -26,7 +26,7 @@ vaultscan/
 - CLI Interface: The user-facing part of your tool. See [click](https://click.palletsprojects.com/en/stable/) library.
 - Output: Classes to print out messages. See [logging](https://docs.python.org/3/library/logging.html).
 - DataCipher: It allows to encrypt/decrypt data using a global key. See [cryptography.fernet](https://cryptography.io/en/latest/fernet/).
-- Scanner: The main and more abastract class to search secrets on vaults.
+- Scanner: The main and more abstract class to search secrets on vaults.
 - GlobalConfigs: For managing configuration values.
 
 **Lower level**
@@ -49,7 +49,7 @@ To use the cli just run:
 vaultscan --help
 ```
 
-I also recomend the use of [pyenv](https://github.com/pyenv-win/pyenv-win) to allow you to install and manage multiple Python version in your machine.
+I also recommend the use of [pyenv](https://github.com/pyenv-win/pyenv-win) to allow you to install and manage multiple Python version in your machine.
 
 
 ## Guidelines
@@ -68,7 +68,7 @@ It makes it easy to manage and add new friendly user messages.
 
 To print messages it uses the [logger](./vaultscan/core/output/logger.py) implementation. The *logger* allow us to customize the type of message by info, warning, error, success and debug.
 
-> Note that the debug message is not consider a friendly message since it's not show by default to the user. So it does not make sense to put those messages on the [friendly_messages](./vaultscan/core/friendly_messages.py) class.
+> Note that the debug message is not consider a friendly message since it's not shown by default to the user. So it does not make sense to put those messages on the [friendly_messages](./vaultscan/core/friendly_messages.py) class.
 
 4. **When implementing a new engine you should:**
 

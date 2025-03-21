@@ -92,7 +92,7 @@ Each vault engine has its own authentication method. Below is an overview of how
 
 The [Azure Key Vault](https://azure.microsoft.com/en-us/) engine uses the [```DefaultAzureCredential```](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.defaultazurecredential?view=azure-dotnet) class for authentication and authorization. This class can uses environment variable, managed identity or even the ```az cli```.
 
-The easiest and **recommended** way to authenticate is by using az cli. 
+The easiest and **recommended** way to authenticate is by using ```az cli```. 
 
 But, you could also use a service principal by setting the following environment variables:
 
