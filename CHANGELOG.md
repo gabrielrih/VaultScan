@@ -1,43 +1,7 @@
 # CHANGELOG
 
 
-## v0.1.0-rc.5 (2025-03-21)
-
-### Bug Fixes
-
-- Poetry build
-  ([`db7ee4f`](https://github.com/gabrielrih/VaultScan/commit/db7ee4f39de60fa65554c276c0e799d1eee1914a))
-
-
-## v0.1.0-rc.4 (2025-03-21)
-
-
-## v0.1.0-rc.3 (2025-03-21)
-
-### Bug Fixes
-
-- Poetry build
-  ([`4778d9d`](https://github.com/gabrielrih/VaultScan/commit/4778d9d65d4f6e5210edd9e7126291d8f43b831e))
-
-- Poetry build
-  ([`cc3e5d4`](https://github.com/gabrielrih/VaultScan/commit/cc3e5d4503096169cc11f8cc5f6fd95e39fa955e))
-
-
-## v0.1.0-rc.2 (2025-03-21)
-
-### Continuous Integration
-
-- Building poetry on semantic-release command
-  ([`b46d9c6`](https://github.com/gabrielrih/VaultScan/commit/b46d9c6aca4f6deff1e8a577f466905db24caf4a))
-
-- Fix the publish error (it didnt upload the dist files)
-  ([`d930403`](https://github.com/gabrielrih/VaultScan/commit/d930403dc95ed2deab244975d7e3e39954edd177))
-
-- Fix the publish error (it didnt upload the dist files)
-  ([`cccafce`](https://github.com/gabrielrih/VaultScan/commit/cccafced4daddea2365e96029d8979ca5ec59383))
-
-
-## v0.1.0-rc.1 (2025-03-11)
+## v0.1.0-rc.1 (2025-03-21)
 
 ### Bug Fixes
 
@@ -82,6 +46,15 @@
 
 - New package version
   ([`b9e3020`](https://github.com/gabrielrih/VaultScan/commit/b9e3020bddd07d3662012dcdb35db8c7286076be))
+
+- Poetry build
+  ([`db7ee4f`](https://github.com/gabrielrih/VaultScan/commit/db7ee4f39de60fa65554c276c0e799d1eee1914a))
+
+- Poetry build
+  ([`4778d9d`](https://github.com/gabrielrih/VaultScan/commit/4778d9d65d4f6e5210edd9e7126291d8f43b831e))
+
+- Poetry build
+  ([`cc3e5d4`](https://github.com/gabrielrih/VaultScan/commit/cc3e5d4503096169cc11f8cc5f6fd95e39fa955e))
 
 - Printing in table format
   ([`6ea8c70`](https://github.com/gabrielrih/VaultScan/commit/6ea8c70b36c816cb5a92bdd9dc46fd6c16ed27de))
@@ -130,11 +103,23 @@
 - Add dependency between package and unit tests
   ([`0a278ab`](https://github.com/gabrielrih/VaultScan/commit/0a278abaecfcebe6dc4e39d517aed0590c49c009))
 
+- Building poetry on semantic-release command
+  ([`b46d9c6`](https://github.com/gabrielrih/VaultScan/commit/b46d9c6aca4f6deff1e8a577f466905db24caf4a))
+
+- Change semantic_release configuration to be generic for all the branches
+  ([`ad88909`](https://github.com/gabrielrih/VaultScan/commit/ad889097f6ab7f100423db08a8d12782489fd551))
+
 - Create a release
   ([`b740e4e`](https://github.com/gabrielrih/VaultScan/commit/b740e4ec1cd745a2101582f5ed3f772b6093f6c2))
 
 - Create a release
   ([`6e9f1db`](https://github.com/gabrielrih/VaultScan/commit/6e9f1dbaec7c4895c414a2193d3af30c180c43e7))
+
+- Fix the publish error (it didnt upload the dist files)
+  ([`d930403`](https://github.com/gabrielrih/VaultScan/commit/d930403dc95ed2deab244975d7e3e39954edd177))
+
+- Fix the publish error (it didnt upload the dist files)
+  ([`cccafce`](https://github.com/gabrielrih/VaultScan/commit/cccafced4daddea2365e96029d8979ca5ec59383))
 
 - Generate new version using semantic-release, updating version on Poetry and then publishing the
   package
