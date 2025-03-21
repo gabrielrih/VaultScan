@@ -44,12 +44,11 @@ assets = [
 # The NEW_VERSION variable is automatically injected by semantic_release: https://python-semantic-release.readthedocs.io/en/latest/configuration.html#build-command
 build_command = "poetry version $NEW_VERSION && poetry install --no-interaction && poetry build && ls ./dist/"
 
-[tool.semantic_release.branches.main]
+[tool.semantic_release.branches.release]
 match = "(main|master)"
-prerelease_token = "rc"
 prerelease = false
 
-[tool.semantic_release.branches.semver]
-match = "feat/semver"
-#prerelease_token = "rc"
-#prerelease = true
+[tool.semantic_release.branches.prerelease]
+match = ".*"
+prerelease_token = "rc"
+prerelease = true
