@@ -1,6 +1,6 @@
 [project]
 name = "VaultScan"
-version = "0.3.3"
+dynamic = ["version"]
 description = "Searching objects across vaults"
 authors = [
     {name = "gabrielrih@gmail.com"}
@@ -18,6 +18,9 @@ dependencies = [
 ]
 packages = [{ include = "vaultscan" }]
 
+[tool.poetry]
+version = "1.0.0-dev"
+
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
@@ -30,3 +33,18 @@ pytest = "^8.3.4"
 coverage = "^7.6.12"
 pytest-console-scripts = "^1.4.1"
 
+[tool.semantic_release]
+version_variables = [
+    "vaultscan/__init__.py:__version__"
+]
+# The NEW_VERSION variable is automatically injected by semantic_release: https://python-semantic-release.readthedocs.io/en/latest/configuration.html#build-command
+build_command = "poetry version $NEW_VERSION && poetry build && ls -ls ./dist/"
+
+[tool.semantic_release.branches.release]
+match = "(main|master)"
+prerelease = false
+
+[tool.semantic_release.branches.prerelease]
+match = ".*"
+prerelease_token = "rc"
+prerelease = true
