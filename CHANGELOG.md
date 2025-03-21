@@ -1,6 +1,18 @@
 # CHANGELOG
 
 
+## v0.1.0-rc.2 (2025-03-21)
+
+### Bug Fixes
+
+- Generating package on the artifacts folder instead of the dist (because the dist is on the
+  .gitignore file)
+  ([`b92358c`](https://github.com/gabrielrih/VaultScan/commit/b92358cb265289b3fd86aa02ec5e8c99b4a92192))
+
+- Generating package on the dist folder instead of the artifacts
+  ([`80a861f`](https://github.com/gabrielrih/VaultScan/commit/80a861fd7fa68e43b224495f849de92ad5219571))
+
+
 ## v0.1.0-rc.1 (2025-03-21)
 
 ### Bug Fixes
