@@ -1,6 +1,14 @@
 # CHANGELOG
 
 
+## v0.1.0 (2025-03-21)
+
+### Continuous Integration
+
+- Fixing warning message 'The set-output command is deprecated '
+  ([`5757241`](https://github.com/gabrielrih/VaultScan/commit/5757241174c1db73d18ac4b90492b3192bd4eeee))
+
+
 ## v0.1.0-rc.2 (2025-03-21)
 
 ### Bug Fixes
@@ -12,6 +20,9 @@
 
 - Changing messages
   ([`28917da`](https://github.com/gabrielrih/VaultScan/commit/28917dad46d62f1933a9b64cd08c76333abb7db0))
+
+- Fixing warning message 'The set-output command is deprecated '
+  ([`8623423`](https://github.com/gabrielrih/VaultScan/commit/8623423879ae27adef7eab8673124e45ae43dd5d))
 
 - Remove unecessary code
   ([`10739d4`](https://github.com/gabrielrih/VaultScan/commit/10739d40f6aa7c1ddcaff17d64f58f921f098fee))
