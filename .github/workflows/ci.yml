@@ -57,8 +57,15 @@ jobs:
     - name: Release
       id: release
       run: |
-        echo "🔹Using semantic-release to generate the new release version"
-        semantic-release version --vcs-release --tag
+        # Trigger final release for push to main
+        if [[ "${{ github.event_name }}" == "push" ]]; then
+          echo "🔹Using semantic-release to generate the release version"
+          semantic-release version --vcs-release --tag
+        else
+          # Trigger pre-release for PRs
+          echo "🔹Using semantic-release to generate the pre-release version"
+          semantic-release version --as-prerelease --vcs-release --tag
+        fi
       
         echo "🔹Getting the generated tag"
         GENERATED_TAG=$(git describe --tags --abbrev=0)
