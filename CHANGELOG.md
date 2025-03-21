@@ -1,6 +1,17 @@
 # CHANGELOG
 
 
+## v0.1.0-rc.2 (2025-03-21)
+
+### Continuous Integration
+
+- Fix the publish error (it didnt upload the dist files)
+  ([`d930403`](https://github.com/gabrielrih/VaultScan/commit/d930403dc95ed2deab244975d7e3e39954edd177))
+
+- Fix the publish error (it didnt upload the dist files)
+  ([`cccafce`](https://github.com/gabrielrih/VaultScan/commit/cccafced4daddea2365e96029d8979ca5ec59383))
+
+
 ## v0.1.0-rc.1 (2025-03-11)
 
 ### Bug Fixes
