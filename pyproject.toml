@@ -41,8 +41,8 @@ assets = [
     "dist/*.tar.gz",
     "dist/*.whl"
 ]
-#build_command = ".\build_package.sh"
-build_command = "poetry version $NEW_VERSION && poetry build"
+# The NEW_VERSION variable is automatically injected by semantic_release: https://python-semantic-release.readthedocs.io/en/latest/configuration.html#build-command
+build_command = "poetry version $NEW_VERSION && poetry install --no-interaction && poetry build && ls ./dist/"
 
 [tool.semantic_release.branches.main]
 match = "(main|master)"
