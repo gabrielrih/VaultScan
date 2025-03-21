@@ -38,8 +38,8 @@ version_variables = [
     "vaultscan/__init__.py:__version__"
 ]
 assets = [
-    "dist/*.tar.gz",
-    "dist/*.whl"
+    "./dist/*.tar.gz",
+    "./dist/*.whl"
 ]
 # The NEW_VERSION variable is automatically injected by semantic_release: https://python-semantic-release.readthedocs.io/en/latest/configuration.html#build-command
 build_command = "poetry version $NEW_VERSION && poetry install --no-interaction && poetry build && ls ./dist/"
