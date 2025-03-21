@@ -54,12 +54,19 @@ jobs:
     - name: Install python-semantic-release
       run: |
         pip install python-semantic-release
-    - name: Run Semantic Release
+    - name: Release
       run: |
         echo "🔹Using semantic-release to generate the new pre-release version"
         semantic-release version --as-prerelease --vcs-release --tag
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload artifacts on release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: "dist/*"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     # - name: Run Semantic Release (Versioning Only)
     #   run: |
     #     echo "🔹Generating a new package version and a tag using semver"
