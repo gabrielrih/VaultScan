@@ -1,9 +1,15 @@
 # CHANGELOG
 
 
+## v0.1.0-rc.4 (2025-03-21)
+
+
 ## v0.1.0-rc.3 (2025-03-21)
 
 ### Bug Fixes
+
+- Poetry build
+  ([`4778d9d`](https://github.com/gabrielrih/VaultScan/commit/4778d9d65d4f6e5210edd9e7126291d8f43b831e))
 
 - Poetry build
   ([`cc3e5d4`](https://github.com/gabrielrih/VaultScan/commit/cc3e5d4503096169cc11f8cc5f6fd95e39fa955e))
