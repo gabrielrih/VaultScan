@@ -1,18 +1,6 @@
 # CHANGELOG
 
 
-## v0.1.0-rc.2 (2025-03-21)
-
-### Bug Fixes
-
-- Generating package on the artifacts folder instead of the dist (because the dist is on the
-  .gitignore file)
-  ([`b92358c`](https://github.com/gabrielrih/VaultScan/commit/b92358cb265289b3fd86aa02ec5e8c99b4a92192))
-
-- Generating package on the dist folder instead of the artifacts
-  ([`80a861f`](https://github.com/gabrielrih/VaultScan/commit/80a861fd7fa68e43b224495f849de92ad5219571))
-
-
 ## v0.1.0-rc.1 (2025-03-21)
 
 ### Bug Fixes
@@ -40,6 +28,13 @@
 
 - Generating new version
   ([`bea1845`](https://github.com/gabrielrih/VaultScan/commit/bea1845bd1c619fce7b23fefa2f41992108bd453))
+
+- Generating package on the artifacts folder instead of the dist (because the dist is on the
+  .gitignore file)
+  ([`b92358c`](https://github.com/gabrielrih/VaultScan/commit/b92358cb265289b3fd86aa02ec5e8c99b4a92192))
+
+- Generating package on the dist folder instead of the artifacts
+  ([`80a861f`](https://github.com/gabrielrih/VaultScan/commit/80a861fd7fa68e43b224495f849de92ad5219571))
 
 - Generating release on GitHub
   ([`4479fd7`](https://github.com/gabrielrih/VaultScan/commit/4479fd720c6d5827565f7584eb14763a95ef99dd))
@@ -140,6 +135,9 @@
 - Generating a latest release
   ([`d2fd021`](https://github.com/gabrielrih/VaultScan/commit/d2fd021fdb937a8758eda7ff23c0406ecc1a8e36))
 
+- Getting tag and using to upload artifacts
+  ([`a660a7d`](https://github.com/gabrielrih/VaultScan/commit/a660a7dd5f61b867272c078629b244f0d0e1b233))
+
 - Publish package on GitHub Packages
   ([`829aa79`](https://github.com/gabrielrih/VaultScan/commit/829aa794f4ee36ca9fbb5e1fe0267ce9c7a82716))
 
@@ -166,6 +164,12 @@
 
 - Trying to install keyrings.alt to be used on github actions
   ([`2b1c030`](https://github.com/gabrielrih/VaultScan/commit/2b1c0308b1920f9a7bf5d73e0e5c963041289410))
+
+- Upload dist artifacts without commiting it
+  ([`28d618d`](https://github.com/gabrielrih/VaultScan/commit/28d618d149647986569ce4bced7818f5b30f3833))
+
+- Upload dist artifacts without commiting it
+  ([`c55725b`](https://github.com/gabrielrih/VaultScan/commit/c55725bc351f984c7cf79e23f9e18a7de4d92c10))
 
 ### Features
 
