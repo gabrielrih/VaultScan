@@ -65,8 +65,9 @@ jobs:
         echo "Generated tag: $GENERATED_TAG"
         
         echo "🔹Setting the tag as an output for use in subsequent steps"
-        echo "tag=$GENERATED_TAG" >> $GITHUB_ENV
-        echo "::set-output name=tag::$GENERATED_TAG"
+        # echo "tag=$GENERATED_TAG" >> $GITHUB_ENV
+        # echo "::set-output name=tag::$GENERATED_TAG"
+        echo "tag=$GENERATED_TAG" >> $GITHUB_OUTPUT
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Upload artifacts on release
