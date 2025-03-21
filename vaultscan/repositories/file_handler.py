@@ -1,21 +1,43 @@
 import os
 
+from abc import ABC, abstractmethod
 from json import load, dump
-from typing import List, Dict
+from typing import List, Dict, Any
 
 from vaultscan.util.user import CurrentUser
 
 
-class JSONFileHandler:
-    ''' It handles a JSON file on a given folder '''
+
+class FileHandler(ABC):
     def __init__(self, folder_name: str, filename: str):
         self._filename = filename
-        self.folder = DefaultConfigFolder(name = folder_name)
-        self.folder.create_if_doesnt_exist()
+        self.folder_name = folder_name
 
     @property
     def filename(self) -> str:
         return self._filename
+    
+    @property
+    @abstractmethod
+    def path(self) -> str: pass
+
+    @property
+    @abstractmethod
+    def exists(self) -> bool: pass
+
+    @abstractmethod
+    def read(self) -> Any: pass
+    
+    @abstractmethod
+    def write(self, content: Any) -> None: pass
+
+
+class JSONFileHandler(FileHandler):
+    ''' It handles a JSON file on a given folder '''
+    def __init__(self, folder_name, filename):
+        super().__init__(folder_name, filename)
+        self.folder = DefaultConfigFolder(name = folder_name)
+        self.folder.create_if_doesnt_exist()
 
     @property
     def path(self) -> str:
