@@ -65,8 +65,6 @@ jobs:
         echo "Generated tag: $GENERATED_TAG"
         
         echo "🔹Setting the tag as an environment variable to be used in subsequent steps"
-        #echo "tag=$GENERATED_TAG" >> $GITHUB_ENV
-        # echo "::set-output name=tag::$GENERATED_TAG"
         echo "tag=$GENERATED_TAG" >> $GITHUB_OUTPUT
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -76,7 +74,6 @@ jobs:
       if: steps.release.outputs.released == 'true'
       with:
         tag_name: ${{ steps.release.outputs.tag }}
-        #tag_name: ${{ env.TAG }}
         files: "dist/*"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
