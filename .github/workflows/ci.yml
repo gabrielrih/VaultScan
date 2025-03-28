@@ -32,6 +32,7 @@ jobs:
           poetry run coverage run -m pytest test/vaultscan/unit
           echo "Code coverage report:"
           poetry run coverage report
+          ls -ls
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
