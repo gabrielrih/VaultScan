@@ -32,6 +32,16 @@ jobs:
           poetry run coverage run -m pytest test/vaultscan/unit
           echo "Code coverage report:"
           poetry run coverage report
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage.xml
+          path: ./coverage.xml
   release:
     runs-on: ubuntu-latest
     name: Versioning and release
