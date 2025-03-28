@@ -30,6 +30,7 @@ jobs:
       - name: Run tests
         run: |
           poetry run coverage run -m pytest test/vaultscan/unit
+          poetry run coverage xml
           echo "Code coverage report:"
           poetry run coverage report
           ls -ls
