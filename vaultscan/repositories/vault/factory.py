@@ -14,5 +14,5 @@ class VaultRepositoryFactory:
     def create(type: VaultRepositoryType = VaultRepositoryType.JSON) -> VaultRepository:
         if type == VaultRepositoryType.JSON:
             file = JSONFileHandler(folder_name = '.vaultscan', filename = 'vaults.json')
-            return VaultRepositoryAsJson(file = file)
+            return VaultRepositoryAsJson(file)
         raise ValueError(f'The specified VaultRepositoryType {type} is not valid!')

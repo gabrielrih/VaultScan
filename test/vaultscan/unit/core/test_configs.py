@@ -10,7 +10,6 @@ from vaultscan.core.configs import (
 )
 
 
-
 class TestAvailableConfigs(TestCase):
     def test_check_type_when_verbose_config(self):
         config = AvailableConfigs.VERBOSE
@@ -108,7 +107,6 @@ class TestConfigManager(TestCase):
 
         # Then
         self.assertEqual(value, expected_value_as_string)
-
 
 
 class TestConfigValidator(TestCase):

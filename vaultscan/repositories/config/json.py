@@ -1,16 +1,13 @@
 from typing import List, Dict
 
 from vaultscan.repositories.config.base import ConfigRepository, Config
-from vaultscan.repositories.file_handler import JSONFileHandler
+from vaultscan.repositories.file_handler import FileHandler
 
 
 class ConfigRepositoryAsJson(ConfigRepository):
     ''' Repository implementation to persist the configurations on a file '''
-    def __init__(self):
-        self.file = JSONFileHandler(
-            folder_name = '.vaultscan',
-            filename = 'configs.json'
-        )
+    def __init__(self, file: FileHandler):
+        self.file = file
         if not self.file.exists:
             self.initialize()
 
@@ -38,8 +35,6 @@ class ConfigRepositoryAsJson(ConfigRepository):
     def unset(self, name: str) -> None:
         content: Dict = self.file.read()
         configs: List[Dict] = content['configs']
-        if not configs:
-            return
         for config in configs:
             if config['name'] == name:
                 configs.remove(config)
