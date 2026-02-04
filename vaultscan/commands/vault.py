@@ -163,9 +163,9 @@ def list(output_format: str) -> None:
     ''' List all vaults on the configuration '''
     logger.debug(f'Args: {str(locals())}')
     vaults = repository.get_all()
-    logger.info(
-        VaultMessages.NUMBER_OF_VAULTS_FOUND.value.format(quantity = len(vaults))
-    )
     OutputHandler(
         format = OutputFormat(output_format)
     ).print(vaults)
+    logger.info(
+        VaultMessages.NUMBER_OF_VAULTS_FOUND.value.format(quantity = len(vaults))
+    )

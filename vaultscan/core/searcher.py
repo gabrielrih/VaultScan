@@ -48,8 +48,6 @@ class MultiVaultSearcher(Searcher):
                     secrets.extend(future.result())
                 except Exception as e:
                     logger.error("Error searching vault: %s", e)
-        message = SecretMessages.NUMBER_OF_SECRETS_FOUND.value.format(quantity = len(secrets))
-        logger.info(message)
         return secrets
     
     def _find_on_vault(self, vault: Dict, filter: str, is_value: bool) -> List[Dict]:
@@ -69,5 +67,10 @@ class MultiVaultSearcher(Searcher):
             type = self.filter_type,
             is_value = is_value
         )
-        # Convert each secret to a dict
-        return [ secret.__dict__ for secret in secrets]
+        
+        # Converter each secret to dict.
+        # Include the "value" field just when is_value = True
+        return [
+            {k: v for k, v in secret.__dict__.items() if not (k == 'value' and not is_value)}
+            for secret in secrets
+        ]

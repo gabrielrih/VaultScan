@@ -6,7 +6,7 @@ from vaultscan.util.package import PACKAGE_NAME
 class TestCliVersionCommand():
     def test_show_version(self):
         # Given
-        expected_output_message = f'{PACKAGE_NAME} version:'
+        expected_output_message = f'{PACKAGE_NAME} installed version:'
 
         # When
         result = subprocess.run(
