@@ -22,9 +22,7 @@ class TestCliVaultCommand:
         result_add = subprocess.run(
             ['vaultscan', 'vault', 'add', 'keyvault',
              '--alias', vault_name,
-             '--vault-name', vault_name,
-             '--rg', 'fake-rg',
-             '--subscription-id', 'fake-subscription-id'],  # Simulating the CLI execution
+             '--vault-name', vault_name],  # Simulating the CLI execution
             capture_output = True,  # Capture stdout and stderr
             text = True  # Decode output as text (instead of bytes)
         )
@@ -53,15 +51,13 @@ class TestCliVaultCommand:
         result_add = subprocess.run(
             ['vaultscan', 'vault', 'add', 'keyvault',
              '--alias', old_vault_name,
-             '--vault-name', old_vault_name,
-             '--rg', 'fake-rg',
-             '--subscription-id', 'fake-subscription-id'],  # Simulating the CLI execution
+             '--vault-name', old_vault_name],  # Simulating the CLI execution
             capture_output = True,  # Capture stdout and stderr
             text = True  # Decode output as text (instead of bytes)
         )
         result_rename = subprocess.run(
             ['vaultscan', 'vault', 'rename',
-             '--old-alias', old_vault_name,
+             '--alias', old_vault_name,
              '--new-alias', new_vault_name],  # Simulating the CLI execution
             capture_output = True,  # Capture stdout and stderr
             text = True  # Decode output as text (instead of bytes)
