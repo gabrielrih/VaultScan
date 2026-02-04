@@ -70,7 +70,6 @@ class MultiVaultSearcher(Searcher):
         
         # Converter each secret to dict.
         # Include the "value" field just when is_value = True
-        #return [ secret.__dict__ for secret in secrets]
         return [
             {k: v for k, v in secret.__dict__.items() if not (k == 'value' and not is_value)}
             for secret in secrets
