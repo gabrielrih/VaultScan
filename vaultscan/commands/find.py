@@ -39,29 +39,35 @@ DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(
               is_flag = True,
               required = False,
               help = 'Show the value of the secrets')
+@click.option('--count-only',
+              is_flag = True,
+              required = False,
+              help = 'Show only the count of secrets')
 @click.option('--output-format', '-o',
               type = click.Choice(OutputFormat.get_values()),
               required = False,
               default = DEFAULT_OUTPUT_FORMAT.value,
               help = 'Output format')
 @time_execution
-def secrets(filter: str, only_vault: str, exact: bool, show_values: bool, output_format: str) -> None:
+def secrets(filter: str, only_vault: str, exact: bool, show_values: bool, count_only: bool, output_format: str) -> None:
     ''' Find secrets across vaults '''
     logger.debug(f'Args: {str(locals())}')
     vaults = get_vaults(only_vault = only_vault)
     if not vaults:
         logger.error(VaultMessages.NO_VAULTS.value)
         return
+
     scanner = MultiVaultSearcherFactory.create(vaults = vaults, exact_match = exact)
-    secrets: List[Dict] = scanner.find(
-        filter = filter,
-        is_value = show_values
-    )
+
+    # When we just want to count the secrets, there is no need to get their values
+    should_fetch_values: bool = show_values and not count_only
+    secrets: List[Dict] = scanner.find(filter = filter, is_value = should_fetch_values)
+
+    if count_only:
+        logger.info(SecretMessages.NUMBER_OF_SECRETS_FOUND.value.format(quantity = len(secrets)))
+        return
+    
     OutputHandler(
         format = OutputFormat(output_format)
     ).print(secrets)
-    logger.info(
-        SecretMessages.NUMBER_OF_SECRETS_FOUND.value.format(
-            quantity = len(secrets)
-        )
-    )
+    logger.info(SecretMessages.NUMBER_OF_SECRETS_FOUND.value.format(quantity = len(secrets)))
