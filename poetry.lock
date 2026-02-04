@@ -568,6 +568,20 @@ python-dateutil = "*"
 pytz = "*"
 
 [[package]]
+name = "dotenv"
+version = "0.9.9"
+description = "Deprecated package"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "dotenv-0.9.9-py2.py3-none-any.whl", hash = "sha256:29cf74a087b31dafdb5a446b6d7e11cbce8ed2741540e2339c69fbef92c94ce9"},
+]
+
+[package.dependencies]
+python-dotenv = "*"
+
+[[package]]
 name = "idna"
 version = "3.10"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -1326,4 +1340,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11"
-content-hash = "2a78cbe9931037604da78697255d3345aff538cc2f2eefc0728a7b76164ee9b0"
+content-hash = "cca2f71d3520464ea747bbddf12de9763026af5648c70e36db57677de0a2b5f4"

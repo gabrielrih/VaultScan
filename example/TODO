@@ -1,0 +1,9 @@
+BITWARDEN
+
+- Parar obter o organizationId, olhar na URL do bitarden conectando via browser:
+https://vault.bitwarden.com/#/organization/YOUR_ORGANIZATION_ID
+
+- Gerar um token no bitwarden: https://bitwarden.com/help/access-tokens/
+
+- É necessário incluir os projetos que você quer expor para a ferramenta no "Machine accounts" e dar as permissões.
+Caso contrário tu até consegue usar a SDK mas ele vai desconsiderar as secrets que estão nesse projeto.
