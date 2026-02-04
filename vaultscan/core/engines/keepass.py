@@ -73,15 +73,17 @@ class KeePassSecretEngine(BaseVaultEngine):
         '''
         entries = self.client.find_entries(recursive = True)
         for entry in entries:
-            entry_name = str(entry.title).lower()  # normalize the entry name
-            group_name = str(entry.group).lower()  # normalize the group
-            if not self.is_match([ entry_name, group_name ], filter, type):
-                continue
+
+            if filter:
+                entry_name = str(entry.title).lower()  # normalize the entry name
+                group_name = str(entry.group).lower()  # normalize the group
+                if not self.is_match([ entry_name, group_name ], filter, type):
+                    continue
+
             value = ''
             if is_value:
                 value = entry.password
-            secret_name = KeePassSecretEngine.\
-                format_secret_name(
+            secret_name = KeePassSecretEngine.format_secret_name(
                     group = str(entry.group),
                     secret = entry.title  # original name
                 )

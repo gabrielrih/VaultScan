@@ -25,7 +25,7 @@ DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(
 ).get_value()  # getting it from user configuration
 
 @find.command()
-@click.argument("filter")
+@click.argument("filter", required = False, default = '')
 @click.option('--only-vault',
               type = click.STRING,
               required = False,
@@ -56,12 +56,21 @@ def secrets(filter: str, only_vault: str, exact: bool, show_values: bool, count_
     if not vaults:
         logger.error(VaultMessages.NO_VAULTS.value)
         return
+    
+    if exact and not filter:
+        logger.warning(SecretMessages.WARNING_WHEN_EXACT_FLAG_USED_WITH_NO_FILTER.value)
+
+    if not filter and not only_vault:
+        logger.warning(SecretMessages.WARNING_WHEN_SEARCHING_ALL_SECRETS.value)
 
     scanner = MultiVaultSearcherFactory.create(vaults = vaults, exact_match = exact)
 
     # When we just want to count the secrets, there is no need to get their values
     should_fetch_values: bool = show_values and not count_only
-    secrets: List[Dict] = scanner.find(filter = filter, is_value = should_fetch_values)
+    secrets: List[Dict] = scanner.find(
+        filter = filter if filter else '',  # guarantees that filter is never None
+        is_value = should_fetch_values
+    )
 
     if count_only:
         logger.info(SecretMessages.NUMBER_OF_SECRETS_FOUND.value.format(quantity = len(secrets)))

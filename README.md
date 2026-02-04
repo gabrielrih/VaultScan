@@ -32,18 +32,18 @@ The main group commands available on this tool are:
 You can install this tool by downloading the latest ```.whl``` file from GitHub Releases and using pip.
 
 - Go to the [Releases page](https://github.com/gabrielrih/VaultScan/releases/).
-- Find the latest version and download the ```.whl``` file (Example, ```vaultscan-0.1.0-py3-none-any.whl```).
+- Find the latest version and download the ```.whl``` file (Example, ```vaultscan-1.0.0-py3-none-any.whl```).
 
 Or you can download it from the terminal:
 
 ```
-wget -O "vaultscan-0.1.0-py3-none-any.whl" "https://github.com/gabrielrih/VaultScan/releases/download/v0.1.0/vaultscan-0.1.0-py3-none-any.whl"
+wget -O "vaultscan-1.0.0-py3-none-any.whl" "https://github.com/gabrielrih/VaultScan/releases/download/v1.0.0/vaultscan-1.0.0-py3-none-any.whl"
 ```
 
 - After downloading the .whl file, install it using pip:
 
 ```
-pip install --user vaultscan-0.1.0-py3-none-any.whl
+pip install --user vaultscan-1.0.0-py3-none-any.whl
 ```
 
 By doing that a ```vaultscan.exe``` file will be created probably on the folder: ```C:\Users\user\AppData\Roaming\Python\Python312\Scripts```. So, you must add this folder on the user PATH.
@@ -164,6 +164,41 @@ Search for all secrets that match a given regex in an specific vault:
 vaultscan find secrets host --only-vault key_vault
 ```
 
+## Searching all secrets
+
+Search for all secrets in all vaults:
+
+```
+vaultscan find secrets
+```
+
+> This command can take a while if you are using a lot of vaults
+
+Search for all secrets in an specific vault:
+
+```
+vaultscan find secrets --only-vault key_vault
+```
+
+## Counting secrets
+
+Count for secrets that match a given regex in all vaults:
+
+```
+vaultscan find secrets my_secret_name --count-only
+```
+
+Count for secrets that match a given regex in an specific vault:
+
+```
+vaultscan find secrets my_secret --only-vault key_vault --count-only
+```
+
+Count for all secrets in an specific vault:
+
+```
+vaultscan find secrets --only-vault key_vault --count-only
+```
 
 # Supported OS & Limitations
 
