@@ -66,8 +66,9 @@ class KeyVaultSecretEngine(BaseVaultEngine):
         secrets: List[str] = self.client.get_all_secrets()
         for name in secrets:
             name = name.lower()  # normalize the secret name
-            if not self.is_match([ name ], filter, type):
-                continue
+            if filter:
+                if not self.is_match([ name ], filter, type):
+                    continue
             value = ''
             if is_value:
                 value = self.client.get_value(name)
@@ -92,19 +93,23 @@ class KeyVaultSecretEngineConcurrent(BaseVaultEngine):
         # Fetching all the secrets on the vault (without filter)
         secrets: List[str] = self.client.get_all_secrets()
 
-        # Filtering secret names based on your matching function.
-        # This reduces the set that may need the expensive "get_value" call.
-        filter = filter.lower()  # normalize the filter
-        matching_secrets = [ secret_name for secret_name in secrets if self.is_match([ secret_name.lower() ], filter, type) ]
+        if filter:
+            # Filtering secret names based on your matching function.
+            # This reduces the set that may need the expensive "get_value" call.
+            filter = filter.lower()  # normalize the filter
+            matching_secrets = [ 
+                secret_name for secret_name in secrets
+                if self.is_match([ secret_name.lower() ], filter, type) 
+            ]
+        else:
+            # no filter, so add all secrets
+            matching_secrets = secrets
 
         # Return secrets without its value
         response = list()
         if not is_value:
             response = [
-                Secret(
-                    vault = self.vault.alias,
-                    name = secret_name
-                )
+                Secret(vault = self.vault.alias, name = secret_name)
                 for secret_name in matching_secrets
             ]
             logger.debug(f'{len(response)} secrets found on KV {self.vault.alias} mathing the regex {filter}')

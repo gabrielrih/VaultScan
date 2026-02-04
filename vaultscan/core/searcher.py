@@ -5,7 +5,7 @@ from typing import List, Dict
 
 from vaultscan.core.engines.engines import AvailableEngines
 from vaultscan.core.engines.base import Secret, FilterType
-from vaultscan.core.friendly_messages import VaultMessages, SecretMessages
+from vaultscan.core.friendly_messages import VaultMessages
 from vaultscan.core.output.logger import LoggerFactory
 from vaultscan.repositories.vault.base import VaultStatus
 
@@ -29,14 +29,14 @@ class Searcher(ABC):
         logger.debug(f'All vaults: {self.vaults}')
 
     @abstractmethod
-    def find(self, filter: str, is_value: bool = False) -> List[Dict]: pass
+    def find(self, filter: str = '', is_value: bool = False) -> List[Dict]: pass
 
 
 class MultiVaultSearcher(Searcher):
     def __init__(self, vaults: List[Dict], filter_type: FilterType):
         super().__init__(vaults, filter_type)
 
-    def find(self, filter: str, is_value: bool = False) -> List[Dict]:
+    def find(self, filter: str = '', is_value: bool = False) -> List[Dict]:
         secrets: List[Dict] = list()
         with concurrent.futures.ThreadPoolExecutor(max_workers = 5) as executor:
             futures = [
@@ -50,7 +50,7 @@ class MultiVaultSearcher(Searcher):
                     logger.error("Error searching vault: %s", e)
         return secrets
     
-    def _find_on_vault(self, vault: Dict, filter: str, is_value: bool) -> List[Dict]:
+    def _find_on_vault(self, vault: Dict, filter: str = '', is_value: bool = False) -> List[Dict]:
         engine: AvailableEngines = AvailableEngines.from_type(type = vault['type'])
         vault = engine.config.from_dict(vault)
         if vault.status == VaultStatus.DISABLED:
