@@ -1,5 +1,6 @@
 # Pytest
 example_*.json
+example
 
 # pydeps
 vaultscan.svg
