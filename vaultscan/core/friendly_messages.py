@@ -35,6 +35,3 @@ class SecretMessages(Enum):
     NUMBER_OF_SECRETS_FOUND = '{quantity} secret(s) found!'
     WARNING_WHEN_EXACT_FLAG_USED_WITH_NO_FILTER = '--exact flag is ignored when no filter is provided'
     WARNING_WHEN_SEARCHING_ALL_SECRETS = 'No filter provided. Searching for all secrets across all vaults. This may take a while...'
-
-#logger.warning("This command can take a while")
-#logger.warning('No filter provided. Searching for all secrets across all vaults. This may take a while...')
