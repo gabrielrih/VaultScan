@@ -48,8 +48,6 @@ class MultiVaultSearcher(Searcher):
                     secrets.extend(future.result())
                 except Exception as e:
                     logger.error("Error searching vault: %s", e)
-        message = SecretMessages.NUMBER_OF_SECRETS_FOUND.value.format(quantity = len(secrets))
-        logger.info(message)
         return secrets
     
     def _find_on_vault(self, vault: Dict, filter: str, is_value: bool) -> List[Dict]:

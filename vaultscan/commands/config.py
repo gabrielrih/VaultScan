@@ -77,11 +77,11 @@ def list(output_format: str) -> None:
     ''' List configurations '''
     logger.debug(f'Args: {str(locals())}')
     configs = get_configs_current_and_default_values()
-    message = ConfigMessages.NUMBER_OF_CONFIGS_FOUND.value.format(quantity = len(configs))
-    logger.info(message)
     OutputHandler(
         format = OutputFormat(output_format)
     ).print(configs)
+    message = ConfigMessages.NUMBER_OF_CONFIGS_FOUND.value.format(quantity = len(configs))
+    logger.info(message)
 
 
 # FIX IT

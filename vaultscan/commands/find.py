@@ -5,7 +5,7 @@ from typing import List, Dict
 from vaultscan.core.vaults import get_vaults
 from vaultscan.core.searcher import MultiVaultSearcherFactory
 from vaultscan.core.configs import AvailableConfigs, ConfigManager
-from vaultscan.core.friendly_messages import VaultMessages
+from vaultscan.core.friendly_messages import VaultMessages, SecretMessages
 from vaultscan.core.output.time_execution import time_execution
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
 from vaultscan.core.output.logger import LoggerFactory
@@ -60,3 +60,8 @@ def secrets(filter: str, only_vault: str, exact: bool, show_values: bool, output
     OutputHandler(
         format = OutputFormat(output_format)
     ).print(secrets)
+    logger.info(
+        SecretMessages.NUMBER_OF_SECRETS_FOUND.value.format(
+            quantity = len(secrets)
+        )
+    )

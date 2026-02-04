@@ -15,7 +15,7 @@ class VaultMessages(Enum):
     VAULT_DISABLED = 'Ignoring vault "{alias}" because it is disabled'
     ALL_VAULTS_REMOVED = 'All the vaults has been removed from the configuration!'
     NO_VAULTS = 'No vaults found!'
-    NUMBER_OF_VAULTS_FOUND = '{quantity} vaults found!'
+    NUMBER_OF_VAULTS_FOUND = '{quantity} vault(s) found!'
     SEARCHING_ON_VAULT = 'Searching on vault "{alias}" of type "{type}"'
 
 
@@ -23,7 +23,7 @@ class ConfigMessages(Enum):
     CONFIG_SET = 'The config "{config}" was set using the given value!'
     CONFIG_RESET = 'The config "{config}" has been reverted to its original value!'
     INVALID_VALUE = 'The value "{value}" is not valid for the "{config}" configuration. The possible values are: {possible_values}'
-    NUMBER_OF_CONFIGS_FOUND = '{quantity} configs found!'
+    NUMBER_OF_CONFIGS_FOUND = '{quantity} config(s) found!'
 
 
 class VersionMessages(Enum):
@@ -32,4 +32,4 @@ class VersionMessages(Enum):
 
 
 class SecretMessages(Enum):
-    NUMBER_OF_SECRETS_FOUND = '{quantity} secrets found!'
+    NUMBER_OF_SECRETS_FOUND = '{quantity} secret(s) found!'
