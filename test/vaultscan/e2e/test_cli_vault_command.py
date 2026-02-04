@@ -20,7 +20,7 @@ class TestCliVaultCommand:
 
         # Adding it
         result_add = subprocess.run(
-            ['vaultscan', 'vault', 'add', 'kv',
+            ['vaultscan', 'vault', 'add', 'keyvault',
              '--alias', vault_name,
              '--vault-name', vault_name,
              '--rg', 'fake-rg',
@@ -51,7 +51,7 @@ class TestCliVaultCommand:
         # When
         # Add, rename and then remove the vault
         result_add = subprocess.run(
-            ['vaultscan', 'vault', 'add', 'kv',
+            ['vaultscan', 'vault', 'add', 'keyvault',
              '--alias', old_vault_name,
              '--vault-name', old_vault_name,
              '--rg', 'fake-rg',
@@ -77,7 +77,6 @@ class TestCliVaultCommand:
         assert result_rename.returncode == 0
         assert result_remove.returncode == 0
 
-    
     def test_list(self):
         # When
         result = subprocess.run(
