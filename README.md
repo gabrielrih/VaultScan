@@ -56,37 +56,6 @@ To see the installed version you can run:
 pip show vaultscan
 ```
 
-# Usage
-
-After installation, run the CLI with:
-
-```
-vaultscan --help
-```
-
-## Configuring the vaults
-First of all you must configure the vaults you want to use in the tool. This is a required step.
-
-### Configuring an Azure Key Vault
-
-```
-vaultscan vault add keyvault --alias mykv --vault-name vault
-```
-
-> vault_name on Azure are unique, so you does not need more information than that.
-
-### Configuring a Keepass database
-
-```
-vaultscan vault add keepass --alias my_keepass --path "C:\databases\passwords.kdbx"
-```
-
-Look at the configured vaults just running:
-
-```
-vaultscan vault list
-```
-
 ## Authentication & Engine configuration
 Each vault engine has its own authentication method. Below is an overview of how authentication works for supported engines:
 
@@ -127,6 +96,37 @@ vaultscan vault add keepass --help
 > The password is securely encrypted and saved on your local machine.
 
 **Limitation**: It supports Keepass database when using master key. If you're using a [Key File](https://keepass.info/help/base/keys.html) to protect your secrets the cli won't work.
+
+# Usage
+
+After installation, run the CLI with:
+
+```
+vaultscan --help
+```
+
+## Configuring the vaults
+First of all you must configure the vaults you want to use in the tool. This is a required step.
+
+### Configuring an Azure Key Vault
+
+```
+vaultscan vault add keyvault --alias mykv --vault-name vault
+```
+
+> vault_name on Azure are unique, so you does not need more information than that.
+
+### Configuring a Keepass database
+
+```
+vaultscan vault add keepass --alias my_keepass --path "C:\databases\passwords.kdbx"
+```
+
+Look at the configured vaults just running:
+
+```
+vaultscan vault list
+```
 
 ## Searching secrets by its exact name
 
