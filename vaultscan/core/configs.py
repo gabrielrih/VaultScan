@@ -19,7 +19,9 @@ class AvailableConfigs(Enum):
     '''
     VERBOSE = ('verbose', bool, 'False', [ 'True', 'False' ])
     OUTPUT_FORMAT = ('output_format', OutputFormat, OutputFormat.JSON.value, OutputFormat.get_values())
-    ENABLE_CONCURRENCY = ('enable_concurrency', bool, 'False', [ 'True', 'False' ])
+    ENABLE_CONCURRENCY = ('enable_concurrency', bool, 'True', [ 'True', 'False' ])
+    CACHE_ENABLED = ('cache_enabled', bool, 'True', [ 'True', 'False' ])
+    CACHE_TTL = ('cache_ttl', int, '600', None)
 
     def __init__(self, config_name: str, value_type: Type, default_value: str, possible_values: List[str]):
         self.config_name: str = config_name
@@ -83,6 +85,8 @@ class ConfigManager:
         ''' Convert a string value to the appropriate type '''
         if issubclass(value_type, bool):
             return value.lower() == 'true'
+        if issubclass(value_type, int):
+            return int(value)
         return value_type(value)
 
 
@@ -91,4 +95,22 @@ class ConfigValidator:
     @classmethod
     def is_a_valid_value(cls, config: AvailableConfigs, value: str) -> bool:
         ''' Check if the given value is allowed for the specified config '''
+        if config.possible_values is None:
+            # In this case accepts any value
+            return cls._validate_type(value, config.value_type)
         return value in config.possible_values
+
+    @classmethod
+    def _validate_type(cls, value: str, value_type: Type) -> bool:
+        ''' Validate if value can be converted to the expected type '''
+        try:
+            if issubclass(value_type, int):
+                int(value)
+                return True
+            if issubclass(value_type, bool):
+                return value.lower() in ['true', 'false']
+            # TO DO
+            # Add other types here if needed
+            return True
+        except (ValueError, TypeError):
+            return False

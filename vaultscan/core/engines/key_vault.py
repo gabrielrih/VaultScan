@@ -4,6 +4,7 @@ from typing import List, Dict, Type
 from dataclasses import dataclass, fields
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
+from azure.core.exceptions import ResourceNotFoundError, ClientAuthenticationError
 
 from vaultscan.core.engines.base import (
     FilterType,
@@ -11,6 +12,7 @@ from vaultscan.core.engines.base import (
     BaseVaultEngine,
     Secret
 )
+from vaultscan.core.cache.singleton import CacheManagerSingleton
 from vaultscan.core.configs import AvailableConfigs, ConfigManager
 from vaultscan.core.output.logger import LoggerFactory
 from vaultscan.repositories.vault.base import VaultStatus
@@ -71,7 +73,13 @@ class KeyVaultSecretEngine(BaseVaultEngine):
                     continue
             value = ''
             if is_value:
-                value = self.client.get_value(name)
+                try:
+                    value = self.client.get_value(name)
+                except Exception as exc:
+                    # it may happen if the secret is deleted when it's being processing
+                    # in this case it prints the error and then ignores the secret
+                    logger.warning("Error fetching value from secret %r: %s", name, exc)
+                    continue
             response.append(
                 Secret(
                     vault = self.vault.alias,
@@ -79,7 +87,6 @@ class KeyVaultSecretEngine(BaseVaultEngine):
                     value = value
                 )
             )
-        logger.debug(f'{len(response)} secrets found on KV {self.vault.alias} mathing the regex {filter}')
         return response
 
 
@@ -112,7 +119,6 @@ class KeyVaultSecretEngineConcurrent(BaseVaultEngine):
                 Secret(vault = self.vault.alias, name = secret_name)
                 for secret_name in matching_secrets
             ]
-            logger.debug(f'{len(response)} secrets found on KV {self.vault.alias} mathing the regex {filter}')
             return response
 
         # Return secrets with its value
@@ -123,9 +129,8 @@ class KeyVaultSecretEngineConcurrent(BaseVaultEngine):
                     response.append(future.result())
                 except Exception as exc:
                     logger.error("Error fetching secret %r: %s", future_to_name[future], exc)
-        logger.debug(f'{len(response)} secrets found on KV {self.vault.alias} mathing the regex {filter}')
         return response
-    
+
     def _fetch_secret_with_its_value(self, secret_name: str) -> Secret:
         value = self.client.get_value(secret_name)
         return Secret(
@@ -135,18 +140,41 @@ class KeyVaultSecretEngineConcurrent(BaseVaultEngine):
         )
 
 
+CACHE_ENABLED: bool = ConfigManager(
+    AvailableConfigs.CACHE_ENABLED
+).get_value()
 class KeyVaultSecretClient:
     def __init__(self, vault_name: str):
         self.vault_name = vault_name
+        self.cache = CacheManagerSingleton.get_instance() if CACHE_ENABLED else None
         self.client = SecretClient(
             vault_url = f"https://{vault_name}.vault.azure.net",
             credential = DefaultAzureCredential()
         )
 
     def get_all_secrets(self) -> List[str]:
-        return [ secret.name for secret in self.client.list_properties_of_secrets() ]
+        cache_key = f"keyvault:{self.vault_name}:secrets"
+        
+        if self.cache and self.cache.exists(cache_key):
+            return self.cache.get(cache_key)
+
+        logger.debug(f"Fetching secret names from Azure KV: {self.vault_name}")
+        secrets: List[str] = [ secret.name for secret in self.client.list_properties_of_secrets() ]
+        if self.cache:
+            self.cache.set(cache_key, secrets)
+        
+        return secrets
 
     def get_value(self, secret_name: str) -> str:
-        logger.debug(f'Getting value for {secret_name =} on {self.vault_name =}')
-        secret = self.client.get_secret(secret_name)
-        return str(secret.value)
+        logger.debug(f'Getting the latest value for {secret_name =} on {self.vault_name =}')
+        try:
+            secret = self.client.get_secret(secret_name)
+            return str(secret.value)
+        except ResourceNotFoundError:
+            raise KeyVaultSecretNotFound(f'Secret "{secret_name}" not found in vault "{self.vault_name}"')
+        except ClientAuthenticationError as e:
+            raise RuntimeError(f'Authentication failed when accessing Key Vault "{self.vault_name}"') from e
+
+
+class KeyVaultSecretNotFound(Exception):
+    pass

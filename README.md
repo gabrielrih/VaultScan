@@ -10,6 +10,7 @@ VaultScan is a CLI tool for searching objects across multiple vault engines, sup
 - [Usage](#usage)
     - [Configuring the vaults](#configuring-the-vaults)
     - [Searching secrets](#searching-secrets)
+    - [Managing cache](#managing-cache)
 - [Supported OS & Limitations](#supported-os--limitations)
 - [Contributing](#Contributing)
 
@@ -20,6 +21,7 @@ The main group commands available on this tool are:
 - **Vault:** To configure a list of vaults used for searching objects
 - **Find:** To find objects across vaults
 - **Config:** To manage configurations
+- **Cache:** To manage cache for improved performance
 
 # Installation
 
@@ -31,18 +33,18 @@ The main group commands available on this tool are:
 You can install this tool by downloading the latest ```.whl``` file from GitHub Releases and using pip.
 
 - Go to the [Releases page](https://github.com/gabrielrih/VaultScan/releases/).
-- Find the latest version and download the ```.whl``` file (Example, ```vaultscan-1.2.0-py3-none-any.whl```).
+- Find the latest version and download the ```.whl``` file (Example, ```vaultscan-1.3.0-py3-none-any.whl```).
 
 Or you can download it from the terminal:
 
 ```
-wget -O "vaultscan-1.2.0-py3-none-any.whl" "https://github.com/gabrielrih/VaultScan/releases/download/v1.2.0/vaultscan-1.2.0-py3-none-any.whl"
+wget -O "vaultscan-1.3.0-py3-none-any.whl" "https://github.com/gabrielrih/VaultScan/releases/download/v1.3.0/vaultscan-1.3.0-py3-none-any.whl"
 ```
 
 - After downloading the .whl file, install it using pip:
 
 ```
-pip install --user vaultscan-1.2.0-py3-none-any.whl
+pip install --user vaultscan-1.3.0-py3-none-any.whl
 ```
 
 By doing that a ```vaultscan.exe``` file will be created probably on the folder: ```C:\Users\user\AppData\Roaming\Python\Python312\Scripts```. So, you must add this folder on the user PATH.
@@ -203,6 +205,50 @@ Count for all secrets in an specific vault:
 vaultscan find secrets --only-vault key_vault --only-count
 ```
 
+## Managing cache
+
+VaultScan implements a disk-based cache system to improve performance when searching secrets across vaults. The cache stores secret names retrieved from vault engines (like Azure Key Vault) to reduce API calls and speed up subsequent searches.
+
+### Understanding the cache
+
+- **What is cached:** Only secret names are cached. Secret values are never cached for security reasons.
+- **Cache location:** `.cache/vaultscan` directory in your current working directory
+- **Default TTL:** 600 seconds (10 minutes)
+- **Automatic invalidation:** Cached entries expire automatically after the configured TTL
+
+To see cache statistics including number of cached keys and disk usage:
+
+```bash
+vaultscan cache status
+```
+
+Example output:
+```json
+{
+  "cache_dir": ".cache/vaultscan",
+  "stats": {
+    "total_keys": 15,
+    "size_bytes": 8192,
+    "size_mb": 0.01
+  },
+  "cache_enabled": true
+}
+```
+
+To clear all cached data:
+
+```bash
+vaultscan cache clear
+```
+
+### When to clear the cache
+
+You should clear the cache when:
+- You've added, removed, or renamed secrets in your vaults
+- You want to force a fresh fetch from the vault engines
+- You're troubleshooting unexpected search results
+- Cache data seems stale or corrupted
+
 # Supported OS & Limitations
 
 **Supported Operating Systems**
@@ -216,6 +262,11 @@ vaultscan find secrets --only-vault key_vault --only-count
 ```
 keyring.errors.NoKeyringError: No recommended backend was available. Install a recommended 3rd party backend package; or, install the keyrings.alt package if you want to use the non-recommended backends.
 ```
+
+- Cache Storage:
+    - Cache is stored in `.cache/vaultscan` directory relative to your current working directory
+    - Ensure you have write permissions in the directory where you run vaultscan
+    - Cache files are not automatically cleaned up when uninstalling the tool
 
 - CLI Dependencies:
     - Some features (like colored output) may depend on terminal capabilities.

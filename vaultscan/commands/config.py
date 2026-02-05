@@ -36,10 +36,11 @@ def set(name: str, value: str) -> None:
     if not is_valid_value:
         ''' It should never get in here because the click should validate
             the right option when using the click.Choice type '''
+        possible_values_msg = str(config.possible_values) if config.possible_values else f"any valid {config.value_type.__name__}"
         message = ConfigMessages.INVALID_VALUE.value.format(
             value = value,
             config = name,
-            possible_values = str(config.possible_values)
+            possible_values = possible_values_msg
         )
         logger.error(message)
         return
