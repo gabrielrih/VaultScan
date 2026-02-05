@@ -39,11 +39,16 @@ class DiskCacheProvider(CacheProviderBase):
     def get_stats(self) -> Dict:
         cache_path = Path(self.cache_dir)
         total_size = sum(f.stat().st_size for f in cache_path.rglob('*') if f.is_file())
+        keys_list = list(self._cache.iterkeys())
         return {
             'cache_dir': self.cache_dir,
-            'stats': {
+            'default_ttl_seconds': self.default_ttl,
+            'size': {
+                'bytes': total_size,
+                'mb': round(total_size / (1024 * 1024), 2),  
+            },
+            'keys': {
                 'total_keys': len(self._cache),
-                'size_bytes': total_size,
-                'size_mb': round(total_size / (1024 * 1024), 2)
+                'sample_keys': keys_list[:5] if keys_list else []  # Show first 5 keys as sample
             }
         }
