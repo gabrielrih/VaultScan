@@ -123,6 +123,18 @@ class TestVaultRepositoryAsJson(TestCase):
         expected_qty_of_vaults = 1
         self.assertEqual(len(vaults), expected_qty_of_vaults)
 
+    def test_get_all_using_filter_when_not_found(self):
+        vaults: List[Dict] = self.repository.get_all(filter = 'missing_vault_alias')
+        self.assertIsInstance(vaults, List)
+        expected_qty_of_vaults = 0
+        self.assertEqual(len(vaults), expected_qty_of_vaults)
+
+    def test_get_all_using_filter_when_found_it(self):
+        vaults: List[Dict] = self.repository.get_all(filter = ALREADY_EXISTED_VAULT_NAME)
+        self.assertIsInstance(vaults, List)
+        expected_qty_of_vaults = 1
+        self.assertEqual(len(vaults), expected_qty_of_vaults)
+
 
 class FakeJSONFileHandler(FileHandler):
     ''' Simulating the JSONFileHandler class but without actually handling a file on disk '''

@@ -9,10 +9,7 @@ VaultScan is a CLI tool for searching objects across multiple vault engines, sup
 - [Authentication & Engine configuration](#authentication--engine-configuration)
 - [Usage](#usage)
     - [Configuring the vaults](#configuring-the-vaults)
-    - [Searching secrets by its exact name](#searching-secrets-by-its-exact-name)
-    - [Searching secrets using regex](#searching-secrets-using-regex)
-    - [Searching all secrets](#searching-all-secrets)
-    - [Counting Secrets](#counting-secrets)
+    - [Searching secrets](#searching-secrets)
 - [Supported OS & Limitations](#supported-os--limitations)
 - [Contributing](#Contributing)
 
@@ -56,10 +53,11 @@ To see the installed version you can run:
 pip show vaultscan
 ```
 
-## Authentication & Engine configuration
+
+# Authentication & Engine configuration
 Each vault engine has its own authentication method. Below is an overview of how authentication works for supported engines:
 
-### Azure Key Vault
+## Azure Key Vault
 
 The [Azure Key Vault](https://azure.microsoft.com/en-us/) engine uses the [```DefaultAzureCredential```](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.defaultazurecredential?view=azure-dotnet) class for authentication and authorization. This class can uses environment variable, managed identity or even the ```az cli```.
 
@@ -83,7 +81,7 @@ export AZURE_CLIENT_SECRET="your-client-secret"
 
 [Click here for more information](https://microsoft.github.io/spring-cloud-azure/4.0.0-beta.3/4.0.0-beta.3/reference/html/authentication.html)
 
-### Keepass
+## Keepass
 
 [Keepass](https://keepass.info/) is a free open source password manager, which helps you to manage your passwords in a secure way. You can store all your passwords in one database, which is locked with a master key. So you only have to remember one single master key to unlock the whole database.
 
@@ -96,6 +94,7 @@ vaultscan vault add keepass --help
 > The password is securely encrypted and saved on your local machine.
 
 **Limitation**: It supports Keepass database when using master key. If you're using a [Key File](https://keepass.info/help/base/keys.html) to protect your secrets the cli won't work.
+
 
 # Usage
 
@@ -128,7 +127,9 @@ Look at the configured vaults just running:
 vaultscan vault list
 ```
 
-## Searching secrets by its exact name
+## Searching secrets
+
+### Searching secrets by its exact name
 
 Search for all secrets that match an exact name:
 
@@ -148,7 +149,7 @@ Search for all secrets that match an exact name in an specific vault:
 vaultscan find secrets my_secret_name --only-vault key_vault --exact
 ```
 
-## Searching secrets using regex
+### Searching secrets using regex
 
 Search for all secrets that match a given regex:
 ```
@@ -166,7 +167,7 @@ Search for all secrets that match a given regex in an specific vault:
 vaultscan find secrets host --only-vault key_vault
 ```
 
-## Searching all secrets
+### Searching all secrets
 
 Search for all secrets in all vaults:
 
@@ -182,24 +183,24 @@ Search for all secrets in an specific vault:
 vaultscan find secrets --only-vault key_vault
 ```
 
-## Counting secrets
+### Counting secrets
 
 Count for secrets that match a given regex in all vaults:
 
 ```
-vaultscan find secrets my_secret_name --count-only
+vaultscan find secrets my_secret_name --only-count
 ```
 
 Count for secrets that match a given regex in an specific vault:
 
 ```
-vaultscan find secrets my_secret --only-vault key_vault --count-only
+vaultscan find secrets my_secret --only-vault key_vault --only-count
 ```
 
 Count for all secrets in an specific vault:
 
 ```
-vaultscan find secrets --only-vault key_vault --count-only
+vaultscan find secrets --only-vault key_vault --only-count
 ```
 
 # Supported OS & Limitations
