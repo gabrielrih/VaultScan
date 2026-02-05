@@ -6,11 +6,10 @@ VaultScan is a CLI tool for searching objects across multiple vault engines, sup
 - [Installation](#installation)
     - [Requirements](#requirements)
     - [Via GitHub Releases](#via-github-releases)
+- [Authentication & Engine configuration](#authentication--engine-configuration)
 - [Usage](#usage)
     - [Configuring the vaults](#configuring-the-vaults)
-    - [Authentication & Engine configuration](#authentication--engine-configuration)
-    - [Searching secrets by its exact name](#searching-secrets-by-their-names)
-    - [Searching secrets using regex](#searching-secrets-using-regex)
+    - [Searching secrets](#searching-secrets)
 - [Supported OS & Limitations](#supported-os--limitations)
 - [Contributing](#Contributing)
 
@@ -54,6 +53,49 @@ To see the installed version you can run:
 pip show vaultscan
 ```
 
+
+# Authentication & Engine configuration
+Each vault engine has its own authentication method. Below is an overview of how authentication works for supported engines:
+
+## Azure Key Vault
+
+The [Azure Key Vault](https://azure.microsoft.com/en-us/) engine uses the [```DefaultAzureCredential```](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.defaultazurecredential?view=azure-dotnet) class for authentication and authorization. This class can uses environment variable, managed identity or even the ```az cli```.
+
+The easiest and **recommended** way to authenticate is by using ```az cli```. 
+
+But, you could also use a service principal by setting the following environment variables:
+
+On Windows:
+```ps1
+$Env:AZURE_CLIENT_ID="your-client-id"
+$Env:AZURE_TENANT_ID="your-tenant-id"
+$Env:AZURE_CLIENT_SECRET="your-client-secret"
+```
+
+On Linux:
+```bash
+export AZURE_CLIENT_ID="your-client-id"
+export AZURE_TENANT_ID="your-tenant-id"
+export AZURE_CLIENT_SECRET="your-client-secret"
+```
+
+[Click here for more information](https://microsoft.github.io/spring-cloud-azure/4.0.0-beta.3/4.0.0-beta.3/reference/html/authentication.html)
+
+## Keepass
+
+[Keepass](https://keepass.info/) is a free open source password manager, which helps you to manage your passwords in a secure way. You can store all your passwords in one database, which is locked with a master key. So you only have to remember one single master key to unlock the whole database.
+
+It means the authorization for the keepass database is through a password provided by the user when configuring the vault.
+
+```
+vaultscan vault add keepass --help
+```
+
+> The password is securely encrypted and saved on your local machine.
+
+**Limitation**: It supports Keepass database when using master key. If you're using a [Key File](https://keepass.info/help/base/keys.html) to protect your secrets the cli won't work.
+
+
 # Usage
 
 After installation, run the CLI with:
@@ -79,61 +121,15 @@ vaultscan vault add keyvault --alias mykv --vault-name vault
 vaultscan vault add keepass --alias my_keepass --path "C:\databases\passwords.kdbx"
 ```
 
-To look at the configured vaults just run:
+Look at the configured vaults just running:
 
 ```
 vaultscan vault list
 ```
 
-... or you can filter by regex
+## Searching secrets
 
-
-```
-vaultscan vault list "my_vault"
-```
-
-## Authentication & Engine configuration
-Each vault engine has its own authentication method. Below is an overview of how authentication works for supported engines:
-
-### Azure Key Vault
-
-The [Azure Key Vault](https://azure.microsoft.com/en-us/) engine uses the [```DefaultAzureCredential```](https://learn.microsoft.com/en-us/dotnet/api/azure.identity.defaultazurecredential?view=azure-dotnet) class for authentication and authorization. This class can uses environment variable, managed identity or even the ```az cli```.
-
-The easiest and **recommended** way to authenticate is by using ```az cli```. 
-
-But, you could also use a service principal by setting the following environment variables:
-
-On Windows:
-```ps1
-$Env:AZURE_CLIENT_ID="your-client-id"
-$Env:AZURE_TENANT_ID="your-tenant-id"
-$Env:AZURE_CLIENT_SECRET="your-client-secret"
-```
-
-On Linux:
-```bash
-export AZURE_CLIENT_ID="your-client-id"
-export AZURE_TENANT_ID="your-tenant-id"
-export AZURE_CLIENT_SECRET="your-client-secret"
-```
-
-[Click here for more information](https://microsoft.github.io/spring-cloud-azure/4.0.0-beta.3/4.0.0-beta.3/reference/html/authentication.html)
-
-### Keepass
-
-[Keepass](https://keepass.info/) is a free open source password manager, which helps you to manage your passwords in a secure way. You can store all your passwords in one database, which is locked with a master key. So you only have to remember one single master key to unlock the whole database.
-
-It means the authorization for the keepass database is through a password provided by the user when configuring the vault.
-
-```
-vaultscan vault add keepass --help
-```
-
-> The password is securely encrypted and saved on your local machine.
-
-**Limitation**: It supports Keepass database when using master key. If you're using a [Key File](https://keepass.info/help/base/keys.html) to protect your secrets the cli won't work.
-
-## Searching secrets by its exact name
+### Searching secrets by its exact name
 
 Search for all secrets that match an exact name:
 
@@ -153,7 +149,7 @@ Search for all secrets that match an exact name in an specific vault:
 vaultscan find secrets my_secret_name --only-vault key_vault --exact
 ```
 
-## Searching secrets using regex
+### Searching secrets using regex
 
 Search for all secrets that match a given regex:
 ```
@@ -171,7 +167,7 @@ Search for all secrets that match a given regex in an specific vault:
 vaultscan find secrets host --only-vault key_vault
 ```
 
-## Searching all secrets
+### Searching all secrets
 
 Search for all secrets in all vaults:
 
@@ -187,7 +183,7 @@ Search for all secrets in an specific vault:
 vaultscan find secrets --only-vault key_vault
 ```
 
-## Counting secrets
+### Counting secrets
 
 Count for secrets that match a given regex in all vaults:
 
