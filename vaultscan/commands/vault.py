@@ -154,15 +154,16 @@ DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(
 ).get_value()  # getting it from user configuration
 
 @vault.command()
+@click.argument("filter", required = False, default = '')
 @click.option('--output-format', '-o',
               type = click.Choice(OutputFormat.get_values()),
               required = False,
               default = DEFAULT_OUTPUT_FORMAT.value,
               help = 'Output format')
-def list(output_format: str) -> None:
+def list(filter: str, output_format: str) -> None:
     ''' List all vaults on the configuration '''
     logger.debug(f'Args: {str(locals())}')
-    vaults = repository.get_all()
+    vaults = repository.get_all(filter = filter)
     OutputHandler(
         format = OutputFormat(output_format)
     ).print(vaults)

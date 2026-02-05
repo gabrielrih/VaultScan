@@ -51,4 +51,4 @@ class VaultRepository(ABC):
     def get(self, alias: str) -> Dict: pass
 
     @abstractmethod
-    def get_all(self) -> List[Dict]: pass
+    def get_all(self, filter: str = '') -> List[Dict]: pass

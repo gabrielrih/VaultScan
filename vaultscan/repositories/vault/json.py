@@ -1,3 +1,5 @@
+import re
+
 from typing import List, Dict
 
 from vaultscan.repositories.vault.base import (
@@ -86,6 +88,17 @@ class VaultRepositoryAsJson(VaultRepository):
                 return vault
         return {}
 
-    def get_all(self) -> List[Dict]:
+    def get_all(self, filter: str = '') -> List[Dict]:
         content: Dict = self.file.read()
-        return content['vaults']
+        vaults = content['vaults']
+
+        if not filter:
+            return vaults
+        
+        filtered_vaults = []
+        for vault in vaults:
+            searchable_text = f"{vault.get('alias', '')}"
+            if re.search(filter, searchable_text, re.IGNORECASE):
+                filtered_vaults.append(vault)
+        
+        return filtered_vaults
