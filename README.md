@@ -79,10 +79,17 @@ vaultscan vault add keyvault --alias mykv --vault-name vault
 vaultscan vault add keepass --alias my_keepass --path "C:\databases\passwords.kdbx"
 ```
 
-Look at the configured vaults just running:
+To look at the configured vaults just run:
 
 ```
 vaultscan vault list
+```
+
+... or you can filter by regex
+
+
+```
+vaultscan vault list "my_vault"
 ```
 
 ## Authentication & Engine configuration
