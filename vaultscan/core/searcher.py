@@ -15,17 +15,18 @@ logger = LoggerFactory.get_logger(__name__)
 
 class MultiVaultSearcherFactory:
     @staticmethod
-    def create(vaults: List[Dict], exact_match: bool = False) -> 'Searcher':
+    def create(vaults: List[Dict], exact_match: bool = False, ignore_disabled: bool = True) -> 'Searcher':
         filter_type = FilterType.BY_REGEX
         if exact_match:
             filter_type = FilterType.BY_MATCH
-        return MultiVaultSearcher(vaults, filter_type)
+        return MultiVaultSearcher(vaults, filter_type, ignore_disabled)
 
 
 class Searcher(ABC):
-    def __init__(self, vaults: List[Dict], filter_type: FilterType):
+    def __init__(self, vaults: List[Dict], filter_type: FilterType, ignore_disabled: bool):
         self.vaults = vaults
         self.filter_type = filter_type
+        self.ignore_disabled = ignore_disabled
         logger.debug(f'All vaults: {self.vaults}')
 
     @abstractmethod
@@ -33,8 +34,8 @@ class Searcher(ABC):
 
 
 class MultiVaultSearcher(Searcher):
-    def __init__(self, vaults: List[Dict], filter_type: FilterType):
-        super().__init__(vaults, filter_type)
+    def __init__(self, vaults: List[Dict], filter_type: FilterType, ignore_disabled: bool):
+        super().__init__(vaults, filter_type, ignore_disabled)
 
     def find(self, filter: str = '', is_value: bool = False) -> List[Dict]:
         secrets: List[Dict] = list()
@@ -53,15 +54,18 @@ class MultiVaultSearcher(Searcher):
     def _find_on_vault(self, vault: Dict, filter: str = '', is_value: bool = False) -> List[Dict]:
         engine: AvailableEngines = AvailableEngines.from_type(type = vault['type'])
         vault = engine.config.from_dict(vault)
-        if vault.status == VaultStatus.DISABLED:
+        
+        if self.ignore_disabled and vault.status == VaultStatus.DISABLED:
             message = VaultMessages.VAULT_DISABLED.value.format(alias = vault.alias)
-            logger.info(message)
+            logger.warning(message)
             return []
+        
         message = VaultMessages.SEARCHING_ON_VAULT.value.format(
             alias = vault.alias,
             type = vault.type
         )
         logger.info(message)
+
         secrets: List[Secret] = engine.engine(vault).find(
             filter = filter,
             type = self.filter_type,
