@@ -14,7 +14,7 @@ class VaultMessages(Enum):
     VAULT_ALREADY_EXISTS = 'The alias "{alias}" already exists!'
     VAULT_DISABLED = 'Ignoring vault "{alias}" because it is disabled'
     ALL_VAULTS_REMOVED = 'All the vaults has been removed from the configuration!'
-    NO_VAULTS = 'No vaults found!'
+    NO_VAULTS = 'No vault found!'
     NUMBER_OF_VAULTS_FOUND = '{quantity} vault(s) found!'
     SEARCHING_ON_VAULT = 'Searching on vault "{alias}" of type "{type}"'
 
@@ -35,3 +35,7 @@ class SecretMessages(Enum):
     NUMBER_OF_SECRETS_FOUND = '{quantity} secret(s) found!'
     WARNING_WHEN_EXACT_FLAG_USED_WITH_NO_FILTER = '--exact flag is ignored when no filter is provided'
     WARNING_WHEN_SEARCHING_ALL_SECRETS = 'No filter provided. Searching for all secrets across all vaults. This may take a while...'
+
+
+class CacheMessages(Enum):
+    CACHE_RESET = 'Cache reset successfully!'
