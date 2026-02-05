@@ -185,19 +185,19 @@ vaultscan find secrets --only-vault key_vault
 Count for secrets that match a given regex in all vaults:
 
 ```
-vaultscan find secrets my_secret_name --count-only
+vaultscan find secrets my_secret_name --only-count
 ```
 
 Count for secrets that match a given regex in an specific vault:
 
 ```
-vaultscan find secrets my_secret --only-vault key_vault --count-only
+vaultscan find secrets my_secret --only-vault key_vault --only-count
 ```
 
 Count for all secrets in an specific vault:
 
 ```
-vaultscan find secrets --only-vault key_vault --count-only
+vaultscan find secrets --only-vault key_vault --only-count
 ```
 
 # Supported OS & Limitations
