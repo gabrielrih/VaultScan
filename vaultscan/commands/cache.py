@@ -40,8 +40,8 @@ def status(output_format: str) -> None:
     ).print([stats])
 
 @cache.command()
-def reset() -> None:
-    ''' Reset cache '''
+def clear() -> None:
+    ''' Clear cache '''
     cache_manager = CacheManagerSingleton.get_instance()
     cache_manager.clear()
-    logger.success(CacheMessages.CACHE_RESET.value)
+    logger.success(CacheMessages.CACHE_CLEARED.value)

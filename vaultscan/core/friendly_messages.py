@@ -38,4 +38,4 @@ class SecretMessages(Enum):
 
 
 class CacheMessages(Enum):
-    CACHE_RESET = 'Cache reset successfully!'
+    CACHE_CLEARED = 'The cache has been successfully cleared!'
