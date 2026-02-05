@@ -11,6 +11,7 @@ VaultScan is a CLI tool for searching objects across multiple vault engines, sup
     - [Authentication & Engine configuration](#authentication--engine-configuration)
     - [Searching secrets by its exact name](#searching-secrets-by-their-names)
     - [Searching secrets using regex](#searching-secrets-using-regex)
+    - [Searching all secrets](#searching-all-secrets)
 - [Supported OS & Limitations](#supported-os--limitations)
 - [Contributing](#Contributing)
 
