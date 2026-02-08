@@ -1,11 +1,8 @@
 import click
 
-from typing import List, Dict
-
-from vaultscan.core.vaults import get_vaults
-from vaultscan.core.searcher import MultiVaultSearcherFactory
+from vaultscan.application.find_service import FindSecretService
+from vaultscan.application.result import ServiceResult
 from vaultscan.core.configs import AvailableConfigs, ConfigManager
-from vaultscan.core.friendly_messages import VaultMessages, SecretMessages
 from vaultscan.core.output.time_execution import time_execution
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
 from vaultscan.core.output.logger import LoggerFactory
@@ -52,36 +49,26 @@ DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(
 def secrets(filter: str, only_vault: str, exact: bool, show_values: bool, only_count: bool, output_format: str) -> None:
     ''' Find secrets across vaults '''
     logger.debug(f'Args: {str(locals())}')
-    vaults = get_vaults(only_vault = only_vault)
-    if not vaults:
-        logger.error(VaultMessages.NO_VAULTS.value)
-        return
-    
-    if exact and not filter:
-        logger.warning(SecretMessages.WARNING_WHEN_EXACT_FLAG_USED_WITH_NO_FILTER.value)
 
-    if not filter and not only_vault:
-        logger.warning(SecretMessages.WARNING_WHEN_SEARCHING_ALL_SECRETS.value)
-
-    ignore_disabled = not bool(only_vault)
-    scanner = MultiVaultSearcherFactory.create(
-        vaults = vaults,
-        exact_match = exact,
-        ignore_disabled = ignore_disabled
+    find_service = FindSecretService(only_vault = only_vault)
+    result: ServiceResult = find_service.find(
+        filter = filter,
+        exact = exact,
+        show_values = show_values,
+        only_count = only_count
     )
 
-    # When we just want to count the secrets, there is no need to get their values
-    should_fetch_values: bool = show_values and not only_count
-    secrets: List[Dict] = scanner.find(
-        filter = filter if filter else '',  # guarantees that filter is never None
-        is_value = should_fetch_values
-    )
-
-    if only_count:
-        logger.info(SecretMessages.NUMBER_OF_SECRETS_FOUND.value.format(quantity = len(secrets)))
+    if not result.success:
+        logger.error(result.message)
         return
     
-    OutputHandler(
-        format = OutputFormat(output_format)
-    ).print(secrets)
-    logger.info(SecretMessages.NUMBER_OF_SECRETS_FOUND.value.format(quantity = len(secrets)))
+    for warning in result.warnings:
+        logger.warning(warning)
+
+    if result.data:
+        OutputHandler(
+            format = OutputFormat(output_format)
+        ).print(result.data)
+
+    if result.message:
+        logger.info(result.message)
