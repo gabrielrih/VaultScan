@@ -72,11 +72,7 @@ class KeePassSecretEngine(BaseVaultEngine):
             This is why we are doing this manually
         '''
         entries = self.client.find_entries(recursive = True)
-        first = True
         for entry in entries:
-            if first:
-                first = False
-                logger.info(entry)
             if filter:
                 entry_name = str(entry.title).lower()  # normalize the entry name
                 group_name = str(entry.group).lower()  # normalize the group
