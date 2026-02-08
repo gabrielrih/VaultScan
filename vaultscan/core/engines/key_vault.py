@@ -159,7 +159,16 @@ class KeyVaultSecretClient:
             return self.cache.get(cache_key)
 
         logger.debug(f"Fetching secret names from Azure KV: {self.vault_name}")
-        secrets: List[str] = [ secret.name for secret in self.client.list_properties_of_secrets() ]
+        secrets = []
+        is_first = True
+        for secret in self.client.list_properties_of_secrets():
+            if is_first:
+                logger.info(secret.updated_on)
+                logger.info(secret.created_on)
+                is_first = False
+            logger.info(secret.updated_on)
+            secrets.append(secret.name)
+        #secrets: List[str] = [ secret.name for secret in self.client.list_properties_of_secrets() ]
         if self.cache:
             self.cache.set(cache_key, secrets)
         
