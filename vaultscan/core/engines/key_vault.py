@@ -140,6 +140,7 @@ class KeyVaultSecretEngineConcurrent(BaseVaultEngine):
         )
 
 
+# Reference: https://azuresdkdocs.z19.web.core.windows.net/python/azure-keyvault-secrets/latest/azure.keyvault.secrets.html#azure.keyvault.secrets.SecretProperties
 CACHE_ENABLED: bool = ConfigManager(
     AvailableConfigs.CACHE_ENABLED
 ).get_value()

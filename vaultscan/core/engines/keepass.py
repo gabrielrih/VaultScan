@@ -73,19 +73,23 @@ class KeePassSecretEngine(BaseVaultEngine):
         '''
         entries = self.client.find_entries(recursive = True)
         for entry in entries:
-
             if filter:
                 entry_name = str(entry.title).lower()  # normalize the entry name
                 group_name = str(entry.group).lower()  # normalize the group
-                if not self.is_match([ entry_name, group_name ], filter, type):
+                username = str(entry.username).lower()  # normalize the username
+                matches = [ entry_name, group_name]
+                if username:
+                    matches.append(username)
+                if not self.is_match(matches, filter, type):
                     continue
 
             value = ''
             if is_value:
                 value = entry.password
-            secret_name = KeePassSecretEngine.format_secret_name(
+            secret_name = KeePassSecretEngine.build_secret_name(
                     group = str(entry.group),
-                    secret = entry.title  # original name
+                    secret = entry.title,  # original name
+                    username = entry.username
                 )
             response.append(
                 Secret(
@@ -98,7 +102,7 @@ class KeePassSecretEngine(BaseVaultEngine):
         return response
 
     @staticmethod
-    def format_secret_name(group: str, secret: str) -> str:
+    def build_secret_name(group: str, secret: str, username: str) -> str:
         if not group:
             return f'/{secret}'
         '''
@@ -106,4 +110,6 @@ class KeePassSecretEngine(BaseVaultEngine):
         Expected output: Group1/Group2
         '''
         group = group.replace('Group: ', '').replace('"', '')
+        if username:
+            return f'{group}/{secret}/{username}'
         return f'{group}/{secret}'
