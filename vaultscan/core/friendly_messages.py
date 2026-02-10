@@ -40,3 +40,7 @@ class SecretMessages(Enum):
 
 class CacheMessages(Enum):
     CACHE_CLEARED = 'The cache has been successfully cleared!'
+
+
+class DiffMessages(Enum):
+    CANNOT_COMPARE_VAULTS = 'Cannot compare vaults:\n{details}'

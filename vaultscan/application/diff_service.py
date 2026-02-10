@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 
 from vaultscan.application.base import BaseService, ServiceResult
 from vaultscan.application.find_service import FindSecretService
+from vaultscan.core.friendly_messages import DiffMessages
 
 
 class CompareSecretOnVaults(BaseService):
@@ -22,7 +23,11 @@ class CompareSecretOnVaults(BaseService):
         
         errors = self._validate_results(source_result, target_result)
         if errors:
-            return ServiceResult(success = False, message = ' '.join(errors))
+            error_message = DiffMessages.CANNOT_COMPARE_VAULTS.value.\
+                format(
+                    details = '\n'.join(f'  - {e}' for e in errors)
+                )
+            return ServiceResult(success = False, message = error_message)
         
         source_dict: Dict[str, str] = self._to_dict(secrets = source_result.data or [])
         target_dict: Dict[str, str] = self._to_dict(secrets = target_result.data or [])
@@ -53,9 +58,9 @@ class CompareSecretOnVaults(BaseService):
     def _validate_results(self, *results: ServiceResult) -> List[str]:
         return [ r.message for r in results if not r.success ]
 
-    def _to_dict(self, secrets: List[Dict]) -> Dict[str, str]:
+    def _to_dict(self, secrets: List[Dict]) -> Dict[str, Optional[str]]:
         return {
-            secret["name"]: secret.get("value")
+            secret["name"]: secret.get("value", "")
             for secret in secrets
         }
 
