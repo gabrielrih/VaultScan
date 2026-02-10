@@ -1,33 +1,39 @@
 from typing import List, Dict
 
-from vaultscan.application.result import ServiceResult
+from vaultscan.application.base import BaseService, ServiceResult
+from vaultscan.application.vault_service import GetVaultsService
 from vaultscan.core.searcher import MultiVaultSearcherFactory
-from vaultscan.core.friendly_messages import VaultMessages, SecretMessages
-from vaultscan.repositories.vault.factory import VaultRepositoryFactory
+from vaultscan.core.friendly_messages import SecretMessages
 
 
-class FindSecretService:
-    def __init__(self, only_vault: str = None) -> ServiceResult:
-        self.only_vault = only_vault
+class FindSecretService(BaseService):
+    def __init__(self):
+        self.get_vaults_service = GetVaultsService()
+
+    def execute(self,
+                filter: str = None,
+                exact: bool = False,
+                only_vault: str = None,
+                show_values: bool = False,
+                only_count: bool = False) -> ServiceResult:
         
-    def find(self, filter: str = None, exact: bool = False, show_values: bool = False, only_count: bool = False) -> ServiceResult:
-        vaults = self.get_vaults()
-        if not vaults:
+        vaults_result: ServiceResult = self.get_vaults_service.execute(only_vault = only_vault)
+        if not vaults_result.success:
             return ServiceResult(
                 success = False,
-                message = VaultMessages.NO_VAULTS.value
+                message = vaults_result.message
             )
         
         warnings = []
         if exact and not filter:
             warnings.append(SecretMessages.WARNING_WHEN_EXACT_FLAG_USED_WITH_NO_FILTER.value)
 
-        if not filter and not self.only_vault:
+        if not filter and not only_vault:
             warnings.append(SecretMessages.WARNING_WHEN_SEARCHING_ALL_SECRETS.value)
 
-        ignore_disabled = not bool(self.only_vault)
+        ignore_disabled = not bool(only_vault)
         scanner = MultiVaultSearcherFactory.create(
-            vaults = vaults,
+            vaults = vaults_result.data,
             exact_match = exact,
             ignore_disabled = ignore_disabled
         )
@@ -53,12 +59,3 @@ class FindSecretService:
             data = secrets,
             warnings = warnings
         )
-
-    def get_vaults(self) -> List[Dict]:
-        vault_repository = VaultRepositoryFactory.create()
-        if self.only_vault:
-            vault: Dict = vault_repository.get(alias = self.only_vault)
-            if not vault:
-                return list()
-            return [ vault ]
-        return vault_repository.get_all()

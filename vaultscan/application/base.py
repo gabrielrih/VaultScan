@@ -1,3 +1,4 @@
+from abc import ABC, abstractmethod
 from typing import List, Dict, Optional
 from dataclasses import dataclass, field
 
@@ -8,3 +9,8 @@ class ServiceResult():
     message: Optional[str] = None
     data: Optional[List[Dict]] = field(default_factory=list)
     warnings: Optional[List[str]] = field(default_factory=list)
+
+
+class BaseService(ABC):
+    @abstractmethod
+    def execute(*args, **kwargs) -> ServiceResult: pass

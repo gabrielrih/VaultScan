@@ -1,5 +1,7 @@
 import click
 
+from vaultscan.application.vault_service import GetVaultsService
+from vaultscan.application.base import ServiceResult
 from vaultscan.core.engines.key_vault import KeyVaultConfig
 from vaultscan.core.engines.keepass import KeePassConfig
 from vaultscan.core.configs import AvailableConfigs, ConfigManager
@@ -16,7 +18,7 @@ logger = LoggerFactory.get_logger(__name__)
 
 @click.group()
 def vault() -> None:
-    ''' Configure a list of vaults used for searching objects '''
+    ''' Manage vaults '''
     pass
 
 
@@ -163,10 +165,21 @@ DEFAULT_OUTPUT_FORMAT: OutputFormat = ConfigManager(
 def list(filter: str, output_format: str) -> None:
     ''' List all vaults on the configuration '''
     logger.debug(f'Args: {str(locals())}')
-    vaults = repository.get_all(filter = filter)
-    OutputHandler(
-        format = OutputFormat(output_format)
-    ).print(vaults)
-    logger.info(
-        VaultMessages.NUMBER_OF_VAULTS_FOUND.value.format(quantity = len(vaults))
-    )
+
+    get_vaults = GetVaultsService()
+    result: ServiceResult = get_vaults.execute(filter = filter)
+
+    if not result.success:
+        logger.error(result.message)
+        return
+    
+    for warning in result.warnings:
+        logger.warning(warning)
+
+    if result.data:
+        OutputHandler(
+            format = OutputFormat(output_format)
+        ).print(result.data)
+
+    if result.message:
+        logger.info(result.message)

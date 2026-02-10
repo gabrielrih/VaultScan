@@ -1,7 +1,7 @@
 import click
 
 from vaultscan.application.find_service import FindSecretService
-from vaultscan.application.result import ServiceResult
+from vaultscan.application.base import ServiceResult
 from vaultscan.core.configs import AvailableConfigs, ConfigManager
 from vaultscan.core.output.time_execution import time_execution
 from vaultscan.core.output.formatter import OutputHandler, OutputFormat
@@ -50,10 +50,11 @@ def secrets(filter: str, only_vault: str, exact: bool, show_values: bool, only_c
     ''' Find secrets across vaults '''
     logger.debug(f'Args: {str(locals())}')
 
-    find_service = FindSecretService(only_vault = only_vault)
-    result: ServiceResult = find_service.find(
+    find_secrets = FindSecretService()
+    result: ServiceResult = find_secrets.execute(
         filter = filter,
         exact = exact,
+        only_vault = only_vault,
         show_values = show_values,
         only_count = only_count
     )
