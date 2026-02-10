@@ -10,6 +10,7 @@ VaultScan is a CLI tool for searching objects across multiple vault engines, sup
 - [Usage](#usage)
     - [Configuring the vaults](#configuring-the-vaults)
     - [Searching secrets](#searching-secrets)
+    - [Comparing secrets between vaults](#comparing-secrets-between-vaults)
     - [Managing cache](#managing-cache)
 - [Supported OS & Limitations](#supported-os--limitations)
 - [Contributing](#Contributing)
@@ -18,10 +19,11 @@ VaultScan is a CLI tool for searching objects across multiple vault engines, sup
 
 The main group commands available on this tool are:
 
-- **Vault:** To configure a list of vaults used for searching objects
-- **Find:** To find objects across vaults
-- **Config:** To manage configurations
 - **Cache:** To manage cache for improved performance
+- **Config:** To manage configurations
+- **Diff:** To compare secrets in different vaults
+- **Find:** To find objects across vaults
+- **Vault:** To configure a list of vaults used for searching objects
 
 # Installation
 
@@ -33,18 +35,18 @@ The main group commands available on this tool are:
 You can install this tool by downloading the latest ```.whl``` file from GitHub Releases and using pip.
 
 - Go to the [Releases page](https://github.com/gabrielrih/VaultScan/releases/).
-- Find the latest version and download the ```.whl``` file (Example, ```vaultscan-1.3.0-py3-none-any.whl```).
+- Find the latest version and download the ```.whl``` file (Example, ```vaultscan-1.5.0-py3-none-any.whl```).
 
 Or you can download it from the terminal:
 
 ```
-wget -O "vaultscan-1.3.0-py3-none-any.whl" "https://github.com/gabrielrih/VaultScan/releases/download/v1.3.0/vaultscan-1.3.0-py3-none-any.whl"
+wget -O "vaultscan-1.5.0-py3-none-any.whl" "https://github.com/gabrielrih/VaultScan/releases/download/v1.5.0/vaultscan-1.5.0-py3-none-any.whl"
 ```
 
 - After downloading the .whl file, install it using pip:
 
 ```
-pip install --user vaultscan-1.3.0-py3-none-any.whl
+pip install --user vaultscan-1.5.0-py3-none-any.whl
 ```
 
 By doing that a ```vaultscan.exe``` file will be created probably on the folder: ```C:\Users\user\AppData\Roaming\Python\Python312\Scripts```. So, you must add this folder on the user PATH.
@@ -204,6 +206,33 @@ Count for all secrets in an specific vault:
 ```
 vaultscan find secrets --only-vault key_vault --only-count
 ```
+
+## Comparing secrets between vaults
+
+Compare the secrets across two different vaults:
+
+```
+vaultscan diff kv_1 kv_2
+```
+
+Output example:
+
+```json
+[
+    {
+        "source": "hoop_stg",
+        "target": "hoop_prd_iac",
+        "only_in_source": 44,
+        "only_in_target": 38,
+        "present_in_both": {
+            "total": 19
+        }
+    }
+]
+```
+
+> You can also use the option `--compare-values` to also compare the values of the common secrets and the `--show-details` option to see the list of the secret names.
+
 
 ## Managing cache
 

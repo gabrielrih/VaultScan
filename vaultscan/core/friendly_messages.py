@@ -6,10 +6,10 @@ from enum import Enum
     IMPORTANT: DEBUG and RAISE EXCEPTION messages SHOULDN'T BE HERE. That is because there is no need to those messages be user friendly.
 '''
 class VaultMessages(Enum):
-    VAULT_ADDED = 'The vault "{alias}" was added on the configuration!'
-    VAULT_REMOVED = 'The vault "{alias}" was removed from the configuration!'
+    VAULT_ADDED = 'The vault "{alias}" was added!'
+    VAULT_REMOVED = 'The vault "{alias}" was removed!'
     VAULT_RENAMED = 'The vault "{old_alias}" has been renamed to "{new_alias}"!'
-    VAULT_NOT_FOUND = 'The alias "{alias}" was not found on the configuration!'
+    VAULT_NOT_FOUND = 'The vault "{alias}" was not found!'
     VAULT_STATUS_CHANGED = 'The status of vault "{alias}" has been changed to "{status}"!'
     VAULT_ALREADY_EXISTS = 'The alias "{alias}" already exists!'
     VAULT_DISABLED = 'Ignoring vault "{alias}" because it is disabled'
@@ -17,6 +17,7 @@ class VaultMessages(Enum):
     NO_VAULTS = 'No vault found!'
     NUMBER_OF_VAULTS_FOUND = '{quantity} vault(s) found!'
     SEARCHING_ON_VAULT = 'Searching on vault "{alias}" of type "{type}"'
+    WARNING_WHEN_FILTER_USED_WITH_ONLY_VAULT = 'filter value is ignored when --only-vault is provided'
 
 
 class ConfigMessages(Enum):
@@ -39,3 +40,7 @@ class SecretMessages(Enum):
 
 class CacheMessages(Enum):
     CACHE_CLEARED = 'The cache has been successfully cleared!'
+
+
+class DiffMessages(Enum):
+    CANNOT_COMPARE_VAULTS = 'Cannot compare vaults:\n{details}'
